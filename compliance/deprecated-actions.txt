@@ -1,0 +1,11 @@
+# Deprecated GitHub Actions
+# Format: action-name@version
+# Lines starting with # are comments
+
+# Checkout v3 - upgrade to v4
+actions/checkout@v3
+
+# Add more deprecated actions here as needed
+# Example:
+# actions/setup-node@v2
+# actions/cache@v2

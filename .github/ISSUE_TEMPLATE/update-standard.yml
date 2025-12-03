@@ -1,0 +1,81 @@
+name: Update Compliance Standard
+description: Propose changes to an existing compliance standard
+title: "[STANDARD] "
+labels: ["enhancement", "compliance"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Update Compliance Standard
+        Use this template to propose changes to an existing compliance check or standard.
+
+  - type: input
+    id: check_id
+    attributes:
+      label: Check ID
+      description: Which compliance check does this affect?
+      placeholder: e.g., COMP-001, COMP-005
+    validations:
+      required: true
+
+  - type: dropdown
+    id: change_type
+    attributes:
+      label: Type of Change
+      description: What kind of update is this?
+      options:
+        - Update check logic
+        - Change priority level
+        - Modify pass/fail criteria
+        - Update documentation only
+        - Deprecate check
+    validations:
+      required: true
+
+  - type: textarea
+    id: current_behavior
+    attributes:
+      label: Current Behavior
+      description: How does the check currently work?
+      placeholder: Describe the current state
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposed_change
+    attributes:
+      label: Proposed Change
+      description: What should change?
+      placeholder: Describe the desired new behavior
+    validations:
+      required: true
+
+  - type: textarea
+    id: rationale
+    attributes:
+      label: Rationale
+      description: Why is this change needed?
+      placeholder: Explain the motivation for this change
+    validations:
+      required: true
+
+  - type: textarea
+    id: impact
+    attributes:
+      label: Impact Analysis
+      description: How many repositories would be affected? Would compliance scores change?
+      placeholder: |
+        - Affected repositories:
+        - Compliance score changes:
+        - Breaking changes:
+
+  - type: checkboxes
+    id: backwards_compatibility
+    attributes:
+      label: Backwards Compatibility
+      description: Impact on existing repositories
+      options:
+        - label: This change is backwards compatible
+        - label: This change may cause repos to fail that previously passed
+        - label: Existing issues should be updated
+        - label: Documentation needs updating

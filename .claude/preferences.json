@@ -1,0 +1,25 @@
+{
+  "repository": "my-repos",
+  "purpose": "Cross-repository compliance checking and standardization framework",
+  "type": "automation",
+  "guidelines": [
+    "This is the meta-repository for managing all my-* repositories",
+    "Compliance checks are modular - each check is a separate script",
+    "Use GITHUB_TOKEN for my-repos operations, App token for cross-repo",
+    "Template file approach for issue bodies, not heredocs",
+    "Always check for existing open issues before creating new ones",
+    "my-repos checks itself for compliance too"
+  ],
+  "important_files": {
+    "COMPLIANCE.md": "Source of truth for compliance standards",
+    "compliance/run-all-checks.sh": "Orchestrator script",
+    ".github/workflows/compliance-check.yml": "Automation workflow",
+    ".github/ISSUE_TEMPLATE_COMPLIANCE_FAILURE.md": "Issue template",
+    "docs/adr/": "Architecture decisions"
+  },
+  "common_tasks": {
+    "run_checks_locally": "./compliance/run-all-checks.sh /path/to/repo",
+    "trigger_workflow": "gh workflow run compliance-check.yml --repo tomp736/my-repos",
+    "view_reports": "cat reports/compliance-report-$(date +%Y-%m-%d).md"
+  }
+}

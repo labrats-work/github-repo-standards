@@ -1,0 +1,84 @@
+name: New Compliance Check
+description: Propose a new compliance check for repositories
+title: "[CHECK] "
+labels: ["enhancement", "compliance"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Propose a New Compliance Check
+        Use this template to suggest a new compliance standard that should be checked across all repositories.
+
+  - type: input
+    id: check_name
+    attributes:
+      label: Check Name
+      description: Short name for this check
+      placeholder: e.g., "README Badge Check", "Security Policy Check"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Priority Level
+      description: How important is this check?
+      options:
+        - CRITICAL (10 points) - Must have for all repos
+        - HIGH (5 points) - Should have for most repos
+        - MEDIUM (2 points) - Nice to have
+        - LOW (1 point) - Optional
+    validations:
+      required: true
+
+  - type: textarea
+    id: rationale
+    attributes:
+      label: Rationale
+      description: Why is this check important? What problem does it solve?
+      placeholder: Explain the value of this check
+    validations:
+      required: true
+
+  - type: textarea
+    id: check_logic
+    attributes:
+      label: Check Logic
+      description: How should this check work? What should it look for?
+      placeholder: |
+        Example:
+        - Check if file X exists
+        - Verify file contains section Y
+        - Ensure format matches Z
+    validations:
+      required: true
+
+  - type: textarea
+    id: pass_criteria
+    attributes:
+      label: Pass Criteria
+      description: When should this check pass?
+      placeholder: Define what makes a repository compliant with this check
+
+  - type: textarea
+    id: fail_message
+    attributes:
+      label: Failure Message
+      description: What message should be shown when this check fails?
+      placeholder: e.g., "README.md badge section not found"
+
+  - type: textarea
+    id: remediation
+    attributes:
+      label: Remediation Steps
+      description: How can users fix failures of this check?
+      placeholder: Step-by-step instructions to become compliant
+
+  - type: checkboxes
+    id: implementation
+    attributes:
+      label: Implementation Checklist
+      options:
+        - label: I can implement this check script
+        - label: I can update COMPLIANCE.md documentation
+        - label: I can help test this check

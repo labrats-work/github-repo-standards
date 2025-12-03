@@ -1,0 +1,41 @@
+# Temporary files
+*.tmp
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE files
+.vscode/
+.idea/
+*.iml
+
+# Test repositories (don't commit cloned repos)
+repos/
+
+# Backup files
+*.bak
+*.backup
+
+# Logs
+*.log
+
+# Node modules (if we ever add JS tooling)
+node_modules/
+
+# Python cache (if we ever add Python tooling)
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+
+# GitHub App private keys and credentials (NEVER COMMIT THESE!)
+*.pem
+*.p12
+private-key*.txt
+github-app-credentials.txt
+github-app-private-key.pem

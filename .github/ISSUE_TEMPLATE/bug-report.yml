@@ -1,0 +1,103 @@
+name: Bug Report
+description: Report a problem with the compliance framework
+title: "[BUG] "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Bug Report
+        Report bugs or issues with the compliance checking framework.
+
+  - type: dropdown
+    id: component
+    attributes:
+      label: Component
+      description: Which part of the system has the bug?
+      options:
+        - Compliance check script
+        - Orchestrator (run-all-checks.sh)
+        - GitHub Actions workflow
+        - Report generation
+        - Issue creation
+        - Documentation
+        - Other
+    validations:
+      required: true
+
+  - type: input
+    id: affected_check
+    attributes:
+      label: Affected Check (if applicable)
+      description: Which compliance check is affected?
+      placeholder: e.g., COMP-001, check-readme-exists.sh
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Bug Description
+      description: Clear description of the problem
+      placeholder: Describe what's happening
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected Behavior
+      description: What should happen?
+      placeholder: Describe the expected correct behavior
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual Behavior
+      description: What actually happens?
+      placeholder: Describe what's actually happening
+
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Steps to Reproduce
+      description: How can this bug be reproduced?
+      placeholder: |
+        1. Run command...
+        2. Check output...
+        3. See error...
+    validations:
+      required: true
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Relevant Logs/Output
+      description: Paste any relevant error messages or logs
+      render: shell
+      placeholder: Paste logs here
+
+  - type: input
+    id: repository
+    attributes:
+      label: Affected Repository
+      description: Which repository shows this bug? (if specific to one repo)
+      placeholder: e.g., my-borowego-2
+
+  - type: dropdown
+    id: severity
+    attributes:
+      label: Severity
+      description: How severe is this bug?
+      options:
+        - Critical - Blocks all compliance checking
+        - High - Affects multiple repositories
+        - Medium - Affects single repository
+        - Low - Minor issue or cosmetic
+    validations:
+      required: true
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Additional Context
+      description: Any other relevant information
+      placeholder: Add screenshots, links, or additional details

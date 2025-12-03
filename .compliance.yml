@@ -1,0 +1,12 @@
+# Compliance Configuration for my-repos
+# List of check IDs to disable
+disabled_checks: []
+  # No checks disabled
+
+# Minimum score percentage to trigger issue creation (default: 50)
+min_score_for_issue: 50
+
+# Notes
+notes: |
+  Meta-repository for compliance checking.
+  All checks apply to meet our own standards.
