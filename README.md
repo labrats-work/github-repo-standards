@@ -1,14 +1,43 @@
 # github-repo-standards
 
-Cross-repository standardization and compliance checking framework for the labrats-work organization.
+> **📋 This is a template repository!** Use it to create your own compliance checking framework for your organization.
 
-## Purpose
+Cross-repository standardization and compliance checking framework. This template provides everything you need to automate compliance checks across all repositories in your organization.
 
-This repository serves as the central hub for:
-- **Compliance checking** - Automated validation of best practices
-- **Standardization tracking** - Monitoring consistency across repositories
-- **Improvement planning** - Coordinating enhancements across repos
-- **Pattern documentation** - Recording successful patterns and anti-patterns
+## 🎯 Purpose
+
+This template repository provides:
+- **Compliance checking framework** - Automated validation of best practices
+- **13 modular compliance checks** - CRITICAL, HIGH, MEDIUM, and LOW priority checks
+- **GitHub App integration** - Cross-repository access and automation
+- **Automated reporting** - Weekly compliance reports and issue tracking
+- **Pattern documentation** - Best practices and anti-patterns
+
+## 🚀 Getting Started
+
+### Use This Template
+
+1. **Click "Use this template"** button above
+2. **Create a private repository** for your implementation (e.g., `your-org/compliance`)
+3. **Follow the setup guide** below
+
+### Setup Steps
+
+1. **Create a GitHub App** for cross-repo access:
+   ```bash
+   cd github-app-tools
+   ./create-app.sh examples/compliance-checker.json
+   ```
+
+2. **Add secrets** to your implementation repository:
+   - `APP_ID` - Your GitHub App ID
+   - `APP_PRIVATE_KEY` - Your GitHub App private key
+
+3. **Install the GitHub App** on repositories you want to track
+
+4. **Trigger the workflow** to run your first compliance check
+
+For detailed instructions, see [GITHUB_APP_SETUP.md](GITHUB_APP_SETUP.md).
 
 ## Quick Start
 
