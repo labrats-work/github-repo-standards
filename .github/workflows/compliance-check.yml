@@ -47,10 +47,10 @@ jobs:
         env:
           GH_TOKEN: ${{ steps.app-token.outputs.token }}
 
-      - name: Checkout repo-standards
+      - name: Checkout github-repo-standards
         uses: actions/checkout@v4
         with:
-          path: repo-standards
+          path: github-repo-standards
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Checkout all repositories with app installed
@@ -60,7 +60,7 @@ jobs:
 
           # Read the dynamic list of repositories from the previous step
           while IFS= read -r repo; do
-            if [ -n "$repo" ] && [ "$repo" != "repo-standards" ]; then
+            if [ -n "$repo" ] && [ "$repo" != "github-repo-standards" ]; then
               echo "Cloning $repo..."
               gh repo clone labrats-work/$repo repos/$repo || echo "Failed to clone $repo"
             fi
@@ -75,11 +75,11 @@ jobs:
 
       - name: Run compliance checks
         run: |
-          cd ${{ github.workspace }}/repo-standards
+          cd ${{ github.workspace }}/github-repo-standards
           mkdir -p reports
 
-          # Add repo-standards itself to the repos directory for compliance checking
-          ln -s "${{ github.workspace }}/repo-standards" "${{ github.workspace }}/repos/repo-standards"
+          # Add github-repo-standards itself to the repos directory for compliance checking
+          ln -s "${{ github.workspace }}/github-repo-standards" "${{ github.workspace }}/repos/github-repo-standards"
 
           # Generate markdown report
           ./compliance/run-all-checks.sh --all --format markdown --parent-dir "${{ github.workspace }}/repos" > reports/compliance-report-$(date +%Y-%m-%d).md
@@ -89,7 +89,7 @@ jobs:
 
       - name: Create summary
         run: |
-          cd ${{ github.workspace }}/repo-standards
+          cd ${{ github.workspace }}/github-repo-standards
 
           REPORT_FILE=$(ls -t reports/compliance-report-*.md | head -1)
 
@@ -99,7 +99,7 @@ jobs:
 
       - name: Commit reports
         run: |
-          cd ${{ github.workspace }}/repo-standards
+          cd ${{ github.workspace }}/github-repo-standards
 
           git config user.name "compliance-checker[bot]"
           git config user.email "compliance-checker[bot]@users.noreply.github.com"
@@ -117,7 +117,7 @@ jobs:
       - name: Create issues in repositories with critical failures
         if: always()
         run: |
-          cd ${{ github.workspace }}/repo-standards
+          cd ${{ github.workspace }}/github-repo-standards
 
           JSON_REPORT=$(ls -t reports/compliance-report-*.json | head -1)
 
@@ -410,7 +410,7 @@ jobs:
       - name: Create pipeline metrics issue
         if: always()
         run: |
-          cd ${{ github.workspace }}/repo-standards
+          cd ${{ github.workspace }}/github-repo-standards
 
           JSON_REPORT=$(ls -t reports/compliance-report-*.json | head -1)
           MARKDOWN_REPORT=$(ls -t reports/compliance-report-*.md | head -1)
@@ -625,22 +625,22 @@ jobs:
           awk -v file="$TREND_DATA" '/{{TREND_DATA}}/ {while((getline line < file) > 0) print line; close(file); next} {print}' "$ISSUE_FILE" > "$ISSUE_FILE.tmp" && mv "$ISSUE_FILE.tmp" "$ISSUE_FILE"
 
           # Check if pipeline metrics issue already exists (open issues only)
-          EXISTING_ISSUE=$(gh issue list --repo "labrats-work/repo-standards" --label "pipeline-metrics" --state open --json number --jq '.[0].number // ""')
+          EXISTING_ISSUE=$(gh issue list --repo "labrats-work/github-repo-standards" --label "pipeline-metrics" --state open --json number --jq '.[0].number // ""')
 
           # Create labels if they don't exist
-          gh label create pipeline-metrics --description "Pipeline execution metrics and statistics" --color "1f77b4" --repo "labrats-work/repo-standards" 2>/dev/null || true
-          gh label create automation --description "Automated processes and workflows" --color "0e8a16" --repo "labrats-work/repo-standards" 2>/dev/null || true
+          gh label create pipeline-metrics --description "Pipeline execution metrics and statistics" --color "1f77b4" --repo "labrats-work/github-repo-standards" 2>/dev/null || true
+          gh label create automation --description "Automated processes and workflows" --color "0e8a16" --repo "labrats-work/github-repo-standards" 2>/dev/null || true
 
           if [ -n "$EXISTING_ISSUE" ]; then
             echo "Closing previous pipeline metrics issue (#$EXISTING_ISSUE)"
             gh issue close "$EXISTING_ISSUE" \
-              --repo "labrats-work/repo-standards" \
+              --repo "labrats-work/github-repo-standards" \
               --comment "Superseded by new pipeline run." || echo "Failed to close previous issue"
           fi
 
           echo "Creating new pipeline metrics issue"
           gh issue create \
-            --repo "labrats-work/repo-standards" \
+            --repo "labrats-work/github-repo-standards" \
             --title "📊 Pipeline Metrics: Compliance Check #${RUN_NUMBER} (${DATE})" \
             --label "pipeline-metrics" \
             --label "automation" \
@@ -654,7 +654,7 @@ jobs:
       - name: Create workflow health reports
         if: always()
         run: |
-          cd ${{ github.workspace }}/repo-standards
+          cd ${{ github.workspace }}/github-repo-standards
 
           DATE=$(date +%Y-%m-%d)
           TIME=$(date +%H:%M:%S)
@@ -662,7 +662,7 @@ jobs:
 
           # Read list of repositories from previous step
           while IFS= read -r repo; do
-            if [ -z "$repo" ] || [ "$repo" = "repo-standards" ]; then
+            if [ -z "$repo" ] || [ "$repo" = "github-repo-standards" ]; then
               continue
             fi
 
@@ -972,7 +972,7 @@ jobs:
 
           # Create issue body from template
           ISSUE_FILE=$(mktemp)
-          cp repo-standards/.github/ISSUE_TEMPLATE_ACTIONS_USAGE.md "$ISSUE_FILE"
+          cp github-repo-standards/.github/ISSUE_TEMPLATE_ACTIONS_USAGE.md "$ISSUE_FILE"
 
           # Replace placeholders
           sed -i "s|{{DATE}}|$DATE|g" "$ISSUE_FILE"
@@ -989,21 +989,21 @@ jobs:
           awk -v file="$RECOMMENDATIONS_FILE" '/{{RECOMMENDATIONS}}/ {while((getline line < file) > 0) print line; close(file); next} {print}' "$ISSUE_FILE" > "$ISSUE_FILE.tmp" && mv "$ISSUE_FILE.tmp" "$ISSUE_FILE"
 
           # Create labels if they don't exist
-          gh label create actions-usage --description "GitHub Actions usage tracking" --color "2ea44f" --repo "labrats-work/repo-standards" 2>/dev/null || true
+          gh label create actions-usage --description "GitHub Actions usage tracking" --color "2ea44f" --repo "labrats-work/github-repo-standards" 2>/dev/null || true
 
           # Check if actions usage issue already exists (open issues only)
-          EXISTING_ISSUE=$(gh issue list --repo "labrats-work/repo-standards" --label "actions-usage" --state open --json number --jq '.[0].number // ""')
+          EXISTING_ISSUE=$(gh issue list --repo "labrats-work/github-repo-standards" --label "actions-usage" --state open --json number --jq '.[0].number // ""')
 
           if [ -n "$EXISTING_ISSUE" ]; then
             echo "Closing previous actions usage issue (#$EXISTING_ISSUE)"
             gh issue close "$EXISTING_ISSUE" \
-              --repo "labrats-work/repo-standards" \
+              --repo "labrats-work/github-repo-standards" \
               --comment "Superseded by new actions usage report." || echo "Failed to close previous issue"
           fi
 
           echo "Creating actions usage report issue"
           gh issue create \
-            --repo "labrats-work/repo-standards" \
+            --repo "labrats-work/github-repo-standards" \
             --title "🔌 GitHub Actions Usage Report (${DATE})" \
             --label "actions-usage" \
             --label "automation" \

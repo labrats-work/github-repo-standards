@@ -1,6 +1,6 @@
 # Documentation
 
-This directory contains detailed documentation for the repo-standards compliance framework.
+This directory contains detailed documentation for the github-repo-standards compliance framework.
 
 ## Contents
 

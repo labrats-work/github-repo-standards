@@ -1,4 +1,4 @@
-# repo-standards
+# github-repo-standards
 
 Cross-repository standardization and compliance checking framework for the labrats-work organization.
 
@@ -33,7 +33,7 @@ cat reports/compliance-report-$(date +%Y-%m-%d).md
 ## Structure
 
 ```
-repo-standards/
+github-repo-standards/
 ├── compliance/              # Compliance checking framework
 │   ├── checks/             # Individual check scripts
 │   ├── run-all-checks.sh   # Orchestrator script
@@ -101,7 +101,7 @@ Trigger checks manually:
 
 ### Pipeline Metrics
 
-After each compliance check run, a pipeline metrics issue is automatically created in repo-standards with:
+After each compliance check run, a pipeline metrics issue is automatically created in github-repo-standards with:
 - **Execution time metrics** - Total duration and step-by-step timing
 - **Repository summary** - Scores, tiers, and pass/fail counts
 - **Success metrics** - Passing/failing repository counts, issues created/updated/closed
@@ -129,7 +129,7 @@ Example: [my-diet workflow-health](https://github.com/labrats-work/my-diet/issue
 
 ### Actions Usage Report
 
-After each compliance check run, an actions usage report is created in repo-standards with:
+After each compliance check run, an actions usage report is created in github-repo-standards with:
 - **Total actions inventory** - All GitHub Actions used across repositories
 - **Usage statistics** - How many times each action is used
 - **Top 10 most used actions** - Ranked by usage frequency

@@ -1,14 +1,14 @@
 {
-  "repository": "repo-standards",
+  "repository": "github-repo-standards",
   "purpose": "Cross-repository compliance checking and standardization framework",
   "type": "automation",
   "guidelines": [
     "This is the meta-repository for managing all my-* repositories",
     "Compliance checks are modular - each check is a separate script",
-    "Use GITHUB_TOKEN for repo-standards operations, App token for cross-repo",
+    "Use GITHUB_TOKEN for github-repo-standards operations, App token for cross-repo",
     "Template file approach for issue bodies, not heredocs",
     "Always check for existing open issues before creating new ones",
-    "repo-standards checks itself for compliance too"
+    "github-repo-standards checks itself for compliance too"
   ],
   "important_files": {
     "COMPLIANCE.md": "Source of truth for compliance standards",
@@ -19,7 +19,7 @@
   },
   "common_tasks": {
     "run_checks_locally": "./compliance/run-all-checks.sh /path/to/repo",
-    "trigger_workflow": "gh workflow run compliance-check.yml --repo labrats-work/repo-standards",
+    "trigger_workflow": "gh workflow run compliance-check.yml --repo labrats-work/github-repo-standards",
     "view_reports": "cat reports/compliance-report-$(date +%Y-%m-%d).md"
   }
 }

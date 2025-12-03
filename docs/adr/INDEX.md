@@ -1,6 +1,6 @@
 # Architecture Decision Records
 
-This directory contains Architecture Decision Records (ADRs) documenting significant decisions made about the repo-standards compliance framework.
+This directory contains Architecture Decision Records (ADRs) documenting significant decisions made about the github-repo-standards compliance framework.
 
 ## What is an ADR?
 

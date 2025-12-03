@@ -1,4 +1,4 @@
-# Compliance Configuration for repo-standards
+# Compliance Configuration for github-repo-standards
 # List of check IDs to disable
 disabled_checks: []
   # No checks disabled

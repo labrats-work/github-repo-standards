@@ -1,4 +1,4 @@
-# Claude Context: repo-standards - Cross-Repository Standardization
+# Claude Context: github-repo-standards - Cross-Repository Standardization
 
 ## Repository Overview
 
@@ -11,7 +11,7 @@ This is the **meta-repository** for managing compliance and standardization acro
 ### Core Components
 
 ```
-repo-standards/
+github-repo-standards/
 ├── compliance/              # Compliance checking framework
 │   ├── checks/             # Modular check scripts (COMP-001 to COMP-013)
 │   ├── run-all-checks.sh   # Orchestrator script
@@ -86,10 +86,10 @@ repo-standards/
 
 ```bash
 # Via GitHub CLI
-gh workflow run compliance-check.yml --repo labrats-work/repo-standards
+gh workflow run compliance-check.yml --repo labrats-work/github-repo-standards
 
 # Watch execution
-gh run watch <run-id> --repo labrats-work/repo-standards
+gh run watch <run-id> --repo labrats-work/github-repo-standards
 ```
 
 ### View Compliance Reports
@@ -112,7 +112,7 @@ This repository uses a GitHub App for cross-repository access:
 - **Setup:** See GITHUB_APP_SETUP.md for instructions
 
 **Security Model:**
-- GITHUB_TOKEN: Used for repo-standards operations (checkout, commit, push)
+- GITHUB_TOKEN: Used for github-repo-standards operations (checkout, commit, push)
 - GitHub App Token: Used ONLY for reading other repos (clone) and creating issues
 
 ## Automation Workflow
@@ -120,11 +120,11 @@ This repository uses a GitHub App for cross-repository access:
 ### Weekly Schedule (Every Monday 9 AM UTC)
 
 1. **Generate GitHub App Token** from app credentials
-2. **Checkout repo-standards** using GITHUB_TOKEN
+2. **Checkout github-repo-standards** using GITHUB_TOKEN
 3. **Clone all my-* repositories** using App Token
-4. **Run compliance checks** on all repos (including repo-standards itself)
+4. **Run compliance checks** on all repos (including github-repo-standards itself)
 5. **Generate reports** (markdown + JSON)
-6. **Commit reports** to repo-standards using GITHUB_TOKEN
+6. **Commit reports** to github-repo-standards using GITHUB_TOKEN
 7. **Create issues** in failing repositories (<50%) using App Token
 8. **Deduplication check** - Skip if open compliance issue exists
 
@@ -165,13 +165,13 @@ When working in this repository:
 3. **Use Template Files** - Issue bodies should use the template file approach, not heredocs
 4. **Deduplication Is Important** - Always check for existing open issues before creating new ones
 5. **Security Model Matters** - GITHUB_TOKEN for same-repo, App token for cross-repo reads
-6. **Self-Checking** - repo-standards checks itself for compliance too
+6. **Self-Checking** - github-repo-standards checks itself for compliance too
 
 ### Common Pitfalls
 
 - **Don't use sed for multiline substitution** - Use awk or separate temp files
 - **Don't create duplicate issues** - Check for existing open compliance issues first
-- **Don't use GitHub App token for repo-standards operations** - Use GITHUB_TOKEN
+- **Don't use GitHub App token for github-repo-standards operations** - Use GITHUB_TOKEN
 - **Don't hardcode repo lists** - Use GitHub App to discover installed repos
 
 ### Typical Workflows
@@ -196,7 +196,7 @@ When working in this repository:
 ## Version History
 
 - **2025-12-03:** Repository migrated to labrats-work organization with fresh history
-- **2025-12-03:** Renamed from my-repos to repo-standards
+- **2025-12-03:** Renamed from my-repos to github-repo-standards
 - **Previous:** Compliance framework with 13 checks, GitHub App integration, automated reporting
 
 ## Last Updated

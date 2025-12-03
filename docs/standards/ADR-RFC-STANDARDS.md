@@ -584,7 +584,7 @@ Summary of input received during review.
 
 **Quality checking:**
 - **Markdown linters**: Enforce consistent formatting
-- **Compliance checks**: Verify required sections present (can integrate with repo-standards compliance framework)
+- **Compliance checks**: Verify required sections present (can integrate with github-repo-standards compliance framework)
 
 ### Template File
 
@@ -650,7 +650,7 @@ Proposed
 
 ### ADR Quality Check (COMP-009)
 
-The repo-standards compliance framework checks for ADR presence. To meet the standard:
+The github-repo-standards compliance framework checks for ADR presence. To meet the standard:
 
 **Minimum requirements:**
 - `docs/adr/` directory exists
@@ -697,7 +697,7 @@ Potential additions to compliance checking:
 
 ### Areas for Improvement
 
-**repo-standards ADRs (001-003)**
+**github-repo-standards ADRs (001-003)**
 - Good technical decisions but brief
 - Could expand consequences sections
 - Limited alternatives (2-3 vs ideal 5+)
