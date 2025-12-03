@@ -1,17 +1,17 @@
-# Claude Context: my-repos - Cross-Repository Standardization
+# Claude Context: repo-standards - Cross-Repository Standardization
 
 ## Repository Overview
 
-This is the **meta-repository** for managing compliance and standardization across all `my-*` repositories. It provides automated compliance checking, best practices enforcement, and cross-repository improvement tracking.
+This is the **meta-repository** for managing compliance and standardization across all repositories in the labrats-work organization. It provides automated compliance checking, best practices enforcement, and cross-repository improvement tracking.
 
-**Purpose:** Central hub for ensuring consistency, quality, and maintainability across the entire portfolio of personal repositories.
+**Purpose:** Central hub for ensuring consistency, quality, and maintainability across all labrats-work repositories.
 
 ## Project Architecture
 
 ### Core Components
 
 ```
-my-repos/
+repo-standards/
 ├── compliance/              # Compliance checking framework
 │   ├── checks/             # Modular check scripts (COMP-001 to COMP-013)
 │   ├── run-all-checks.sh   # Orchestrator script
@@ -86,10 +86,10 @@ my-repos/
 
 ```bash
 # Via GitHub CLI
-gh workflow run compliance-check.yml --repo tomp736/my-repos
+gh workflow run compliance-check.yml --repo labrats-work/repo-standards
 
 # Watch execution
-gh run watch <run-id> --repo tomp736/my-repos
+gh run watch <run-id> --repo labrats-work/repo-standards
 ```
 
 ### View Compliance Reports
@@ -106,13 +106,13 @@ jq '.repositories[] | select(.compliance_score < 50)' reports/compliance-report-
 
 This repository uses a GitHub App for cross-repository access:
 
-- **App Name:** My-Repos Compliance Checker
-- **App ID:** 2376728
+- **App Name:** Labrats-Work Repo Standards (to be created)
 - **Permissions:** contents:read, issues:write
-- **Purpose:** Read other my-* repos and create compliance issues
+- **Purpose:** Read organization repos and create compliance issues
+- **Setup:** See GITHUB_APP_SETUP.md for instructions
 
 **Security Model:**
-- GITHUB_TOKEN: Used for my-repos operations (checkout, commit, push)
+- GITHUB_TOKEN: Used for repo-standards operations (checkout, commit, push)
 - GitHub App Token: Used ONLY for reading other repos (clone) and creating issues
 
 ## Automation Workflow
@@ -120,11 +120,11 @@ This repository uses a GitHub App for cross-repository access:
 ### Weekly Schedule (Every Monday 9 AM UTC)
 
 1. **Generate GitHub App Token** from app credentials
-2. **Checkout my-repos** using GITHUB_TOKEN
+2. **Checkout repo-standards** using GITHUB_TOKEN
 3. **Clone all my-* repositories** using App Token
-4. **Run compliance checks** on all repos (including my-repos itself)
+4. **Run compliance checks** on all repos (including repo-standards itself)
 5. **Generate reports** (markdown + JSON)
-6. **Commit reports** to my-repos using GITHUB_TOKEN
+6. **Commit reports** to repo-standards using GITHUB_TOKEN
 7. **Create issues** in failing repositories (<50%) using App Token
 8. **Deduplication check** - Skip if open compliance issue exists
 
@@ -136,22 +136,7 @@ This repository uses a GitHub App for cross-repository access:
 
 ## Related Repositories
 
-### Tracked Repositories (10 total)
-
-1. **my-borowego-2** - Apartment management
-2. **my-diet** - Recipe & meal planning
-3. **my-fin** - Expense analyzer
-4. **my-health** - Health tracking
-5. **my-homelab** - Infrastructure documentation
-6. **my-jobs** - Job hunting
-7. **my-junk** - Items for sale
-8. **my-orangepi** - Infrastructure as code
-9. **my-protonmail** - Email analysis
-10. **my-resume** - Job search knowledge
-
-### Support Repository
-
-- **my-gh-apps** - GitHub App creation tools
+This framework tracks all repositories in the labrats-work organization where the GitHub App is installed. The list is dynamic and automatically discovered during compliance checks.
 
 ## Important Files
 
@@ -180,13 +165,13 @@ When working in this repository:
 3. **Use Template Files** - Issue bodies should use the template file approach, not heredocs
 4. **Deduplication Is Important** - Always check for existing open issues before creating new ones
 5. **Security Model Matters** - GITHUB_TOKEN for same-repo, App token for cross-repo reads
-6. **Self-Checking** - my-repos checks itself for compliance too
+6. **Self-Checking** - repo-standards checks itself for compliance too
 
 ### Common Pitfalls
 
 - **Don't use sed for multiline substitution** - Use awk or separate temp files
 - **Don't create duplicate issues** - Check for existing open compliance issues first
-- **Don't use GitHub App token for my-repos operations** - Use GITHUB_TOKEN
+- **Don't use GitHub App token for repo-standards operations** - Use GITHUB_TOKEN
 - **Don't hardcode repo lists** - Use GitHub App to discover installed repos
 
 ### Typical Workflows
@@ -210,13 +195,10 @@ When working in this repository:
 
 ## Version History
 
-- **2025-11-26:** Repository created, initial standardization plan (Issue #1)
-- **2025-11-29:** Compliance framework implemented with 13 checks
-- **2025-11-29:** GitHub App integration added for cross-repo access
-- **2025-11-29:** Template file approach for issue creation
-- **2025-11-29:** Issue deduplication logic added
-- **2025-11-29:** Self-compliance checking enabled
+- **2025-12-03:** Repository migrated to labrats-work organization with fresh history
+- **2025-12-03:** Renamed from my-repos to repo-standards
+- **Previous:** Compliance framework with 13 checks, GitHub App integration, automated reporting
 
 ## Last Updated
 
-2025-11-29
+2025-12-03

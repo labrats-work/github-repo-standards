@@ -2,7 +2,7 @@
 
 ## Purpose
 
-This document establishes standards for writing Architecture Decision Records (ADRs) and Request for Comments (RFCs) across all repositories in the tomp736 organization. These standards ensure consistency, quality, and long-term value of architectural documentation.
+This document establishes standards for writing Architecture Decision Records (ADRs) and Request for Comments (RFCs) across all repositories in the labrats-work organization. These standards ensure consistency, quality, and long-term value of architectural documentation.
 
 ## What is an ADR?
 
@@ -584,7 +584,7 @@ Summary of input received during review.
 
 **Quality checking:**
 - **Markdown linters**: Enforce consistent formatting
-- **Compliance checks**: Verify required sections present (can integrate with my-repos compliance framework)
+- **Compliance checks**: Verify required sections present (can integrate with repo-standards compliance framework)
 
 ### Template File
 
@@ -650,7 +650,7 @@ Proposed
 
 ### ADR Quality Check (COMP-009)
 
-The my-repos compliance framework checks for ADR presence. To meet the standard:
+The repo-standards compliance framework checks for ADR presence. To meet the standard:
 
 **Minimum requirements:**
 - `docs/adr/` directory exists
@@ -671,7 +671,7 @@ Potential additions to compliance checking:
 - Validate INDEX.md matches actual ADR files
 - Flag ADRs missing alternatives or consequences
 
-## Examples from tomp736 Repositories
+## Examples from labrats-work Repositories
 
 ### Excellent Examples
 
@@ -697,7 +697,7 @@ Potential additions to compliance checking:
 
 ### Areas for Improvement
 
-**my-repos ADRs (001-003)**
+**repo-standards ADRs (001-003)**
 - Good technical decisions but brief
 - Could expand consequences sections
 - Limited alternatives (2-3 vs ideal 5+)

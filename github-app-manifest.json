@@ -1,10 +1,10 @@
 {
   "name": "My-Repos Compliance Checker",
-  "url": "https://github.com/tomp736/my-repos",
+  "url": "https://github.com/labrats-work/repo-standards",
   "hook_attributes": {
     "url": "https://example.com/webhook"
   },
-  "redirect_url": "https://github.com/tomp736/my-repos",
+  "redirect_url": "https://github.com/labrats-work/repo-standards",
   "callback_urls": [],
   "public": false,
   "default_permissions": {

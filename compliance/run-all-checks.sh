@@ -10,7 +10,7 @@ CHECKS_DIR="$SCRIPT_DIR/checks"
 REPO_PATH=""
 FORMAT="json"
 ALL_REPOS=false
-PARENT_DIR="/home/u0/code/tomp736"
+PARENT_DIR="/home/u0/code/labrats-work"
 
 # Parse arguments
 while [[ $# -gt 0 ]]; do

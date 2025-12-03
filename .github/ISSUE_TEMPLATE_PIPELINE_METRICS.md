@@ -62,12 +62,12 @@
 
 ### 📎 Resources
 
-- **Full Report (Markdown):** [compliance-report-{{DATE}}.md](https://github.com/tomp736/my-repos/blob/main/reports/compliance-report-{{DATE}}.md)
-- **Full Report (JSON):** [compliance-report-{{DATE}}.json](https://github.com/tomp736/my-repos/blob/main/reports/compliance-report-{{DATE}}.json)
+- **Full Report (Markdown):** [compliance-report-{{DATE}}.md](https://github.com/labrats-work/repo-standards/blob/main/reports/compliance-report-{{DATE}}.md)
+- **Full Report (JSON):** [compliance-report-{{DATE}}.json](https://github.com/labrats-work/repo-standards/blob/main/reports/compliance-report-{{DATE}}.json)
 - **Workflow Run:** {{RUN_URL}}
-- **Compliance Standards:** [COMPLIANCE.md](https://github.com/tomp736/my-repos/blob/main/COMPLIANCE.md)
+- **Compliance Standards:** [COMPLIANCE.md](https://github.com/labrats-work/repo-standards/blob/main/COMPLIANCE.md)
 
 ---
 
-*This issue was automatically created by the [My-Repos Compliance Checker](https://github.com/tomp736/my-repos).*
+*This issue was automatically created by the [My-Repos Compliance Checker](https://github.com/labrats-work/repo-standards).*
 *Generated: {{DATE}} {{TIME}}*

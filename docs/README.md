@@ -1,6 +1,6 @@
 # Documentation
 
-This directory contains detailed documentation for the my-repos compliance framework.
+This directory contains detailed documentation for the repo-standards compliance framework.
 
 ## Contents
 
@@ -19,7 +19,7 @@ This directory contains detailed documentation for the my-repos compliance frame
 
 ### External Resources
 
-- [GitHub App: my-gh-apps](https://github.com/tomp736/my-gh-apps) - GitHub App creation tools
+- [GitHub App: my-gh-apps](https://github.com/labrats-work/my-gh-apps) - GitHub App creation tools
 - [Compliance Reports](../reports/) - Generated compliance reports
 
 ## Compliance Framework Overview

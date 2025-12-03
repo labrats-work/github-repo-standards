@@ -1,6 +1,6 @@
-# my-repos
+# repo-standards
 
-Cross-repository standardization and improvement tracking for all `my-*` repositories.
+Cross-repository standardization and compliance checking framework for the labrats-work organization.
 
 ## Purpose
 
@@ -33,7 +33,7 @@ cat reports/compliance-report-$(date +%Y-%m-%d).md
 ## Structure
 
 ```
-my-repos/
+repo-standards/
 ├── compliance/              # Compliance checking framework
 │   ├── checks/             # Individual check scripts
 │   ├── run-all-checks.sh   # Orchestrator script
@@ -48,22 +48,9 @@ my-repos/
 
 ## Repositories Tracked
 
-This system monitors the following repositories:
+This system monitors all repositories in the labrats-work organization.
 
-| Repository | Purpose | Current Status |
-|-----------|---------|----------------|
-| **my-borowego-2** | Apartment management | 🟠 Needs Improvement |
-| **my-diet** | Recipe & meal planning | 🟢 Excellent |
-| **my-fin** | Expense analyzer | 🟠 Needs Improvement |
-| **my-health** | Health tracking | 🟢 Excellent |
-| **my-homelab** | Infrastructure docs | 🟢 Excellent |
-| **my-jobs** | Job hunting | 🟡 Good |
-| **my-junk** | Items for sale | 🟢 Excellent |
-| **my-orangepi** | Infrastructure as code | 🟡 Good |
-| **my-protonmail** | Email analysis | 🔴 Critical Issues |
-| **my-resume** | Job search knowledge | 🟢 Excellent |
-
-*Status updated weekly via automated checks*
+*Status updated weekly via automated checks. Configure which repositories to track using the GitHub App installation.*
 
 ## Compliance Framework
 
@@ -96,7 +83,7 @@ Each repository receives a weighted score:
 ### Weekly Compliance Checks
 
 Every Monday at 9 AM UTC:
-1. Clone all `my-*` repositories
+1. Clone all repositories in the organization
 2. Run compliance checks
 3. Generate reports (markdown + JSON)
 4. Commit reports to this repo
@@ -114,7 +101,7 @@ Trigger checks manually:
 
 ### Pipeline Metrics
 
-After each compliance check run, a pipeline metrics issue is automatically created in my-repos with:
+After each compliance check run, a pipeline metrics issue is automatically created in repo-standards with:
 - **Execution time metrics** - Total duration and step-by-step timing
 - **Repository summary** - Scores, tiers, and pass/fail counts
 - **Success metrics** - Passing/failing repository counts, issues created/updated/closed
@@ -138,11 +125,11 @@ After each compliance check run, workflow health issues are created in each repo
 - Previous health issues automatically closed
 - Labeled with `workflow-health` and `automation`
 
-Example: [my-diet workflow-health](https://github.com/tomp736/my-diet/issues?q=label%3Aworkflow-health)
+Example: [my-diet workflow-health](https://github.com/labrats-work/my-diet/issues?q=label%3Aworkflow-health)
 
 ### Actions Usage Report
 
-After each compliance check run, an actions usage report is created in my-repos with:
+After each compliance check run, an actions usage report is created in repo-standards with:
 - **Total actions inventory** - All GitHub Actions used across repositories
 - **Usage statistics** - How many times each action is used
 - **Top 10 most used actions** - Ranked by usage frequency
@@ -160,62 +147,55 @@ View the latest report: [actions-usage label](../../issues?q=label%3Aactions-usa
 
 ## Standardization Roadmap
 
-See [Issue #1](https://github.com/tomp736/my-repos/issues/1) for the comprehensive standardization plan.
-
-### Phase 1: Foundation (Week 1-2) 🎯 CURRENT
+### Foundation Phase
 - [ ] Add CLAUDE.md to all repos
 - [ ] Ensure all repos have .gitignore
 - [ ] Add LICENSE to all repos
 - [ ] Standardize README structure
 
-### Phase 2: Structure (Week 3-4)
+### Structure Phase
 - [ ] Add docs/ directory to repos lacking it
-- [ ] Implement ADR pattern in 3+ repos
+- [ ] Implement ADR pattern
 - [ ] Create .claude/ configuration
-- [ ] Add issue templates to 3+ repos
+- [ ] Add issue templates
 
-### Phase 3: Automation (Month 2)
-- [ ] Add workflows to zero-automation repos
+### Automation Phase
+- [ ] Add workflows to repositories
 - [ ] Implement scheduled tasks
 - [ ] Add PR validation
 
-### Phase 4: Enhancement (Month 3)
-- [ ] Expand documentation in Tier 2/3 repos
+### Enhancement Phase
+- [ ] Expand documentation
 - [ ] Add contributing guidelines
 - [ ] Implement consistent commit conventions
 
-### Phase 5: Advanced (Month 4-6)
-- [ ] Add MkDocs to 2-3 more repos
-- [ ] Implement advanced analytics
-- [ ] Create visualization workflows
-
 ## Best Practices
 
-### Identified from Analysis
+The compliance framework promotes these patterns:
 
-**Issue-Driven Workflows** (from my-junk, my-resume):
+**Issue-Driven Workflows:**
 - Form-based issue templates capture structured data
 - GitHub Actions auto-create PRs
 - Non-technical interface for data entry
 
-**Architecture Decision Records** (from my-health, my-orangepi):
+**Architecture Decision Records:**
 - Numbered ADRs document "why" decisions were made
 - Template-based consistency
 - Prevents re-litigating decisions
 
-**Documentation Status Tracking** (from my-homelab):
+**Documentation Status Tracking:**
 - Tables showing completion percentages
 - Visual indicators (🟢🟡🔴)
 - Clear roadmap of gaps
 
-**Automated Data Collection** (from my-diet, my-health):
+**Automated Data Collection:**
 - Scheduled workflows gather data
 - Hands-off accumulation
 - Consistent formatting
 
 ## Contributing
 
-This is a personal repository, but if you're collaborating on any `my-*` repos:
+When working with labrats-work repositories:
 
 1. Review compliance reports before making changes
 2. Follow standards defined in COMPLIANCE.md
@@ -282,11 +262,11 @@ This ensures important issues are surfaced immediately, regardless of overall co
 
 ## Status
 
-**Created:** 2025-11-26
-**Tracked Repositories:** 10
+**Created:** 2025-12-03
+**Organization:** labrats-work
 **Active Checks:** 13
 **Automation:** ✅ Active (weekly)
 
 ---
 
-Last Updated: 2025-11-26
+Last Updated: 2025-12-03

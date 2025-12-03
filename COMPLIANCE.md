@@ -234,7 +234,7 @@ notes: |
   Full compliance maintained for comprehensive documentation.
 ```
 
-**Meta-repository (my-repos):**
+**Meta-repository (repo-standards):**
 ```yaml
 disabled_checks: []
 min_score_for_issue: 50

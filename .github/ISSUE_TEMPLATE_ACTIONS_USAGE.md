@@ -45,5 +45,5 @@
 
 ---
 
-*This issue was automatically created by the [My-Repos Compliance Checker](https://github.com/tomp736/my-repos).*
+*This issue was automatically created by the [My-Repos Compliance Checker](https://github.com/labrats-work/repo-standards).*
 *Generated: {{DATE}} {{TIME}}*

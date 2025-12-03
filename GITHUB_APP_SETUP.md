@@ -18,12 +18,12 @@ Benefits over Personal Access Tokens:
 Clone the GitHub App creation toolset:
 
 ```bash
-cd /home/u0/code/tomp736
-gh repo clone tomp736/my-gh-apps
+cd /home/u0/code/labrats-work
+gh repo clone labrats-work/my-gh-apps
 cd my-gh-apps
 ```
 
-**Or visit:** https://github.com/tomp736/my-gh-apps
+**Or visit:** https://github.com/labrats-work/my-gh-apps
 
 ---
 
@@ -34,8 +34,8 @@ cd my-gh-apps
 Use the manifest from this repository:
 
 ```bash
-cd /home/u0/code/tomp736/my-gh-apps
-./create-app.sh ../my-repos/github-app-manifest.json
+cd /home/u0/code/labrats-work/my-gh-apps
+./create-app.sh ../repo-standards/github-app-manifest.json
 ```
 
 This will:
@@ -56,7 +56,7 @@ The script will display:
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 App ID:           123456
-App Slug:         my-repos-compliance-checker
+App Slug:         repo-standards-compliance-checker
 Private Key:      Saved to github-app-private-key.pem
 ```
 
@@ -66,7 +66,7 @@ Private Key:      Saved to github-app-private-key.pem
 
 1. **Go to Repository Secrets**
    ```
-   https://github.com/tomp736/my-repos/settings/secrets/actions
+   https://github.com/labrats-work/repo-standards/settings/secrets/actions
    ```
 
 2. **Add APP_ID**
@@ -108,7 +108,7 @@ Private Key:      Saved to github-app-private-key.pem
 3. Select repositories:
    - **"Only select repositories"**
    - Add all your `my-*` repositories:
-     - ✅ my-repos (required for writing reports)
+     - ✅ repo-standards (required for writing reports)
      - ✅ my-borowego-2
      - ✅ my-diet
      - ✅ my-fin
@@ -129,7 +129,7 @@ Private Key:      Saved to github-app-private-key.pem
 After adding secrets to GitHub, delete the credential files in my-gh-apps:
 
 ```bash
-cd /home/u0/code/tomp736/my-gh-apps
+cd /home/u0/code/labrats-work/my-gh-apps
 
 # Delete private key (it's now in GitHub Secrets)
 rm github-app-private-key.pem
@@ -147,12 +147,12 @@ rm github-app-private-key.pem
 Trigger the compliance workflow to test everything:
 
 ```bash
-gh workflow run compliance-check.yml --repo tomp736/my-repos
+gh workflow run compliance-check.yml --repo labrats-work/repo-standards
 ```
 
 **Check the workflow run:**
 ```bash
-gh run watch --repo tomp736/my-repos
+gh run watch --repo labrats-work/repo-standards
 ```
 
 **What should happen:**
@@ -160,7 +160,7 @@ gh run watch --repo tomp736/my-repos
 2. ✅ Clones all 11 repositories
 3. ✅ Runs compliance checks
 4. ✅ Generates reports
-5. ✅ Commits reports to my-repos
+5. ✅ Commits reports to repo-standards
 6. ✅ Creates issue if <50% compliance
 
 If it works, you're done! 🎉
@@ -243,4 +243,4 @@ After completing this setup:
 ---
 
 **Created:** 2025-11-26
-**For:** tomp736/my-repos compliance checking
+**For:** labrats-work/repo-standards compliance checking

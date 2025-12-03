@@ -31,7 +31,7 @@ jobs:
         with:
           app-id: ${{ secrets.APP_ID }}
           private-key: ${{ secrets.APP_PRIVATE_KEY }}
-          owner: tomp736
+          owner: labrats-work
 
       - name: Get repositories with app installed
         id: get-repos
@@ -47,10 +47,10 @@ jobs:
         env:
           GH_TOKEN: ${{ steps.app-token.outputs.token }}
 
-      - name: Checkout my-repos
+      - name: Checkout repo-standards
         uses: actions/checkout@v4
         with:
-          path: my-repos
+          path: repo-standards
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Checkout all repositories with app installed
@@ -60,9 +60,9 @@ jobs:
 
           # Read the dynamic list of repositories from the previous step
           while IFS= read -r repo; do
-            if [ -n "$repo" ] && [ "$repo" != "my-repos" ]; then
+            if [ -n "$repo" ] && [ "$repo" != "repo-standards" ]; then
               echo "Cloning $repo..."
-              gh repo clone tomp736/$repo repos/$repo || echo "Failed to clone $repo"
+              gh repo clone labrats-work/$repo repos/$repo || echo "Failed to clone $repo"
             fi
           done < /tmp/repo-list.txt
         env:
@@ -75,11 +75,11 @@ jobs:
 
       - name: Run compliance checks
         run: |
-          cd ${{ github.workspace }}/my-repos
+          cd ${{ github.workspace }}/repo-standards
           mkdir -p reports
 
-          # Add my-repos itself to the repos directory for compliance checking
-          ln -s "${{ github.workspace }}/my-repos" "${{ github.workspace }}/repos/my-repos"
+          # Add repo-standards itself to the repos directory for compliance checking
+          ln -s "${{ github.workspace }}/repo-standards" "${{ github.workspace }}/repos/repo-standards"
 
           # Generate markdown report
           ./compliance/run-all-checks.sh --all --format markdown --parent-dir "${{ github.workspace }}/repos" > reports/compliance-report-$(date +%Y-%m-%d).md
@@ -89,7 +89,7 @@ jobs:
 
       - name: Create summary
         run: |
-          cd ${{ github.workspace }}/my-repos
+          cd ${{ github.workspace }}/repo-standards
 
           REPORT_FILE=$(ls -t reports/compliance-report-*.md | head -1)
 
@@ -99,7 +99,7 @@ jobs:
 
       - name: Commit reports
         run: |
-          cd ${{ github.workspace }}/my-repos
+          cd ${{ github.workspace }}/repo-standards
 
           git config user.name "compliance-checker[bot]"
           git config user.email "compliance-checker[bot]@users.noreply.github.com"
@@ -117,7 +117,7 @@ jobs:
       - name: Create issues in repositories with critical failures
         if: always()
         run: |
-          cd ${{ github.workspace }}/my-repos
+          cd ${{ github.workspace }}/repo-standards
 
           JSON_REPORT=$(ls -t reports/compliance-report-*.json | head -1)
 
@@ -203,8 +203,8 @@ jobs:
             echo "Processing $REPO_NAME: $ISSUE_REASON"
 
             # Ensure labels exist in target repository
-            gh label create compliance --description "Compliance checking related" --color "0e8a16" --repo "tomp736/$REPO_NAME" 2>/dev/null || true
-            gh label create critical --description "Critical issues requiring immediate attention" --color "d73a4a" --repo "tomp736/$REPO_NAME" 2>/dev/null || true
+            gh label create compliance --description "Compliance checking related" --color "0e8a16" --repo "labrats-work/$REPO_NAME" 2>/dev/null || true
+            gh label create critical --description "Critical issues requiring immediate attention" --color "d73a4a" --repo "labrats-work/$REPO_NAME" 2>/dev/null || true
 
             # Build checks table (save to temp file to avoid sed multiline issues)
             # Sort by: priority (CRITICAL->HIGH->MEDIUM->LOW), then by status (fail first)
@@ -291,14 +291,14 @@ jobs:
             ISSUE_TITLE="🚨 Compliance Check [$CRITICAL_FAILURES critical, $HIGH_FAILURES high, $MEDIUM_FAILURES med, $LOW_FAILURES low]"
 
             # Check if compliance issue already exists (open issues only)
-            EXISTING_ISSUE=$(gh issue list --repo "tomp736/$REPO_NAME" --label "compliance" --state open --json number --jq '.[0].number // ""')
+            EXISTING_ISSUE=$(gh issue list --repo "labrats-work/$REPO_NAME" --label "compliance" --state open --json number --jq '.[0].number // ""')
 
             if [ -n "$EXISTING_ISSUE" ]; then
               echo "Updating existing compliance issue for $REPO_NAME (#$EXISTING_ISSUE): [$CRITICAL_FAILURES,$HIGH_FAILURES,$MEDIUM_FAILURES,$LOW_FAILURES]"
 
               # Update existing issue with new title and body
               gh issue edit "$EXISTING_ISSUE" \
-                --repo "tomp736/$REPO_NAME" \
+                --repo "labrats-work/$REPO_NAME" \
                 --title "$ISSUE_TITLE" \
                 --body-file "$ISSUE_FILE" || echo "Failed to update issue in $REPO_NAME"
             else
@@ -306,7 +306,7 @@ jobs:
 
               # Create issue from file
               gh issue create \
-                --repo "tomp736/$REPO_NAME" \
+                --repo "labrats-work/$REPO_NAME" \
                 --title "$ISSUE_TITLE" \
                 --label "compliance" \
                 --label "critical" \
@@ -393,14 +393,14 @@ jobs:
             fi
 
             # Check if compliance issue exists (open issues only)
-            EXISTING_ISSUE=$(gh issue list --repo "tomp736/$REPO_NAME" --label "compliance" --state open --json number --jq '.[0].number // ""')
+            EXISTING_ISSUE=$(gh issue list --repo "labrats-work/$REPO_NAME" --label "compliance" --state open --json number --jq '.[0].number // ""')
 
             if [ -n "$EXISTING_ISSUE" ]; then
               echo "Closing compliance issue for $REPO_NAME (#$EXISTING_ISSUE) - now at $SCORE%"
 
               # Close issue with success comment
               gh issue close "$EXISTING_ISSUE" \
-                --repo "tomp736/$REPO_NAME" \
+                --repo "labrats-work/$REPO_NAME" \
                 --comment "✅ Compliance check now passing with score: **${SCORE}%**. All critical compliance issues have been resolved. This issue is now closed. Updated: $(date +%Y-%m-%d)" || echo "Failed to close issue in $REPO_NAME"
             fi
           done
@@ -410,7 +410,7 @@ jobs:
       - name: Create pipeline metrics issue
         if: always()
         run: |
-          cd ${{ github.workspace }}/my-repos
+          cd ${{ github.workspace }}/repo-standards
 
           JSON_REPORT=$(ls -t reports/compliance-report-*.json | head -1)
           MARKDOWN_REPORT=$(ls -t reports/compliance-report-*.md | head -1)
@@ -625,22 +625,22 @@ jobs:
           awk -v file="$TREND_DATA" '/{{TREND_DATA}}/ {while((getline line < file) > 0) print line; close(file); next} {print}' "$ISSUE_FILE" > "$ISSUE_FILE.tmp" && mv "$ISSUE_FILE.tmp" "$ISSUE_FILE"
 
           # Check if pipeline metrics issue already exists (open issues only)
-          EXISTING_ISSUE=$(gh issue list --repo "tomp736/my-repos" --label "pipeline-metrics" --state open --json number --jq '.[0].number // ""')
+          EXISTING_ISSUE=$(gh issue list --repo "labrats-work/repo-standards" --label "pipeline-metrics" --state open --json number --jq '.[0].number // ""')
 
           # Create labels if they don't exist
-          gh label create pipeline-metrics --description "Pipeline execution metrics and statistics" --color "1f77b4" --repo "tomp736/my-repos" 2>/dev/null || true
-          gh label create automation --description "Automated processes and workflows" --color "0e8a16" --repo "tomp736/my-repos" 2>/dev/null || true
+          gh label create pipeline-metrics --description "Pipeline execution metrics and statistics" --color "1f77b4" --repo "labrats-work/repo-standards" 2>/dev/null || true
+          gh label create automation --description "Automated processes and workflows" --color "0e8a16" --repo "labrats-work/repo-standards" 2>/dev/null || true
 
           if [ -n "$EXISTING_ISSUE" ]; then
             echo "Closing previous pipeline metrics issue (#$EXISTING_ISSUE)"
             gh issue close "$EXISTING_ISSUE" \
-              --repo "tomp736/my-repos" \
+              --repo "labrats-work/repo-standards" \
               --comment "Superseded by new pipeline run." || echo "Failed to close previous issue"
           fi
 
           echo "Creating new pipeline metrics issue"
           gh issue create \
-            --repo "tomp736/my-repos" \
+            --repo "labrats-work/repo-standards" \
             --title "📊 Pipeline Metrics: Compliance Check #${RUN_NUMBER} (${DATE})" \
             --label "pipeline-metrics" \
             --label "automation" \
@@ -654,7 +654,7 @@ jobs:
       - name: Create workflow health reports
         if: always()
         run: |
-          cd ${{ github.workspace }}/my-repos
+          cd ${{ github.workspace }}/repo-standards
 
           DATE=$(date +%Y-%m-%d)
           TIME=$(date +%H:%M:%S)
@@ -662,14 +662,14 @@ jobs:
 
           # Read list of repositories from previous step
           while IFS= read -r repo; do
-            if [ -z "$repo" ] || [ "$repo" = "my-repos" ]; then
+            if [ -z "$repo" ] || [ "$repo" = "repo-standards" ]; then
               continue
             fi
 
             echo "Analyzing workflow health for $repo..."
 
             # Get all workflows for this repository
-            WORKFLOWS_JSON=$(gh api "/repos/tomp736/$repo/actions/workflows" --jq '.workflows' 2>/dev/null || echo "[]")
+            WORKFLOWS_JSON=$(gh api "/repos/labrats-work/$repo/actions/workflows" --jq '.workflows' 2>/dev/null || echo "[]")
             TOTAL_WORKFLOWS=$(echo "$WORKFLOWS_JSON" | jq 'length')
 
             if [ "$TOTAL_WORKFLOWS" -eq 0 ]; then
@@ -697,7 +697,7 @@ jobs:
               WORKFLOW_ID=$(echo "$workflow_json" | jq -r '.id')
 
               # Get recent runs for this workflow (last 30 days)
-              RUNS=$(gh api "/repos/tomp736/$repo/actions/workflows/$WORKFLOW_ID/runs?per_page=100" --jq '.workflow_runs' 2>/dev/null || echo "[]")
+              RUNS=$(gh api "/repos/labrats-work/$repo/actions/workflows/$WORKFLOW_ID/runs?per_page=100" --jq '.workflow_runs' 2>/dev/null || echo "[]")
 
               # Filter runs from last N days
               CUTOFF_DATE=$(date -d "$DAYS days ago" +%Y-%m-%d 2>/dev/null || date -v-${DAYS}d +%Y-%m-%d 2>/dev/null || echo "2025-11-01")
@@ -806,16 +806,16 @@ jobs:
             awk -v file="$RECENT_FAILURES_FILE" '/{{RECENT_FAILURES}}/ {while((getline line < file) > 0) print line; close(file); next} {print}' "$ISSUE_FILE" > "$ISSUE_FILE.tmp" && mv "$ISSUE_FILE.tmp" "$ISSUE_FILE"
 
             # Create labels if they don't exist
-            gh label create workflow-health --description "Workflow health monitoring" --color "0366d6" --repo "tomp736/$repo" 2>/dev/null || true
-            gh label create automation --description "Automated processes" --color "0e8a16" --repo "tomp736/$repo" 2>/dev/null || true
+            gh label create workflow-health --description "Workflow health monitoring" --color "0366d6" --repo "labrats-work/$repo" 2>/dev/null || true
+            gh label create automation --description "Automated processes" --color "0e8a16" --repo "labrats-work/$repo" 2>/dev/null || true
 
             # Check if workflow health issue already exists (open issues only)
-            EXISTING_ISSUE=$(gh issue list --repo "tomp736/$repo" --label "workflow-health" --state open --json number --jq '.[0].number // ""')
+            EXISTING_ISSUE=$(gh issue list --repo "labrats-work/$repo" --label "workflow-health" --state open --json number --jq '.[0].number // ""')
 
             if [ -n "$EXISTING_ISSUE" ]; then
               echo "Closing previous workflow health issue for $repo (#$EXISTING_ISSUE)"
               gh issue close "$EXISTING_ISSUE" \
-                --repo "tomp736/$repo" \
+                --repo "labrats-work/$repo" \
                 --comment "Superseded by new workflow health report." || echo "Failed to close previous issue"
             fi
 
@@ -823,7 +823,7 @@ jobs:
             if [ "$OVERALL_SUCCESS_RATE" -lt 95 ] || [ -z "$EXISTING_ISSUE" ]; then
               echo "Creating workflow health issue for $repo (success rate: ${OVERALL_SUCCESS_RATE}%)"
               gh issue create \
-                --repo "tomp736/$repo" \
+                --repo "labrats-work/$repo" \
                 --title "🔄 Workflow Health Report: ${OVERALL_SUCCESS_RATE}% Success Rate (${DATE})" \
                 --label "workflow-health" \
                 --label "automation" \
@@ -972,7 +972,7 @@ jobs:
 
           # Create issue body from template
           ISSUE_FILE=$(mktemp)
-          cp my-repos/.github/ISSUE_TEMPLATE_ACTIONS_USAGE.md "$ISSUE_FILE"
+          cp repo-standards/.github/ISSUE_TEMPLATE_ACTIONS_USAGE.md "$ISSUE_FILE"
 
           # Replace placeholders
           sed -i "s|{{DATE}}|$DATE|g" "$ISSUE_FILE"
@@ -989,21 +989,21 @@ jobs:
           awk -v file="$RECOMMENDATIONS_FILE" '/{{RECOMMENDATIONS}}/ {while((getline line < file) > 0) print line; close(file); next} {print}' "$ISSUE_FILE" > "$ISSUE_FILE.tmp" && mv "$ISSUE_FILE.tmp" "$ISSUE_FILE"
 
           # Create labels if they don't exist
-          gh label create actions-usage --description "GitHub Actions usage tracking" --color "2ea44f" --repo "tomp736/my-repos" 2>/dev/null || true
+          gh label create actions-usage --description "GitHub Actions usage tracking" --color "2ea44f" --repo "labrats-work/repo-standards" 2>/dev/null || true
 
           # Check if actions usage issue already exists (open issues only)
-          EXISTING_ISSUE=$(gh issue list --repo "tomp736/my-repos" --label "actions-usage" --state open --json number --jq '.[0].number // ""')
+          EXISTING_ISSUE=$(gh issue list --repo "labrats-work/repo-standards" --label "actions-usage" --state open --json number --jq '.[0].number // ""')
 
           if [ -n "$EXISTING_ISSUE" ]; then
             echo "Closing previous actions usage issue (#$EXISTING_ISSUE)"
             gh issue close "$EXISTING_ISSUE" \
-              --repo "tomp736/my-repos" \
+              --repo "labrats-work/repo-standards" \
               --comment "Superseded by new actions usage report." || echo "Failed to close previous issue"
           fi
 
           echo "Creating actions usage report issue"
           gh issue create \
-            --repo "tomp736/my-repos" \
+            --repo "labrats-work/repo-standards" \
             --title "🔌 GitHub Actions Usage Report (${DATE})" \
             --label "actions-usage" \
             --label "automation" \

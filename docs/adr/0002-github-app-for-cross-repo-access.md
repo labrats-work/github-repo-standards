@@ -2,7 +2,7 @@
 
 **Date:** 2025-11-29
 **Status:** Accepted
-**Deciders:** tomp736
+**Deciders:** labrats-work
 
 ## Context
 
@@ -11,7 +11,7 @@ The compliance workflow needed to:
 - Read their contents for checking
 - Create issues in repositories that fail compliance
 
-GITHUB_TOKEN only provides access to the current repository (my-repos), not other repositories.
+GITHUB_TOKEN only provides access to the current repository (repo-standards), not other repositories.
 
 **Alternatives considered:**
 1. Personal Access Token (PAT)
@@ -28,7 +28,7 @@ Use a **GitHub App** for cross-repository access:
 - **Installation:** On all my-* repositories
 
 **Security model:**
-- GITHUB_TOKEN: my-repos operations (checkout, commit, push)
+- GITHUB_TOKEN: repo-standards operations (checkout, commit, push)
 - GitHub App token: Cross-repo reads and issue creation
 
 ## Consequences
@@ -56,7 +56,7 @@ Use a **GitHub App** for cross-repository access:
 
 ## References
 
-- [my-gh-apps](https://github.com/tomp736/my-gh-apps) - GitHub App creation toolkit
+- [my-gh-apps](https://github.com/labrats-work/my-gh-apps) - GitHub App creation toolkit
 - [GITHUB_APP_SETUP.md](../../GITHUB_APP_SETUP.md) - Setup instructions
 - [GitHub Apps Documentation](https://docs.github.com/en/apps)
 - Workflow: `.github/workflows/compliance-check.yml`

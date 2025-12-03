@@ -43,11 +43,11 @@
 
 ### 📎 Resources
 
-- **Repository Workflows:** https://github.com/tomp736/{{REPOSITORY}}/actions
-- **Compliance Report:** [Latest Report](https://github.com/tomp736/my-repos/tree/main/reports)
-- **View All Runs:** https://github.com/tomp736/{{REPOSITORY}}/actions/runs
+- **Repository Workflows:** https://github.com/labrats-work/{{REPOSITORY}}/actions
+- **Compliance Report:** [Latest Report](https://github.com/labrats-work/repo-standards/tree/main/reports)
+- **View All Runs:** https://github.com/labrats-work/{{REPOSITORY}}/actions/runs
 
 ---
 
-*This issue was automatically created by the [My-Repos Compliance Checker](https://github.com/tomp736/my-repos).*
+*This issue was automatically created by the [My-Repos Compliance Checker](https://github.com/labrats-work/repo-standards).*
 *Generated: {{DATE}} {{TIME}}*
