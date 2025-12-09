@@ -82,36 +82,12 @@ if [ -f "README.md" ]; then
   exit 0
 fi
 
-# Create README.md with basic content
-cat > README.md <<EOF
-# $REPO
-
-$description
-
-## Purpose
-
-[Describe the purpose and goals of this repository]
-
-## Quick Start
-
-\`\`\`bash
-# Add quick start instructions here
-\`\`\`
-
-## Project Structure
-
-\`\`\`
-[Describe the repository structure]
-\`\`\`
-
-## Related Repositories
-
-- [$OWNER](https://github.com/$OWNER) - Organization repositories
-
-## License
-
-[Specify license]
-EOF
+# Create README.md from template
+TEMPLATE_DIR="$(dirname "$0")/templates"
+sed -e "s|{{REPO}}|$REPO|g" \
+    -e "s|{{DESCRIPTION}}|$description|g" \
+    -e "s|{{OWNER}}|$OWNER|g" \
+    "$TEMPLATE_DIR/README.md.tmpl" > README.md
 
 # Commit and push
 git add README.md

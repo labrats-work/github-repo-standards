@@ -85,60 +85,14 @@ elif [ -f "requirements.txt" ] || [ -f "pyproject.toml" ]; then
   repo_type="Python"
 fi
 
-# Create CLAUDE.md with context
-cat > CLAUDE.md <<EOF
-# Claude Context: $REPO
-
-## Repository Overview
-
-$description
-
-**Type:** $repo_type Repository
-
-## Project Purpose
-
-[Describe the purpose and goals of this repository]
-
-## Architecture
-
-### Key Components
-
-[Describe the main components and their relationships]
-
-### Technologies Used
-
-[List the primary technologies, frameworks, and tools]
-
-## Common Operations
-
-### Development Workflow
-
-\`\`\`bash
-# Add common development commands
-\`\`\`
-
-### Deployment
-
-\`\`\`bash
-# Add deployment commands
-\`\`\`
-
-## Important Files
-
-[List and describe key files and their purposes]
-
-## Related Repositories
-
-- [$OWNER](https://github.com/$OWNER) - Organization repositories
-
-## Notes for AI Assistants
-
-[Add specific guidance for AI assistants working with this codebase]
-
-## Last Updated
-
-$(date +%Y-%m-%d)
-EOF
+# Create CLAUDE.md from template
+TEMPLATE_DIR="$(dirname "$0")/templates"
+sed -e "s|{{REPO}}|$REPO|g" \
+    -e "s|{{DESCRIPTION}}|$description|g" \
+    -e "s|{{REPO_TYPE}}|$repo_type|g" \
+    -e "s|{{OWNER}}|$OWNER|g" \
+    -e "s|{{DATE}}|$(date +%Y-%m-%d)|g" \
+    "$TEMPLATE_DIR/CLAUDE.md.tmpl" > CLAUDE.md
 
 # Commit and push
 git add CLAUDE.md

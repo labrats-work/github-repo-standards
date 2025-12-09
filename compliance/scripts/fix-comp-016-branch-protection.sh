@@ -53,40 +53,11 @@ if [ "$existing_count" -gt 0 ]; then
   exit 0
 fi
 
-# Create branch protection ruleset
-ruleset_json='{
-  "name": "Default Branch Protection",
-  "target": "branch",
-  "enforcement": "active",
-  "conditions": {
-    "ref_name": {
-      "include": ["~DEFAULT_BRANCH"],
-      "exclude": []
-    }
-  },
-  "rules": [
-    {
-      "type": "pull_request",
-      "parameters": {
-        "required_approving_review_count": 0,
-        "dismiss_stale_reviews_on_push": false,
-        "require_code_owner_review": false,
-        "require_last_push_approval": false,
-        "required_review_thread_resolution": false
-      }
-    },
-    {
-      "type": "required_status_checks",
-      "parameters": {
-        "required_status_checks": [],
-        "strict_required_status_checks_policy": false
-      }
-    }
-  ]
-}'
+# Create branch protection ruleset from template
+TEMPLATE_DIR="$(dirname "$0")/templates"
 
 echo -e "${YELLOW}Creating branch protection ruleset for $REPO...${NC}"
-if echo "$ruleset_json" | gh api "repos/$OWNER/$REPO/rulesets" --input - &>/dev/null; then
+if cat "$TEMPLATE_DIR/branch-ruleset.json.tmpl" | gh api "repos/$OWNER/$REPO/rulesets" --input - &>/dev/null; then
   echo -e "${GREEN}✓ Created branch protection ruleset for $REPO${NC}"
   exit 0
 else

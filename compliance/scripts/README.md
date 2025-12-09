@@ -1,12 +1,10 @@
 # Compliance Fix Scripts
 
-This directory contains automated scripts to fix CRITICAL and HIGH priority compliance failures across all organization repositories.
+Automated scripts to fix CRITICAL and HIGH priority compliance failures for individual repositories.
 
 ## Available Scripts
 
-### Individual Fix Scripts
-
-Each script addresses a specific compliance check:
+Each script processes ONE repository at a time and requires `GITHUB_ORG` environment variable:
 
 - **fix-comp-001-readme.sh** - Creates basic README.md files (CRITICAL)
 - **fix-comp-002-license.sh** - Creates MIT LICENSE files (CRITICAL)
@@ -15,34 +13,39 @@ Each script addresses a specific compliance check:
 - **fix-comp-016-branch-protection.sh** - Creates branch rulesets (HIGH)
 - **fix-comp-017-repo-settings.sh** - Enables squash merge (HIGH)
 
-### Master Script
-
-- **fix-all-critical-high.sh** - Runs all fix scripts in the optimal order
-
 ## Usage
 
-### Run All Fixes
+### Single Repository
 
-To fix all CRITICAL and HIGH priority compliance issues:
+Each script operates on exactly ONE repository passed as a parameter:
 
 ```bash
-cd /path/to/github-repo-standards
-./compliance/scripts/fix-all-critical-high.sh
+# Fix README for a single repository
+GITHUB_ORG=your-org ./compliance/scripts/fix-comp-001-readme.sh my-repo
+
+# Fix LICENSE for a single repository
+GITHUB_ORG=your-org ./compliance/scripts/fix-comp-002-license.sh my-repo
+
+# Fix repository settings for a single repository
+GITHUB_ORG=your-org ./compliance/scripts/fix-comp-017-repo-settings.sh my-repo
 ```
 
-### Run Individual Fixes
+### Multiple Repositories
 
-To address specific compliance issues:
+To process multiple repositories, iterate in your caller script or shell:
 
 ```bash
-# Fix repository settings only
-./compliance/scripts/fix-comp-017-repo-settings.sh
+# Fix README for multiple repositories
+for repo in repo1 repo2 repo3; do
+  GITHUB_ORG=your-org ./compliance/scripts/fix-comp-001-readme.sh $repo
+done
 
-# Fix branch protection only
-./compliance/scripts/fix-comp-016-branch-protection.sh
-
-# Fix missing README files only
-./compliance/scripts/fix-comp-001-readme.sh
+# Fix all CRITICAL issues for specific repositories
+for script in fix-comp-001-*.sh fix-comp-002-*.sh fix-comp-003-*.sh fix-comp-004-*.sh; do
+  for repo in repo1 repo2; do
+    GITHUB_ORG=your-org ./compliance/scripts/$script $repo
+  done
+done
 ```
 
 ## How It Works
@@ -66,58 +69,6 @@ These scripts clone each repository, create the missing file, commit, and push:
 6. Clean up temporary directory
 
 ## Prerequisites
-
-## Initial Setup
-
-Before running fix scripts, you need to configure which repositories to process.
-
-### Method 1: Edit Script Directly
-
-Open the fix script and uncomment/populate the REPOS array:
-
-```bash
-vim compliance/scripts/fix-comp-001-readme.sh
-```
-
-```bash
-REPOS=(
-  "my-repo-1"
-  "my-repo-2"
-  "my-repo-3"
-)
-```
-
-### Method 2: Dynamic Discovery
-
-Use GitHub CLI to discover repositories automatically:
-
-```bash
-# Edit script to use dynamic discovery
-REPOS=($(gh repo list your-org --limit 1000 --json name --jq ".[].name"))
-```
-
-### Method 3: Filter by Topic
-
-Discover repositories with specific topics:
-
-```bash
-# Get all repos with "infrastructure" topic
-REPOS=($(gh repo list your-org --topic infrastructure --json name --jq ".[].name"))
-```
-
-### Example: Running After Configuration
-
-```bash
-# 1. Set your organization
-export GITHUB_ORG="my-organization"
-
-# 2. Edit script to add repositories
-vim compliance/scripts/fix-comp-001-readme.sh
-
-# 3. Run the script
-./compliance/scripts/fix-comp-001-readme.sh
-```
-
 
 - GitHub CLI (`gh`) must be installed and authenticated
 - User must have push access to all repositories
@@ -151,7 +102,7 @@ Basic structure with:
 ### LICENSE
 MIT License with:
 - Current year
-- Your Organization as copyright holder
+- labrats-work as copyright holder
 
 ### .gitignore
 Comprehensive ignore patterns for:
@@ -187,14 +138,40 @@ Updates to:
 - `allow_rebase_merge`: false
 - `delete_branch_on_merge`: true
 
-## Customization
+## Template System
 
-To customize the content of generated files, edit the heredoc sections in each script:
+Generated files use reusable templates from `compliance/scripts/templates/`:
 
+- **README.md.tmpl** - Repository documentation template
+- **LICENSE.tmpl** - MIT License template
+- **gitignore.tmpl** - Comprehensive ignore patterns
+- **CLAUDE.md.tmpl** - AI context documentation template
+- **branch-ruleset.json.tmpl** - Branch protection ruleset configuration
+
+### Template Variables
+
+Templates use `{{VARIABLE}}` syntax for substitution:
+
+- `{{REPO}}` - Repository name
+- `{{DESCRIPTION}}` - Repository description from GitHub
+- `{{OWNER}}` - Organization/owner name (from GITHUB_ORG)
+- `{{YEAR}}` - Current year
+- `{{REPO_TYPE}}` - Detected repository type (Terraform, Node.js, Python, etc.)
+- `{{DATE}}` - Current date (YYYY-MM-DD)
+
+### Customization
+
+To customize generated content:
+
+1. Edit template files in `compliance/scripts/templates/`
+2. Add new variables to templates using `{{VARIABLE}}` syntax
+3. Update corresponding script to perform substitution with `sed`
+
+Example:
 ```bash
-cat > FILENAME <<EOF
-Your custom content here
-EOF
+sed -e "s|{{REPO}}|$REPO|g" \
+    -e "s|{{OWNER}}|$OWNER|g" \
+    "$TEMPLATE_DIR/README.md.tmpl" > README.md
 ```
 
 ## Troubleshooting
@@ -244,33 +221,3 @@ After running these scripts, focus on:
 - COMP-005 (HIGH): Improve README structure with required sections
 - COMP-006 (HIGH): Add docs/ directory with README
 - Medium and low priority items as time permits
-
-## Configuration
-
-### Environment Variables
-
-The fix scripts use the following environment variable:
-
-- **GITHUB_ORG** - Your GitHub organization name (default: "your-org")
-
-Set before running scripts:
-
-```bash
-export GITHUB_ORG="my-organization"
-./scripts/fix-all-critical-high.sh
-```
-
-Or inline:
-
-```bash
-GITHUB_ORG="my-organization" ./scripts/fix-all-critical-high.sh
-```
-
-### Repository-Specific Configuration
-
-Each fix script automatically:
-- Detects repository ownership from git remote
-- Skips archived repositories
-- Checks existing files/settings before creating
-- Uses the organization from GITHUB_ORG environment variable
-

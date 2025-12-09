@@ -68,44 +68,9 @@ if [ -f ".gitignore" ]; then
   exit 0
 fi
 
-# Create comprehensive .gitignore
-cat > .gitignore <<'EOF'
-# OS Files
-.DS_Store
-Thumbs.db
-*~
-
-# IDE
-.vscode/
-.idea/
-*.swp
-*.swo
-
-# Build artifacts
-dist/
-build/
-*.pyc
-__pycache__/
-node_modules/
-.terraform/
-*.tfstate
-*.tfstate.backup
-
-# Logs
-*.log
-logs/
-
-# Environment
-.env
-.env.local
-*.key
-*.pem
-
-# Temporary files
-tmp/
-temp/
-*.tmp
-EOF
+# Create .gitignore from template
+TEMPLATE_DIR="$(dirname "$0")/templates"
+cp "$TEMPLATE_DIR/gitignore.tmpl" .gitignore
 
 # Commit and push
 git add .gitignore
