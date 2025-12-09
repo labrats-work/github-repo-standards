@@ -1,0 +1,18 @@
+{
+  "name": "Repository Standards Compliance Bot",
+  "url": "https://github.com/your-org/github-repo-standards",
+  "hook_attributes": {
+    "url": "https://example.com/webhook"
+  },
+  "redirect_url": "https://github.com/your-org/github-repo-standards",
+  "callback_urls": [],
+  "public": true,
+  "default_permissions": {
+    "administration": "read",
+    "contents": "read",
+    "issues": "write",
+    "metadata": "read"
+  },
+  "default_events": [],
+  "description": "Cross-repository compliance scanning and monitoring. Read-only access to scan repositories for compliance issues and create issues for critical failures. Install on all repositories to monitor."
+}

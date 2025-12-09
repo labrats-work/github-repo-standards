@@ -1,8 +1,10 @@
 # ADR-0002: GitHub App for Cross-Repository Access
 
 **Date:** 2025-11-29
-**Status:** Accepted
+**Status:** Superseded by [ADR-0004](0004-two-app-architecture.md)
 **Deciders:** labrats-work
+
+> **Note:** This ADR described the original single GitHub App approach. It has been superseded by ADR-0004 which introduces a two-app architecture for better security separation.
 
 ## Context
 

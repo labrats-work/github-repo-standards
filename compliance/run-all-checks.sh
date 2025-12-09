@@ -10,7 +10,7 @@ CHECKS_DIR="$SCRIPT_DIR/checks"
 REPO_PATH=""
 FORMAT="json"
 ALL_REPOS=false
-PARENT_DIR="/home/u0/code/labrats-work"
+PARENT_DIR="$(dirname "$(dirname "$(pwd)")")"
 
 # Parse arguments
 while [[ $# -gt 0 ]]; do
@@ -42,16 +42,20 @@ WEIGHTS[MEDIUM]=2
 WEIGHTS[LOW]=1
 
 # Check definitions with priorities
-declare -A CHECK_PRIORITIES
 CHECK_PRIORITIES[check-readme-exists.sh]="CRITICAL"
 CHECK_PRIORITIES[check-license-exists.sh]="CRITICAL"
 CHECK_PRIORITIES[check-gitignore-exists.sh]="CRITICAL"
 CHECK_PRIORITIES[check-claude-md-exists.sh]="CRITICAL"
 CHECK_PRIORITIES[check-readme-structure.sh]="HIGH"
 CHECK_PRIORITIES[check-docs-directory.sh]="HIGH"
-CHECK_PRIORITIES[check-workflows.sh]="HIGH"
+CHECK_PRIORITIES[check-deprecated-actions.sh]="HIGH"
+CHECK_PRIORITIES[check-branch-protection.sh]="HIGH"
+CHECK_PRIORITIES[check-branch-rulesets.sh]="HIGH"
+CHECK_PRIORITIES[check-repo-settings.sh]="HIGH"
+CHECK_PRIORITIES[check-default-branch.sh]="HIGH"
 CHECK_PRIORITIES[check-issue-templates.sh]="MEDIUM"
 CHECK_PRIORITIES[check-adr-pattern.sh]="MEDIUM"
+CHECK_PRIORITIES[check-adr-quality.sh]="MEDIUM"
 CHECK_PRIORITIES[check-claude-config.sh]="MEDIUM"
 CHECK_PRIORITIES[check-contributing.sh]="LOW"
 CHECK_PRIORITIES[check-security.sh]="LOW"
