@@ -31,15 +31,17 @@ The compliance framework consists of:
    - Outputs JSON with status and message
    - Returns exit code 0 (pass) or 1 (fail)
 
-2. **Orchestrator** (`compliance/run-all-checks.sh`)
-   - Discovers and runs all checks
+2. **Check Priorities** (`compliance/check-priorities.json`)
+   - Maps check IDs to priorities and points
+   - Defines weighted scoring system
+   - Used by workflow for score calculation
+
+3. **Automated Workflow** (`.github/workflows/compliance-check.yml`)
+   - Discovers and runs all check scripts
    - Calculates weighted compliance score
    - Generates markdown and JSON reports
-
-3. **Automation** (`.github/workflows/compliance-check.yml`)
    - Runs weekly on Monday 9 AM UTC
-   - Clones all my-* repositories
-   - Creates issues for failures <50%
+   - Creates issues for CRITICAL/HIGH failures
 
 4. **GitHub App Integration**
    - Provides cross-repository read access
@@ -120,7 +122,7 @@ When adding new compliance checks:
 **"Permission denied" when running checks:**
 ```bash
 chmod +x compliance/checks/*.sh
-chmod +x compliance/run-all-checks.sh
+chmod +x compliance/scripts/*.sh
 ```
 
 **"Repository not found" in workflow:**

@@ -93,9 +93,15 @@ git checkout -b feature/your-feature-name
    - Update `API_PERMISSIONS.md` if GitHub API is used
    - Add example to `docs/` if needed
 
-4. **Assign priority** in `compliance/run-all-checks.sh`:
-   ```bash
-   CHECK_PRIORITIES[check-your-feature.sh]="CRITICAL|HIGH|MEDIUM|LOW"
+4. **Assign priority** in `compliance/check-priorities.json`:
+   ```json
+   {
+     "COMP-XXX": {
+       "name": "Your Feature Check",
+       "priority": "HIGH",
+       "points": 5
+     }
+   }
    ```
 
 ### Check Guidelines
@@ -114,11 +120,13 @@ git checkout -b feature/your-feature-name
 # Test a single check
 ./compliance/checks/check-your-feature.sh /path/to/test/repo
 
-# Run all checks
-./compliance/run-all-checks.sh /path/to/test/repo
+# Run all checks manually
+for check in compliance/checks/check-*.sh; do
+  bash "$check" /path/to/test/repo
+done
 
-# Test JSON output
-./compliance/run-all-checks.sh /path/to/test/repo --format json
+# Test via workflow
+gh workflow run compliance-check.yml --repo YOUR_ORG/github-repo-standards
 ```
 
 ### Test Cases

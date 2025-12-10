@@ -308,24 +308,41 @@ All check scripts must follow this interface:
 
 ## Running Compliance Checks
 
-### Check Single Repository
+### Via Automated Workflow (Recommended)
 ```bash
-./compliance/run-all-checks.sh /path/to/repo
+# Trigger the GitHub Actions workflow
+gh workflow run compliance-check.yml --repo YOUR_ORG/github-repo-standards
+
+# Watch the execution
+gh run watch --repo YOUR_ORG/github-repo-standards
 ```
 
-### Check All my-* Repositories
-```bash
-./compliance/run-all-checks.sh --all
-```
+The workflow automatically:
+- Discovers all repositories
+- Runs all checks in parallel
+- Aggregates results
+- Generates reports
+- Creates issues for failures
 
-### Check Specific Compliance Rule
+### Run Individual Check Locally
 ```bash
+# Check if README.md exists
 ./compliance/checks/check-readme-exists.sh /path/to/repo
+
+# Check branch protection
+./compliance/checks/check-branch-protection.sh /path/to/repo
+
+# All checks output JSON:
+# {"check_id":"COMP-001","name":"README.md Exists","status":"pass","message":"README.md found"}
 ```
 
-### Generate Compliance Report
+### View Reports
 ```bash
-./compliance/run-all-checks.sh --all --format markdown > COMPLIANCE-REPORT.md
+# View latest markdown report
+cat reports/compliance-report-$(date +%Y-%m-%d).md
+
+# Query JSON report with jq
+jq '.repositories[] | select(.compliance_score < 75)' reports/compliance-report-*.json
 ```
 
 ---

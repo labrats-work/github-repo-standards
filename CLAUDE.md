@@ -13,31 +13,36 @@ This is the **meta-repository** for managing compliance and standardization acro
 ```
 github-repo-standards/
 ├── compliance/              # Compliance checking framework
-│   ├── checks/             # Modular check scripts (COMP-001 to COMP-013)
-│   ├── run-all-checks.sh   # Orchestrator script
+│   ├── checks/             # Modular check scripts (COMP-001 to COMP-019)
+│   ├── scripts/            # Automated fix scripts
+│   ├── check-priorities.json  # Check priority and scoring configuration
 │   └── README.md           # Framework documentation
 ├── reports/                # Generated compliance reports
 │   ├── compliance-report-YYYY-MM-DD.md    # Human-readable
 │   └── compliance-report-YYYY-MM-DD.json  # Machine-readable
 ├── .github/
 │   ├── workflows/
-│   │   └── compliance-check.yml  # Weekly automated checks
+│   │   └── compliance-check.yml  # Weekly automated checks (orchestrates all checks)
 │   └── ISSUE_TEMPLATE_COMPLIANCE_FAILURE.md  # Issue template
 ├── COMPLIANCE.md           # Standards definition
-└── github-app-manifest.json  # GitHub App configuration
+└── docs/                   # Documentation
+    ├── setup.md            # Setup guide
+    ├── upgrade.md          # Upgrade guide
+    └── migration-checklist.md  # Migration tracker
 ```
 
 ### How It Works
 
-1. **Compliance Checks** - 13 modular bash scripts check for best practices
+1. **Compliance Checks** - 19 modular bash scripts check for best practices
 2. **Weighted Scoring** - CRITICAL (10pts), HIGH (5pts), MEDIUM (2pts), LOW (1pt)
-3. **Automated Workflow** - Runs weekly, clones all repos, generates reports
-4. **Issue Creation** - Creates issues in failing repositories (<50% compliance)
-5. **Deduplication** - Prevents duplicate issues (checks for existing open compliance issues)
+3. **Workflow Orchestration** - GitHub Actions workflow discovers and runs all checks
+4. **Automated Workflow** - Runs weekly, clones all repos, generates reports
+5. **Issue Creation** - Creates issues in failing repositories (CRITICAL/HIGH failures)
+6. **Deduplication** - Prevents duplicate issues (checks for existing open compliance issues)
 
 ## Compliance Standards
 
-### Standard Checks (13 total)
+### Standard Checks (19 total)
 
 **CRITICAL (4 checks - 10 points each):**
 - COMP-001: README.md exists
@@ -72,14 +77,16 @@ github-repo-standards/
 ### Run Compliance Checks Locally
 
 ```bash
-# Check all repositories (requires cloned repos)
-./compliance/run-all-checks.sh --all --format markdown --parent-dir /path/to/repos
+# Run individual check
+./compliance/checks/check-readme-exists.sh /path/to/repo
 
-# Check single repository
-./compliance/run-all-checks.sh /path/to/my-borowego-2
+# Run all checks manually
+for check in compliance/checks/check-*.sh; do
+  bash "$check" /path/to/repo
+done
 
-# Output JSON format
-./compliance/run-all-checks.sh /path/to/my-fin --format json
+# Checks output JSON format:
+# {"check_id":"COMP-001","name":"README.md Exists","status":"pass","message":"README.md found"}
 ```
 
 ### Trigger Automated Workflow
@@ -141,17 +148,21 @@ This framework tracks all repositories in the labrats-work organization where th
 ## Important Files
 
 ### COMPLIANCE.md
-Defines all 13 compliance standards in detail. This is the source of truth for what makes a repository compliant.
+Defines all 19 compliance standards in detail. This is the source of truth for what makes a repository compliant.
 
-### compliance/run-all-checks.sh
-Orchestrator script that:
-- Discovers all check scripts
-- Runs them against target repositories
-- Calculates weighted scores
-- Generates reports in multiple formats
+### compliance/check-priorities.json
+Configuration file that defines:
+- Check ID to name mapping
+- Priority levels (CRITICAL, HIGH, MEDIUM, LOW)
+- Point values for weighted scoring
 
 ### .github/workflows/compliance-check.yml
-GitHub Actions workflow that automates the entire compliance checking process. Uses both GITHUB_TOKEN and GitHub App token with proper scoping.
+GitHub Actions workflow that orchestrates the entire compliance checking process:
+- Discovers all check scripts in compliance/checks/
+- Runs them in parallel across repositories
+- Calculates weighted scores using check-priorities.json
+- Aggregates results and generates reports
+- Uses both GITHUB_TOKEN and GitHub App tokens with proper scoping
 
 ### .github/ISSUE_TEMPLATE_COMPLIANCE_FAILURE.md
 Template file for compliance issues created in failing repositories. Uses `{{PLACEHOLDER}}` syntax for dynamic content replacement.

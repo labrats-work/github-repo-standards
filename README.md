@@ -28,14 +28,23 @@ This repository serves as the central hub for:
 
 ### Run Compliance Checks
 
-Check all repositories:
+The compliance framework is designed to run via GitHub Actions workflow, which automatically:
+- Discovers all check scripts
+- Runs them in parallel across repositories
+- Aggregates results and generates reports
+
+**Trigger automated workflow:**
 ```bash
-./compliance/run-all-checks.sh --all --format markdown
+gh workflow run compliance-check.yml --repo YOUR_ORG/github-repo-standards
 ```
 
-Check single repository:
+**Run individual check locally:**
 ```bash
-./compliance/run-all-checks.sh /path/to/repository
+# Check if README.md exists
+./compliance/checks/check-readme-exists.sh /path/to/repository
+
+# Check branch protection
+./compliance/checks/check-branch-protection.sh /path/to/repository
 ```
 
 ### Fix Compliance Issues
@@ -78,12 +87,12 @@ github-repo-standards/
 │   │   ├── fix-comp-016-branch-protection.sh  # Ruleset fixes
 │   │   ├── fix-comp-017-repo-settings.sh      # Settings fixes
 │   │   └── README.md       # Fix scripts documentation
-│   ├── run-all-checks.sh   # Orchestrator script
+│   ├── check-priorities.json  # Check priority and scoring configuration
 │   └── README.md           # Compliance documentation
 ├── reports/                # Generated compliance reports
 ├── .github/
 │   └── workflows/
-│       └── compliance-check.yml  # Automated checks
+│       └── compliance-check.yml  # Automated checks (orchestrates all checks)
 ├── COMPLIANCE.md           # Best practices definition
 └── README.md               # This file
 ```

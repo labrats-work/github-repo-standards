@@ -198,7 +198,8 @@ Check the output - the script will continue with other repositories even if one 
 3. Run compliance checks again to verify:
 
 ```bash
-./compliance/run-all-checks.sh --all --format markdown
+# Trigger workflow to check all repositories
+gh workflow run compliance-check.yml --repo YOUR_ORG/github-repo-standards
 ```
 
 ## Expected Impact

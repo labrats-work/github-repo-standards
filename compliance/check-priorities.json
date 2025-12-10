@@ -1,0 +1,97 @@
+{
+  "COMP-001": {
+    "name": "README.md Exists",
+    "priority": "CRITICAL",
+    "points": 10
+  },
+  "COMP-002": {
+    "name": "LICENSE File Exists",
+    "priority": "CRITICAL",
+    "points": 10
+  },
+  "COMP-003": {
+    "name": ".gitignore Exists",
+    "priority": "CRITICAL",
+    "points": 10
+  },
+  "COMP-004": {
+    "name": "CLAUDE.md Exists",
+    "priority": "CRITICAL",
+    "points": 10
+  },
+  "COMP-005": {
+    "name": "README Structure",
+    "priority": "HIGH",
+    "points": 5
+  },
+  "COMP-006": {
+    "name": "docs/ Directory",
+    "priority": "HIGH",
+    "points": 5
+  },
+  "COMP-007": {
+    "name": "GitHub Workflows",
+    "priority": "HIGH",
+    "points": 5
+  },
+  "COMP-008": {
+    "name": "Issue Templates",
+    "priority": "MEDIUM",
+    "points": 2
+  },
+  "COMP-009": {
+    "name": "ADR Directory",
+    "priority": "MEDIUM",
+    "points": 2
+  },
+  "COMP-010": {
+    "name": ".claude/ Configuration",
+    "priority": "MEDIUM",
+    "points": 2
+  },
+  "COMP-011": {
+    "name": "CONTRIBUTING.md",
+    "priority": "LOW",
+    "points": 1
+  },
+  "COMP-012": {
+    "name": "SECURITY.md",
+    "priority": "LOW",
+    "points": 1
+  },
+  "COMP-013": {
+    "name": "MkDocs Configuration",
+    "priority": "LOW",
+    "points": 1
+  },
+  "COMP-014": {
+    "name": "ADR Quality",
+    "priority": "MEDIUM",
+    "points": 2
+  },
+  "COMP-015": {
+    "name": "Deprecated Actions",
+    "priority": "HIGH",
+    "points": 5
+  },
+  "COMP-016": {
+    "name": "Branch Protection",
+    "priority": "HIGH",
+    "points": 5
+  },
+  "COMP-017": {
+    "name": "Repository Settings",
+    "priority": "HIGH",
+    "points": 5
+  },
+  "COMP-018": {
+    "name": "Default Branch",
+    "priority": "HIGH",
+    "points": 5
+  },
+  "COMP-019": {
+    "name": "Branch Rulesets",
+    "priority": "HIGH",
+    "points": 5
+  }
+}

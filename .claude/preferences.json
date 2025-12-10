@@ -12,13 +12,14 @@
   ],
   "important_files": {
     "COMPLIANCE.md": "Source of truth for compliance standards",
-    "compliance/run-all-checks.sh": "Orchestrator script",
-    ".github/workflows/compliance-check.yml": "Automation workflow",
+    "compliance/check-priorities.json": "Check priority and scoring configuration",
+    "compliance/checks/": "Individual check scripts",
+    ".github/workflows/compliance-check.yml": "Orchestrates checks and automation",
     ".github/ISSUE_TEMPLATE_COMPLIANCE_FAILURE.md": "Issue template",
     "docs/adr/": "Architecture decisions"
   },
   "common_tasks": {
-    "run_checks_locally": "./compliance/run-all-checks.sh /path/to/repo",
+    "run_check_locally": "./compliance/checks/check-readme-exists.sh /path/to/repo",
     "trigger_workflow": "gh workflow run compliance-check.yml --repo labrats-work/github-repo-standards",
     "view_reports": "cat reports/compliance-report-$(date +%Y-%m-%d).md"
   }

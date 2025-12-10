@@ -154,8 +154,8 @@ vim COMPLIANCE.md
 # Edit check scripts
 ls compliance/checks/
 
-# Adjust scoring weights
-vim compliance/run-all-checks.sh
+# Adjust scoring weights and priorities
+vim compliance/check-priorities.json
 ```
 
 ### 3. Configure Repository Settings
@@ -203,11 +203,13 @@ gh api /repos/YOUR_ORG/github-repo-standards
 ### 2. Run Local Compliance Check
 
 ```bash
-# Check a single repository
-./compliance/run-all-checks.sh /path/to/repo
+# Test individual check
+./compliance/checks/check-readme-exists.sh /path/to/repo
 
-# Check all repositories
-./compliance/run-all-checks.sh --all --format markdown
+# Test all checks manually
+for check in compliance/checks/check-*.sh; do
+  bash "$check" /path/to/repo
+done
 ```
 
 ### 3. Monitor First Workflow Run

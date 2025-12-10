@@ -108,10 +108,90 @@ jobs:
           echo "=================================================="
           echo ""
 
-          # Run checks and capture output
-          ./compliance/run-all-checks.sh ../repo-to-check --format json > compliance-result.json
+          # Initialize result structure
+          echo '{"repository":"${{ matrix.repo }}","path":"../repo-to-check","checks":[]}' > compliance-result.json
 
-          # Extract key metrics
+          # Load check priorities
+          PRIORITIES_FILE="compliance/check-priorities.json"
+
+          # Run each check script and collect results
+          TOTAL_SCORE=0
+          MAX_SCORE=0
+          PASSED_COUNT=0
+          FAILED_COUNT=0
+
+          echo "Discovering check scripts..."
+          for check_script in compliance/checks/check-*.sh; do
+            if [ -f "$check_script" ]; then
+              CHECK_NAME=$(basename "$check_script")
+              echo "Running: $CHECK_NAME"
+
+              # Run check and capture output
+              CHECK_OUTPUT=$(bash "$check_script" ../repo-to-check 2>&1) || true
+
+              # Extract check ID from output
+              CHECK_ID=$(echo "$CHECK_OUTPUT" | jq -r '.check_id // ""' 2>/dev/null || echo "")
+
+              if [ -z "$CHECK_ID" ]; then
+                echo "  ⚠️  Warning: Could not extract check_id from $CHECK_NAME"
+                continue
+              fi
+
+              # Look up priority for this check
+              PRIORITY=$(jq -r --arg id "$CHECK_ID" '.[$id].priority // "MEDIUM"' "$PRIORITIES_FILE")
+              POINTS=$(jq -r --arg id "$CHECK_ID" '.[$id].points // 2' "$PRIORITIES_FILE")
+
+              # Parse check result
+              STATUS=$(echo "$CHECK_OUTPUT" | jq -r '.status // "fail"')
+
+              # Update counters
+              MAX_SCORE=$((MAX_SCORE + POINTS))
+              if [ "$STATUS" = "pass" ]; then
+                TOTAL_SCORE=$((TOTAL_SCORE + POINTS))
+                PASSED_COUNT=$((PASSED_COUNT + 1))
+              else
+                FAILED_COUNT=$((FAILED_COUNT + 1))
+              fi
+
+              # Add check result with priority to results
+              TEMP_RESULT=$(echo "$CHECK_OUTPUT" | jq --arg priority "$PRIORITY" --arg script "$CHECK_NAME" '. + {priority: $priority, script: $script}')
+              jq --argjson check "{\"priority\":\"$PRIORITY\",\"script\":\"$CHECK_NAME\",\"result\":$CHECK_OUTPUT}" '.checks += [$check]' compliance-result.json > compliance-result-temp.json
+              mv compliance-result-temp.json compliance-result.json
+
+              echo "  ✓ $CHECK_ID: $STATUS ($PRIORITY)"
+            fi
+          done
+
+          # Calculate compliance score
+          if [ $MAX_SCORE -gt 0 ]; then
+            COMPLIANCE_SCORE=$((TOTAL_SCORE * 100 / MAX_SCORE))
+          else
+            COMPLIANCE_SCORE=0
+          fi
+
+          # Determine tier
+          if [ $COMPLIANCE_SCORE -ge 90 ]; then
+            TIER="🟢 Excellent"
+          elif [ $COMPLIANCE_SCORE -ge 75 ]; then
+            TIER="🟡 Good"
+          elif [ $COMPLIANCE_SCORE -ge 50 ]; then
+            TIER="🟠 Needs Improvement"
+          else
+            TIER="🔴 Critical Issues"
+          fi
+
+          # Add summary to result
+          jq --arg score "$COMPLIANCE_SCORE" \
+             --arg tier "$TIER" \
+             --arg passed "$PASSED_COUNT" \
+             --arg failed "$FAILED_COUNT" \
+             --arg total_score "$TOTAL_SCORE" \
+             --arg max_score "$MAX_SCORE" \
+             '. + {compliance_score: ($score | tonumber), tier: $tier, passed: ($passed | tonumber), failed: ($failed | tonumber), total_score: ($total_score | tonumber), max_score: ($max_score | tonumber)}' \
+             compliance-result.json > compliance-result-temp.json
+          mv compliance-result-temp.json compliance-result.json
+
+          # Extract key metrics for GitHub outputs
           SCORE=$(jq -r '.compliance_score' compliance-result.json)
           TIER=$(jq -r '.tier' compliance-result.json)
           PASSED=$(jq -r '.passed' compliance-result.json)
@@ -136,6 +216,7 @@ jobs:
           echo "Score: $SCORE% - $TIER"
           echo "Passed: $PASSED | Failed: $FAILED"
           echo "Critical Failures: $CRITICAL | High Failures: $HIGH"
+          echo "Total: $TOTAL_SCORE / $MAX_SCORE points"
           echo ""
           echo "=================================================="
           echo "Detailed Check Results"

@@ -20,8 +20,9 @@ Implement compliance checks as **modular bash scripts** in `compliance/checks/`:
 1. Each check is a separate script (e.g., `check-readme-exists.sh`)
 2. Each script outputs JSON with standard format
 3. Exit code 0 = pass, 1 = fail
-4. Orchestrator (`run-all-checks.sh`) discovers and runs all checks
-5. Weighted scoring: CRITICAL=10, HIGH=5, MEDIUM=2, LOW=1
+4. GitHub Actions workflow discovers and runs all checks
+5. Check priorities defined in `check-priorities.json`
+6. Weighted scoring: CRITICAL=10, HIGH=5, MEDIUM=2, LOW=1
 
 ## Consequences
 
