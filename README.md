@@ -2,6 +2,8 @@
 
 Cross-repository standardization and compliance checking framework for the labrats-work organization.
 
+> **⚠️ BREAKING CHANGE (v2.0):** If you're upgrading from an existing installation, see **[UPGRADE.md](UPGRADE.md)** for migration instructions. Configuration is now environment-based and requires setup of GitHub Secrets and Variables.
+
 ## Purpose
 
 This repository serves as the central hub for:
