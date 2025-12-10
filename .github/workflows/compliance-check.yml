@@ -11,6 +11,20 @@ on:
         required: false
         type: string
 
+# Environment variables for organization-specific configuration
+env:
+  # Repository name (without owner) where this compliance framework lives
+  STANDARDS_REPO_NAME: ${{ vars.STANDARDS_REPO_NAME || 'github-repo-standards' }}
+  # Maximum number of parallel compliance check jobs
+  MAX_PARALLEL_JOBS: ${{ vars.MAX_PARALLEL_JOBS || '10' }}
+  # Number of days to retain compliance check artifacts
+  ARTIFACT_RETENTION_DAYS: ${{ vars.ARTIFACT_RETENTION_DAYS || '30' }}
+  # Default branch name for PRs
+  DEFAULT_BRANCH: ${{ vars.DEFAULT_BRANCH || 'main' }}
+  # Issue labels for compliance issues
+  COMPLIANCE_LABEL: ${{ vars.COMPLIANCE_LABEL || 'compliance' }}
+  CRITICAL_LABEL: ${{ vars.CRITICAL_LABEL || 'critical' }}
+
 jobs:
   # First job: Discover all repositories
   discover-repos:
@@ -53,7 +67,7 @@ jobs:
     strategy:
       matrix:
         repo: ${{ fromJson(needs.discover-repos.outputs.matrix) }}
-      max-parallel: 10  # Limit concurrent jobs to avoid rate limiting
+      max-parallel: ${{ fromJson(vars.MAX_PARALLEL_JOBS || '10') }}  # Limit concurrent jobs to avoid rate limiting
       fail-fast: false   # Continue even if some repos fail
 
     permissions:
@@ -71,7 +85,7 @@ jobs:
       - name: Checkout compliance framework
         uses: actions/checkout@v4
         with:
-          path: github-repo-standards
+          path: ${{ env.STANDARDS_REPO_NAME }}
 
       - name: Checkout repository
         run: |
@@ -87,7 +101,7 @@ jobs:
       - name: Run compliance checks
         id: compliance
         run: |
-          cd github-repo-standards
+          cd ${{ env.STANDARDS_REPO_NAME }}
 
           echo "=================================================="
           echo "Running compliance checks for: ${{ matrix.repo }}"
@@ -140,13 +154,13 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: compliance-${{ matrix.repo }}
-          path: github-repo-standards/compliance-result.json
-          retention-days: 30
+          path: ${{ env.STANDARDS_REPO_NAME }}/compliance-result.json
+          retention-days: ${{ fromJson(env.ARTIFACT_RETENTION_DAYS) }}
 
       - name: Create/update compliance issue
         run: |
           REPO_NAME="${{ matrix.repo }}"
-          RESULT_FILE="github-repo-standards/compliance-result.json"
+          RESULT_FILE="${{ env.STANDARDS_REPO_NAME }}/compliance-result.json"
 
           CRITICAL=${{ steps.compliance.outputs.critical }}
           HIGH=${{ steps.compliance.outputs.high }}
@@ -183,14 +197,14 @@ jobs:
             fi
 
             # Create labels if they don't exist
-            gh label create compliance --description "Compliance checking related" --color "0e8a16" --repo "${{ github.repository_owner }}/$REPO_NAME" 2>/dev/null || true
-            gh label create critical --description "Critical issues" --color "d73a4a" --repo "${{ github.repository_owner }}/$REPO_NAME" 2>/dev/null || true
+            gh label create "${{ env.COMPLIANCE_LABEL }}" --description "Compliance checking related" --color "0e8a16" --repo "${{ github.repository_owner }}/$REPO_NAME" 2>/dev/null || true
+            gh label create "${{ env.CRITICAL_LABEL }}" --description "Critical issues" --color "d73a4a" --repo "${{ github.repository_owner }}/$REPO_NAME" 2>/dev/null || true
 
             # Build issue title
             ISSUE_TITLE="🚨 Compliance Check [$CRITICAL critical, $HIGH high, $MEDIUM med, $LOW low]"
 
             # Check for existing open compliance issue
-            EXISTING_ISSUE=$(gh issue list --repo "${{ github.repository_owner }}/$REPO_NAME" --label "compliance" --state open --json number --jq '.[0].number // ""' 2>/dev/null || echo "")
+            EXISTING_ISSUE=$(gh issue list --repo "${{ github.repository_owner }}/$REPO_NAME" --label "${{ env.COMPLIANCE_LABEL }}" --state open --json number --jq '.[0].number // ""' 2>/dev/null || echo "")
 
             # Create detailed issue body with check results
             {
@@ -215,7 +229,7 @@ jobs:
               echo "---"
               echo ""
               echo "**Generated:** $(date -u +"%Y-%m-%d %H:%M:%S UTC")"
-              echo "**Workflow Run:** https://github.com/${{ github.repository_owner }}/github-repo-standards/actions/runs/${{ github.run_id }}"
+              echo "**Workflow Run:** https://github.com/${{ github.repository_owner }}/${{ env.STANDARDS_REPO_NAME }}/actions/runs/${{ github.run_id }}"
             } > /tmp/issue-body.md
 
             if [ -n "$EXISTING_ISSUE" ]; then
@@ -229,8 +243,8 @@ jobs:
               CREATE_RESULT=$(gh issue create \
                 --repo "${{ github.repository_owner }}/$REPO_NAME" \
                 --title "$ISSUE_TITLE" \
-                --label "compliance" \
-                --label "critical" \
+                --label "${{ env.COMPLIANCE_LABEL }}" \
+                --label "${{ env.CRITICAL_LABEL }}" \
                 --body-file /tmp/issue-body.md 2>&1) || true
 
               if echo "$CREATE_RESULT" | grep -q "has disabled issues"; then
@@ -252,7 +266,7 @@ jobs:
             fi
 
             # Check if there's an open compliance issue to close
-            EXISTING_ISSUE=$(gh issue list --repo "${{ github.repository_owner }}/$REPO_NAME" --label "compliance" --state open --json number --jq '.[0].number // ""' 2>/dev/null || echo "")
+            EXISTING_ISSUE=$(gh issue list --repo "${{ github.repository_owner }}/$REPO_NAME" --label "${{ env.COMPLIANCE_LABEL }}" --state open --json number --jq '.[0].number // ""' 2>/dev/null || echo "")
 
             if [ -n "$EXISTING_ISSUE" ]; then
               echo "Closing compliance issue #$EXISTING_ISSUE for $REPO_NAME"
@@ -266,7 +280,7 @@ jobs:
 
       - name: Summary
         run: |
-          cd github-repo-standards
+          cd ${{ env.STANDARDS_REPO_NAME }}
 
           echo "## 📊 ${{ matrix.repo }}" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
@@ -310,7 +324,7 @@ jobs:
           app-id: ${{ secrets.INTERNAL_AUTOMATION_APP_ID }}
           private-key: ${{ secrets.INTERNAL_AUTOMATION_APP_PRIVATE_KEY }}
           owner: ${{ github.repository_owner }}
-          repositories: github-repo-standards
+          repositories: ${{ env.STANDARDS_REPO_NAME }}
 
       - name: Checkout github-repo-standards
         uses: actions/checkout@v4
@@ -405,7 +419,7 @@ jobs:
 
           **Generated:** $(date -u +%Y-%m-%d\ %H:%M:%S\ UTC)
           **Workflow Run:** https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}" \
-                --base main \
+                --base ${{ env.DEFAULT_BRANCH }} \
                 --head "$BRANCH_NAME")
 
               PR_NUMBER=$(echo "$PR_URL" | grep -o '[0-9]*$')

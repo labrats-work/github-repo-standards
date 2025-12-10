@@ -10,6 +10,18 @@ This repository serves as the central hub for:
 - **Improvement planning** - Coordinating enhancements across repos
 - **Pattern documentation** - Recording successful patterns and anti-patterns
 
+## Setup
+
+**🚀 New Installation?** See **[SETUP.md](SETUP.md)** for complete setup instructions including:
+- GitHub Apps creation and installation
+- Environment secrets and variables configuration
+- Repository setup and verification
+- Troubleshooting guide
+
+**Required Configuration:**
+- 4 GitHub Secrets (App IDs and private keys)
+- 6 Optional Variables (defaults provided for all)
+
 ## Quick Start
 
 ### Run Compliance Checks

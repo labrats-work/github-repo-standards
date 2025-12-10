@@ -2,6 +2,14 @@
 
 This guide walks you through creating a GitHub App for the compliance checker using the **manifest flow**.
 
+> **⚠️ IMPORTANT:** This document covers GitHub App creation details. For complete setup including environment configuration and secrets, see **[SETUP.md](SETUP.md)**.
+
+## Quick Start
+
+**New to this scanner?** Start with [SETUP.md](SETUP.md) for a complete, step-by-step setup guide.
+
+**Already familiar?** Use this document as a reference for GitHub App configuration details.
+
 ## Why a GitHub App?
 
 Benefits over Personal Access Tokens:
@@ -167,16 +175,45 @@ If it works, you're done! 🎉
 
 ---
 
+## Environment Configuration
+
+After creating the GitHub Apps, you **must** configure GitHub Secrets and Variables.
+
+### Required Setup
+
+**See [SETUP.md - Environment Configuration](SETUP.md#environment-configuration) for detailed instructions.**
+
+**Quick Summary:**
+
+1. **Add Repository Secrets** (Settings → Secrets and variables → Actions → Secrets):
+   - `REPO_STANDARDS_APP_ID`
+   - `REPO_STANDARDS_APP_PRIVATE_KEY` (full PEM format)
+   - `INTERNAL_AUTOMATION_APP_ID`
+   - `INTERNAL_AUTOMATION_APP_PRIVATE_KEY` (full PEM format)
+
+2. **Add Repository Variables** (Settings → Secrets and variables → Actions → Variables) - Optional:
+   - `STANDARDS_REPO_NAME` (default: `github-repo-standards`)
+   - `MAX_PARALLEL_JOBS` (default: `10`)
+   - `ARTIFACT_RETENTION_DAYS` (default: `30`)
+   - `DEFAULT_BRANCH` (default: `main`)
+   - `COMPLIANCE_LABEL` (default: `compliance`)
+   - `CRITICAL_LABEL` (default: `critical`)
+
+**Reference:** See [.env.example](.env.example) for complete configuration options.
+
+---
+
 ## Summary
 
 You've created a GitHub App that can:
-- ✅ Read all your `my-*` repositories
+- ✅ Read all your repositories
 - ✅ Create issues for compliance failures
 - ✅ Run automated checks weekly
 - ✅ Generate compliance reports
 
 **Next Steps:**
-- Wait for Monday 9 AM UTC for automatic run
+1. Configure environment secrets and variables (see above)
+2. Wait for Monday 9 AM UTC for automatic run, or trigger manually
 - Or trigger manually anytime with `gh workflow run`
 - View reports in `reports/` directory
 
