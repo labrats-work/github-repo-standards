@@ -27,7 +27,7 @@ Use this checklist to track your upgrade progress. Check off items as you comple
   - Default branch: ________________
   - Custom labels: ________________
 
-- [ ] **Review breaking changes** (read UPGRADE.md)
+- [ ] **Review breaking changes** (read upgrade.md)
 
 ---
 
@@ -198,15 +198,15 @@ If you encounter issues, check:
 - [ ] **App permissions** are correct
 - [ ] **Workflow logs** for specific error messages
 
-See [UPGRADE.md - Troubleshooting](UPGRADE.md#troubleshooting) for detailed solutions.
+See [upgrade.md - Troubleshooting](upgrade.md#troubleshooting) for detailed solutions.
 
 ---
 
 ## Help & Resources
 
 - [ ] **Documentation reviewed:**
-  - [ ] [UPGRADE.md](UPGRADE.md) - Complete upgrade guide
-  - [ ] [SETUP.md](SETUP.md) - Setup reference
+  - [ ] [upgrade.md](upgrade.md) - Complete upgrade guide
+  - [ ] [setup.md](setup.md) - Setup reference
   - [ ] [.env.example](../.env.example) - Configuration reference
 
 - [ ] **Support channels:**

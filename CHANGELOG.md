@@ -13,7 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 This release introduces environment-based configuration which requires manual setup of GitHub Secrets and Variables.
 
-**Migration Required:** See [UPGRADE.md](docs/UPGRADE.md) for detailed upgrade instructions.
+**Migration Required:** See [upgrade.md](docs/upgrade.md) for detailed upgrade instructions.
 
 **Impact:**
 - Workflows will fail without proper configuration
@@ -23,8 +23,8 @@ This release introduces environment-based configuration which requires manual se
 ### Added
 
 - **Environment-based configuration** for organization-specific customization
-- **docs/SETUP.md** - Comprehensive setup guide for new installations
-- **docs/UPGRADE.md** - Migration guide for existing installations
+- **docs/setup.md** - Comprehensive setup guide for new installations
+- **docs/upgrade.md** - Migration guide for existing installations
 - **CHANGELOG.md** - Version history and changelog
 - **.env.example** - Configuration reference with all options documented
 - **6 configurable variables** with sensible defaults:
@@ -137,14 +137,14 @@ This release introduces environment-based configuration which requires manual se
 
 ## Migration Guides
 
-- **v1.x → v2.0:** See [UPGRADE.md](docs/UPGRADE.md)
+- **v1.x → v2.0:** See [upgrade.md](docs/upgrade.md)
 
 ---
 
 ## Support
 
-- **New installations:** Follow [SETUP.md](docs/SETUP.md)
-- **Existing installations:** Follow [UPGRADE.md](docs/UPGRADE.md)
+- **New installations:** Follow [setup.md](docs/setup.md)
+- **Existing installations:** Follow [upgrade.md](docs/upgrade.md)
 - **Issues:** Open an issue with the appropriate label (`bug`, `upgrade`, `enhancement`)
 - **Security:** Follow [SECURITY.md](SECURITY.md) for vulnerability reporting
 

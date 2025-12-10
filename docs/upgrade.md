@@ -30,7 +30,7 @@ Version 2.0 introduces **environment-based configuration** for the compliance sc
 - You want to pull the latest changes from the main repository
 
 **You can skip this if:**
-- This is a fresh installation (use [SETUP.md](SETUP.md) instead)
+- This is a fresh installation (use [setup.md](setup.md) instead)
 - You're not using the automated workflows
 
 ---
@@ -217,7 +217,7 @@ After upgrade, verify everything works:
 
 **Fix:**
 1. Check GitHub App is still installed on repositories
-2. Verify app permissions match requirements (see [SETUP.md](SETUP.md#github-apps-setup))
+2. Verify app permissions match requirements (see [setup.md](setup.md#github-apps-setup))
 3. Reinstall app if needed
 
 ### Error: "Failed to create token: Bad credentials"
@@ -301,7 +301,7 @@ Besides the breaking changes, v2.0 includes:
 - ✅ Configurable parallel job limits
 - ✅ Customizable issue labels
 - ✅ Flexible repository naming
-- ✅ Comprehensive setup documentation (SETUP.md)
+- ✅ Comprehensive setup documentation (setup.md)
 - ✅ Configuration reference (.env.example)
 
 ### Improvements
@@ -311,8 +311,8 @@ Besides the breaking changes, v2.0 includes:
 - ✅ More maintainable workflow code
 
 ### New Documentation
-- ✅ SETUP.md - Complete setup guide for new installations
-- ✅ UPGRADE.md - This upgrade guide
+- ✅ setup.md - Complete setup guide for new installations
+- ✅ upgrade.md - This upgrade guide
 - ✅ .env.example - Configuration reference
 
 ---
@@ -322,7 +322,7 @@ Besides the breaking changes, v2.0 includes:
 ### Need Help?
 
 1. **Review Documentation:**
-   - [SETUP.md](SETUP.md) - Complete setup guide
+   - [setup.md](setup.md) - Complete setup guide
    - [API_PERMISSIONS.md](../API_PERMISSIONS.md) - GitHub App permissions
    - [SECURITY.md](../SECURITY.md) - Security considerations
 

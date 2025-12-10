@@ -167,6 +167,7 @@ When working in this repository:
 5. **Security Model Matters** - GITHUB_TOKEN for same-repo, App token for cross-repo reads
 6. **Self-Checking** - github-repo-standards checks itself for compliance too
 7. **Documentation Placement** - ALWAYS place markdown documentation files in the `docs/` directory, never in the root
+8. **Documentation Naming** - Use lowercase filenames with hyphens for docs (e.g., `setup.md`, `api-reference.md`, not `SETUP.MD` or `API_REFERENCE.md`)
 
 ### Common Pitfalls
 
@@ -176,8 +177,12 @@ When working in this repository:
 - **Don't hardcode repo lists** - Use GitHub App to discover installed repos
 - **Don't put markdown docs in root** - ALWAYS place markdown documentation (guides, references, etc.) in `docs/` directory
   - ❌ Wrong: `/UPGRADE.md`, `/MIGRATION-GUIDE.md`, `/API-REFERENCE.md`
-  - ✅ Correct: `/docs/UPGRADE.md`, `/docs/MIGRATION-GUIDE.md`, `/docs/API-REFERENCE.md`
+  - ✅ Correct: `/docs/upgrade.md`, `/docs/migration-guide.md`, `/docs/api-reference.md`
   - Exception: Root-level standard files (README.md, CONTRIBUTING.md, SECURITY.md, LICENSE, CHANGELOG.md) stay in root
+- **Don't use all-caps filenames in docs/** - Use lowercase with hyphens for better readability
+  - ❌ Wrong: `docs/SETUP.md`, `docs/API_REFERENCE.md`, `docs/USER_GUIDE.md`
+  - ✅ Correct: `docs/setup.md`, `docs/api-reference.md`, `docs/user-guide.md`
+  - Exception: Root-level convention files can use UPPERCASE (README.md, CONTRIBUTING.md, etc.)
 
 ### Typical Workflows
 
