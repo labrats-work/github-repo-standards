@@ -75,6 +75,42 @@ This document defines the best practices for all `my-*` repositories based on pa
 
 **Check Script:** `check-deprecated-actions.sh`
 
+#### COMP-016: Branch Protection
+**Status:** HIGH
+**Description:** Main/master branch must have protection rules enabled.
+**Rationale:** Branch protection prevents accidental direct commits to main branches, enforces code review workflows, and maintains code quality standards.
+**Best Practices Checked:**
+- Branch protection enabled on default branch
+- Pull request reviews required (recommended)
+**Check Script:** `check-branch-protection.sh`
+
+#### COMP-017: Repository Settings
+**Status:** HIGH
+**Description:** GitHub repository settings should follow best practices.
+**Rationale:** Proper repository settings enable collaboration features, improve security, and streamline workflows.
+**Best Practices Checked:**
+- Issues enabled for collaboration
+- At least one merge method enabled (squash/merge/rebase)
+- Auto-delete branches on merge (recommended)
+- Vulnerability alerts enabled (recommended)
+**Check Script:** `check-repo-settings.sh`
+
+#### COMP-018: Default Branch
+**Status:** HIGH
+**Description:** Repository default branch must be set to 'main'.
+**Rationale:** Using 'main' as the default branch follows modern Git conventions and improves consistency across repositories. The industry has largely moved away from 'master' to 'main' as the standard default branch name.
+**Check Script:** `check-default-branch.sh`
+
+#### COMP-019: Branch Rulesets (not Classic Protection)
+**Status:** HIGH
+**Description:** Repository must use branch rulesets instead of classic branch protection rules.
+**Rationale:** Branch rulesets are the modern replacement for classic branch protection. They offer more flexibility, better organization support, and are the recommended approach by GitHub. Classic branch protection is being phased out.
+**Best Practices Checked:**
+- Branch rulesets configured for default branch
+- No classic branch protection rules in use
+- Protection rules properly configured via rulesets API
+**Check Script:** `check-branch-rulesets.sh`
+
 ---
 
 ### 🔵 MEDIUM - Best Practices
@@ -151,17 +187,17 @@ Score = (Passed Checks / Total Applicable Checks) * 100
 
 **Weight by Priority:**
 - CRITICAL: 10 points each (4 checks = 40 points)
-- HIGH: 5 points each (3 checks = 15 points)
+- HIGH: 5 points each (6 checks = 30 points)
 - MEDIUM: 2 points each (4 checks = 8 points)
 - LOW: 1 point each (3 checks = 3 points)
 
-**Total Possible:** 66 points
+**Total Possible:** 81 points
 
 **Compliance Tiers:**
-- 90-100% (60-66 points): 🟢 Excellent
-- 75-89% (50-59 points): 🟡 Good
-- 50-74% (33-49 points): 🟠 Needs Improvement
-- 0-49% (0-32 points): 🔴 Critical Issues
+- 90-100% (73-81 points): 🟢 Excellent
+- 75-89% (61-72 points): 🟡 Good
+- 50-74% (41-60 points): 🟠 Needs Improvement
+- 0-49% (0-40 points): 🔴 Critical Issues
 
 ---
 
@@ -272,24 +308,41 @@ All check scripts must follow this interface:
 
 ## Running Compliance Checks
 
-### Check Single Repository
+### Via Automated Workflow (Recommended)
 ```bash
-./compliance/run-all-checks.sh /path/to/repo
+# Trigger the GitHub Actions workflow
+gh workflow run compliance-check.yml --repo YOUR_ORG/github-repo-standards
+
+# Watch the execution
+gh run watch --repo YOUR_ORG/github-repo-standards
 ```
 
-### Check All my-* Repositories
-```bash
-./compliance/run-all-checks.sh --all
-```
+The workflow automatically:
+- Discovers all repositories
+- Runs all checks in parallel
+- Aggregates results
+- Generates reports
+- Creates issues for failures
 
-### Check Specific Compliance Rule
+### Run Individual Check Locally
 ```bash
+# Check if README.md exists
 ./compliance/checks/check-readme-exists.sh /path/to/repo
+
+# Check branch protection
+./compliance/checks/check-branch-protection.sh /path/to/repo
+
+# All checks output JSON:
+# {"check_id":"COMP-001","name":"README.md Exists","status":"pass","message":"README.md found"}
 ```
 
-### Generate Compliance Report
+### View Reports
 ```bash
-./compliance/run-all-checks.sh --all --format markdown > COMPLIANCE-REPORT.md
+# View latest markdown report
+cat reports/compliance-report-$(date +%Y-%m-%d).md
+
+# Query JSON report with jq
+jq '.repositories[] | select(.compliance_score < 75)' reports/compliance-report-*.json
 ```
 
 ---
@@ -305,5 +358,5 @@ Results are committed to `reports/` directory.
 
 ---
 
-**Last Updated:** 2025-12-01
-**Version:** 1.1.0 (Added COMP-014: ADR Quality check)
+**Last Updated:** 2025-12-04
+**Version:** 1.3.0 (Added COMP-018: Default Branch)

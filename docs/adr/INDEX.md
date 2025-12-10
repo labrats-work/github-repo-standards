@@ -17,8 +17,9 @@ An Architecture Decision Record (ADR) captures an important architectural decisi
 |-----|-------|--------|------|
 | [0000](0000-adr-template.md) | ADR Template | Template | - |
 | [0001](0001-modular-compliance-checks.md) | Modular Compliance Checks | Accepted | 2025-11-29 |
-| [0002](0002-github-app-for-cross-repo-access.md) | GitHub App for Cross-Repo Access | Accepted | 2025-11-29 |
+| [0002](0002-github-app-for-cross-repo-access.md) | GitHub App for Cross-Repo Access | Superseded | 2025-11-29 |
 | [0003](0003-template-file-for-issue-bodies.md) | Template File for Issue Bodies | Accepted | 2025-11-29 |
+| [0004](0004-two-app-architecture.md) | Two-App Architecture for Compliance Framework | Accepted | 2025-12-09 |
 
 ## Creating a New ADR
 
@@ -42,4 +43,4 @@ An Architecture Decision Record (ADR) captures an important architectural decisi
 
 ## Last Updated
 
-2025-11-29
+2025-12-09

@@ -1,0 +1,76 @@
+site_name: GitHub Repo Standards
+site_description: Cross-repository standardization and compliance checking framework
+site_author: labrats-work
+site_url: https://github.com/labrats-work/github-repo-standards
+
+repo_name: labrats-work/github-repo-standards
+repo_url: https://github.com/labrats-work/github-repo-standards
+edit_uri: edit/main/docs/
+
+theme:
+  name: material
+  palette:
+    primary: indigo
+    accent: indigo
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.expand
+    - navigation.top
+    - search.suggest
+    - search.highlight
+    - content.code.copy
+
+markdown_extensions:
+  - admonition
+  - codehilite
+  - meta
+  - toc:
+      permalink: true
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.details
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+
+nav:
+  - Home: ../README.md
+  - Getting Started:
+      - Setup Guide: setup.md
+      - Upgrade Guide: upgrade.md
+      - Migration Checklist: migration-checklist.md
+  - Documentation:
+      - Overview: README.md
+      - Compliance Standards: ../COMPLIANCE.md
+      - API Permissions: ../API_PERMISSIONS.md
+      - GitHub App Setup: ../GITHUB_APP_SETUP.md
+  - Architecture Decisions:
+      - Index: adr/INDEX.md
+      - ADR-0001 Compliance Framework: adr/0001-compliance-framework-architecture.md
+      - ADR-0002 GitHub App Access: adr/0002-github-app-for-cross-repo-access.md
+      - ADR-0003 Weighted Scoring: adr/0003-weighted-compliance-scoring.md
+      - ADR-0004 Two-App Architecture: adr/0004-two-app-architecture.md
+  - Apps:
+      - Overview: apps/README.md
+      - Repo Standards Bot: apps/repo-standards.md
+      - Internal Automation: apps/internal-automation.md
+  - Standards:
+      - ADR RFC Standards: standards/ADR-RFC-STANDARDS.md
+  - Contributing:
+      - Contributing Guide: ../CONTRIBUTING.md
+      - Security Policy: ../SECURITY.md
+      - Changelog: ../CHANGELOG.md
+
+plugins:
+  - search
+  - git-revision-date-localized:
+      enable_creation_date: true
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/labrats-work
+  version:
+    provider: mike

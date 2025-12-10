@@ -1,0 +1,17 @@
+{
+  "name": "Repository Standards Internal Automation",
+  "url": "https://github.com/your-org/github-repo-standards",
+  "hook_attributes": {
+    "url": "https://example.com/webhook"
+  },
+  "redirect_url": "https://github.com/your-org/github-repo-standards",
+  "callback_urls": [],
+  "public": false,
+  "default_permissions": {
+    "contents": "write",
+    "pull_requests": "write",
+    "metadata": "read"
+  },
+  "default_events": [],
+  "description": "Internal automation for github-repo-standards repository. Creates PRs, commits compliance reports, and manages automated workflows. Install ONLY on github-repo-standards repository."
+}

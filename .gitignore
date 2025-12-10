@@ -16,6 +16,11 @@ Thumbs.db
 # Test repositories (don't commit cloned repos)
 repos/
 
+# Generated compliance reports (organization-specific output files)
+reports/*.json
+reports/*.md
+!reports/README.md
+
 # Backup files
 *.bak
 *.backup

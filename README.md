@@ -1,57 +1,70 @@
 # github-repo-standards
 
-> **📋 This is a template repository!** Use it to create your own compliance checking framework for your organization.
+Cross-repository standardization and compliance checking framework for the labrats-work organization.
 
-Cross-repository standardization and compliance checking framework. This template provides everything you need to automate compliance checks across all repositories in your organization.
+> **⚠️ BREAKING CHANGE (v2.0):** If you're upgrading from an existing installation, see **[upgrade.md](docs/upgrade.md)** for migration instructions. Configuration is now environment-based and requires setup of GitHub Secrets and Variables.
 
-## 🎯 Purpose
+## Purpose
 
-This template repository provides:
-- **Compliance checking framework** - Automated validation of best practices
-- **13 modular compliance checks** - CRITICAL, HIGH, MEDIUM, and LOW priority checks
-- **GitHub App integration** - Cross-repository access and automation
-- **Automated reporting** - Weekly compliance reports and issue tracking
-- **Pattern documentation** - Best practices and anti-patterns
+This repository serves as the central hub for:
+- **Compliance checking** - Automated validation of best practices
+- **Standardization tracking** - Monitoring consistency across repositories
+- **Improvement planning** - Coordinating enhancements across repos
+- **Pattern documentation** - Recording successful patterns and anti-patterns
 
-## 🚀 Getting Started
+## Setup
 
-### Use This Template
+**🚀 New Installation?** See **[setup.md](docs/setup.md)** for complete setup instructions including:
+- GitHub Apps creation and installation
+- Environment secrets and variables configuration
+- Repository setup and verification
+- Troubleshooting guide
 
-1. **Click "Use this template"** button above
-2. **Create a private repository** for your implementation (e.g., `your-org/compliance`)
-3. **Follow the setup guide** below
-
-### Setup Steps
-
-1. **Create a GitHub App** for cross-repo access:
-   ```bash
-   cd github-app-tools
-   ./create-app.sh examples/compliance-checker.json
-   ```
-
-2. **Add secrets** to your implementation repository:
-   - `APP_ID` - Your GitHub App ID
-   - `APP_PRIVATE_KEY` - Your GitHub App private key
-
-3. **Install the GitHub App** on repositories you want to track
-
-4. **Trigger the workflow** to run your first compliance check
-
-For detailed instructions, see [GITHUB_APP_SETUP.md](GITHUB_APP_SETUP.md).
+**Required Configuration:**
+- 4 GitHub Secrets (App IDs and private keys)
+- 6 Optional Variables (defaults provided for all)
 
 ## Quick Start
 
 ### Run Compliance Checks
 
-Check all repositories:
+The compliance framework is designed to run via GitHub Actions workflow, which automatically:
+- Discovers all check scripts
+- Runs them in parallel across repositories
+- Aggregates results and generates reports
+
+**Trigger automated workflow:**
 ```bash
-./compliance/run-all-checks.sh --all --format markdown
+gh workflow run compliance-check.yml --repo YOUR_ORG/github-repo-standards
 ```
 
-Check single repository:
+**Run individual check locally:**
 ```bash
-./compliance/run-all-checks.sh /path/to/repository
+# Check if README.md exists
+./compliance/checks/check-readme-exists.sh /path/to/repository
+
+# Check branch protection
+./compliance/checks/check-branch-protection.sh /path/to/repository
 ```
+
+### Fix Compliance Issues
+
+Fix all CRITICAL and HIGH priority failures across all repositories:
+```bash
+./compliance/scripts/fix-all-critical-high.sh
+```
+
+This automated script will:
+- Enable squash merge for 32 repositories
+- Create branch rulesets for 27 repositories
+- Add missing README.md files to 18 repositories
+- Add MIT LICENSE files to 23 repositories
+- Add .gitignore files to 16 repositories
+- Add CLAUDE.md context files to 26 repositories
+
+**Expected impact:** Improves repository compliance from 13-43% to 70-85%
+
+See [compliance/scripts/README.md](compliance/scripts/README.md) for individual fix scripts and details.
 
 ### View Latest Report
 
@@ -65,12 +78,21 @@ cat reports/compliance-report-$(date +%Y-%m-%d).md
 github-repo-standards/
 ├── compliance/              # Compliance checking framework
 │   ├── checks/             # Individual check scripts
-│   ├── run-all-checks.sh   # Orchestrator script
+│   ├── scripts/            # Automated fix scripts
+│   │   ├── fix-all-critical-high.sh  # Master fix script
+│   │   ├── fix-comp-001-readme.sh    # README fixes
+│   │   ├── fix-comp-002-license.sh   # LICENSE fixes
+│   │   ├── fix-comp-003-gitignore.sh # .gitignore fixes
+│   │   ├── fix-comp-004-claudemd.sh  # CLAUDE.md fixes
+│   │   ├── fix-comp-016-branch-protection.sh  # Ruleset fixes
+│   │   ├── fix-comp-017-repo-settings.sh      # Settings fixes
+│   │   └── README.md       # Fix scripts documentation
+│   ├── check-priorities.json  # Check priority and scoring configuration
 │   └── README.md           # Compliance documentation
 ├── reports/                # Generated compliance reports
 ├── .github/
 │   └── workflows/
-│       └── compliance-check.yml  # Automated checks
+│       └── compliance-check.yml  # Automated checks (orchestrates all checks)
 ├── COMPLIANCE.md           # Best practices definition
 └── README.md               # This file
 ```
@@ -176,20 +198,24 @@ View the latest report: [actions-usage label](../../issues?q=label%3Aactions-usa
 
 ## Standardization Roadmap
 
-### Foundation Phase
-- [ ] Add CLAUDE.md to all repos
-- [ ] Ensure all repos have .gitignore
-- [ ] Add LICENSE to all repos
-- [ ] Standardize README structure
+### Foundation Phase (Automated)
+- [x] **Automated fix scripts created** - Run `./compliance/scripts/fix-all-critical-high.sh`
+  - [x] Add CLAUDE.md to all repos (~26 repos)
+  - [x] Ensure all repos have .gitignore (~16 repos)
+  - [x] Add LICENSE to all repos (~23 repos)
+  - [x] Add README to all repos (~18 repos)
+  - [x] Enable branch protection via rulesets (~27 repos)
+  - [x] Configure repository merge settings (~32 repos)
 
 ### Structure Phase
-- [ ] Add docs/ directory to repos lacking it
+- [ ] Standardize README structure (automated check exists, manual fixes needed)
+- [ ] Add docs/ directory to repos lacking it (~28 repos)
 - [ ] Implement ADR pattern
 - [ ] Create .claude/ configuration
 - [ ] Add issue templates
 
 ### Automation Phase
-- [ ] Add workflows to repositories
+- [x] Add workflows to repositories (compliance checks active)
 - [ ] Implement scheduled tasks
 - [ ] Add PR validation
 

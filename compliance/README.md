@@ -12,28 +12,38 @@ This framework ensures consistency and quality across all personal repositories 
 
 ## Quick Start
 
-### Check a Single Repository
+### Run Via GitHub Actions (Recommended)
+
+The compliance framework is designed to run via the automated workflow:
 
 ```bash
-./run-all-checks.sh /path/to/repository
+# Trigger the workflow
+gh workflow run compliance-check.yml --repo YOUR_ORG/github-repo-standards
+
+# Watch execution
+gh run watch --repo YOUR_ORG/github-repo-standards
 ```
 
-### Check All my-* Repositories
+The workflow automatically:
+- Discovers all repositories where the app is installed
+- Runs all checks in parallel
+- Aggregates results with weighted scoring
+- Generates reports (markdown + JSON)
+- Creates issues for failing repositories
+
+### Run Individual Checks Locally
+
+Each check can be run independently for testing:
 
 ```bash
-./run-all-checks.sh --all
-```
+# Run a specific check
+./checks/check-readme-exists.sh /path/to/repository
 
-### Generate Markdown Report
-
-```bash
-./run-all-checks.sh --all --format markdown > report.md
-```
-
-### Generate JSON Report
-
-```bash
-./run-all-checks.sh --all --format json > report.json
+# Run all checks manually (bash loop)
+for check in checks/check-*.sh; do
+  echo "Running: $(basename $check)"
+  bash "$check" /path/to/repository
+done
 ```
 
 ## Check Scripts
@@ -201,8 +211,16 @@ To add a new compliance check:
    chmod +x checks/check-your-check.sh
    ```
 
-3. **Update `run-all-checks.sh`:**
-   - Add to `CHECK_PRIORITIES` associative array
+3. **Add to check-priorities.json:**
+   ```json
+   {
+     "COMP-XXX": {
+       "name": "Your Check Name",
+       "priority": "HIGH",
+       "points": 5
+     }
+   }
+   ```
 
 4. **Document in COMPLIANCE.md**
    - Add new standard definition
@@ -218,14 +236,16 @@ To add a new compliance check:
 ### Testing All Checks
 
 ```bash
-# Test on a single repo
-./run-all-checks.sh ../my-homelab
+# Test individual check on a repo
+./checks/check-readme-exists.sh /path/to/repo
 
-# Test on all repos
-./run-all-checks.sh --all
+# Test all checks manually
+for check in checks/check-*.sh; do
+  bash "$check" /path/to/repo
+done
 
-# Generate markdown report for review
-./run-all-checks.sh --all --format markdown | less
+# Test via workflow (end-to-end)
+gh workflow run compliance-check.yml --repo YOUR_ORG/github-repo-standards
 ```
 
 ### Debugging Check Scripts
@@ -265,11 +285,11 @@ sudo apt-get install jq
 brew install jq
 ```
 
-### Wrong parent directory
+### Check priorities not loading
 
-Specify custom parent directory:
+Ensure `compliance/check-priorities.json` exists and is valid JSON:
 ```bash
-./run-all-checks.sh --all --parent-dir /custom/path
+jq . compliance/check-priorities.json
 ```
 
 ## Future Enhancements

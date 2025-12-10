@@ -1,4 +1,4 @@
-name: Repository Compliance Check
+name: Repository Compliance Check (Matrix)
 
 on:
   schedule:
@@ -10,63 +10,88 @@ on:
         description: 'Specific repos to check (comma-separated, or leave empty for all)'
         required: false
         type: string
-  push:
-    branches:
-      - main
-    paths:
-      - 'compliance/**'
-      - 'COMPLIANCE.md'
+
+# Environment variables for organization-specific configuration
+env:
+  # Repository name (without owner) where this compliance framework lives
+  STANDARDS_REPO_NAME: ${{ vars.STANDARDS_REPO_NAME || 'github-repo-standards' }}
+  # Maximum number of parallel compliance check jobs
+  MAX_PARALLEL_JOBS: ${{ vars.MAX_PARALLEL_JOBS || '10' }}
+  # Number of days to retain compliance check artifacts
+  ARTIFACT_RETENTION_DAYS: ${{ vars.ARTIFACT_RETENTION_DAYS || '30' }}
+  # Default branch name for PRs
+  DEFAULT_BRANCH: ${{ vars.DEFAULT_BRANCH || 'main' }}
+  # Issue labels for compliance issues
+  COMPLIANCE_LABEL: ${{ vars.COMPLIANCE_LABEL || 'compliance' }}
+  CRITICAL_LABEL: ${{ vars.CRITICAL_LABEL || 'critical' }}
 
 jobs:
-  compliance-check:
+  # First job: Discover all repositories
+  discover-repos:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
-      issues: write
-
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+      repo-count: ${{ steps.set-matrix.outputs.repo-count }}
     steps:
-      - name: Generate GitHub App Token
-        id: app-token
+      - name: Generate Repo Standards App Token
+        id: repo-standards-token
         uses: actions/create-github-app-token@v1
         with:
-          app-id: ${{ secrets.APP_ID }}
-          private-key: ${{ secrets.APP_PRIVATE_KEY }}
-          owner: labrats-work
+          app-id: ${{ secrets.REPO_STANDARDS_APP_ID }}
+          private-key: ${{ secrets.REPO_STANDARDS_APP_PRIVATE_KEY }}
+          owner: ${{ github.repository_owner }}
 
-      - name: Get repositories with app installed
-        id: get-repos
+      - name: Get repositories and create matrix
+        id: set-matrix
         run: |
-          # Get list of repositories where the app is installed using the app token
-          echo "Fetching repositories where My-Repos Compliance Checker is installed..."
+          # Get list of repositories where the repo_standards app is installed
+          echo "Fetching repositories where repo_standards app is installed..."
 
-          gh api /installation/repositories --paginate --jq '.repositories[].name' > /tmp/repo-list.txt
+          REPOS=$(gh api /installation/repositories --paginate --jq '.repositories[].name' | jq -R -s -c 'split("\n") | map(select(length > 0))')
 
-          REPO_COUNT=$(cat /tmp/repo-list.txt | wc -l)
-          echo "Found $REPO_COUNT repositories with app installed:"
-          cat /tmp/repo-list.txt
+          echo "matrix=$REPOS" >> $GITHUB_OUTPUT
+
+          REPO_COUNT=$(echo "$REPOS" | jq 'length')
+          echo "repo-count=$REPO_COUNT" >> $GITHUB_OUTPUT
+
+          echo "Found $REPO_COUNT repositories:"
+          echo "$REPOS" | jq -r '.[]'
         env:
-          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+          GH_TOKEN: ${{ steps.repo-standards-token.outputs.token }}
 
-      - name: Checkout github-repo-standards
+  # Second job: Run compliance checks in parallel using matrix
+  check-compliance:
+    needs: discover-repos
+    runs-on: ubuntu-latest
+    if: needs.discover-repos.outputs.repo-count > 0
+    strategy:
+      matrix:
+        repo: ${{ fromJson(needs.discover-repos.outputs.matrix) }}
+      max-parallel: ${{ fromJson(vars.MAX_PARALLEL_JOBS || '10') }}  # Limit concurrent jobs to avoid rate limiting
+      fail-fast: false   # Continue even if some repos fail
+
+    permissions:
+      contents: read
+
+    steps:
+      - name: Generate Repo Standards App Token
+        id: repo-standards-token
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: ${{ secrets.REPO_STANDARDS_APP_ID }}
+          private-key: ${{ secrets.REPO_STANDARDS_APP_PRIVATE_KEY }}
+          owner: ${{ github.repository_owner }}
+
+      - name: Checkout compliance framework
         uses: actions/checkout@v4
         with:
-          path: github-repo-standards
-          token: ${{ secrets.GITHUB_TOKEN }}
+          path: ${{ env.STANDARDS_REPO_NAME }}
 
-      - name: Checkout all repositories with app installed
+      - name: Checkout repository
         run: |
-          cd ${{ github.workspace }}
-          mkdir -p repos
-
-          # Read the dynamic list of repositories from the previous step
-          while IFS= read -r repo; do
-            if [ -n "$repo" ] && [ "$repo" != "github-repo-standards" ]; then
-              echo "Cloning $repo..."
-              gh repo clone labrats-work/$repo repos/$repo || echo "Failed to clone $repo"
-            fi
-          done < /tmp/repo-list.txt
+          gh repo clone ${{ github.repository_owner }}/${{ matrix.repo }} repo-to-check
         env:
-          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+          GH_TOKEN: ${{ steps.repo-standards-token.outputs.token }}
 
       - name: Install dependencies
         run: |
@@ -74,957 +99,432 @@ jobs:
           sudo apt-get install -y jq
 
       - name: Run compliance checks
+        id: compliance
         run: |
-          cd ${{ github.workspace }}/github-repo-standards
-          mkdir -p reports
-
-          # Add github-repo-standards itself to the repos directory for compliance checking
-          ln -s "${{ github.workspace }}/github-repo-standards" "${{ github.workspace }}/repos/github-repo-standards"
-
-          # Generate markdown report
-          ./compliance/run-all-checks.sh --all --format markdown --parent-dir "${{ github.workspace }}/repos" > reports/compliance-report-$(date +%Y-%m-%d).md
-
-          # Generate JSON report
-          ./compliance/run-all-checks.sh --all --format json --parent-dir "${{ github.workspace }}/repos" > reports/compliance-report-$(date +%Y-%m-%d).json
-
-      - name: Create summary
-        run: |
-          cd ${{ github.workspace }}/github-repo-standards
-
-          REPORT_FILE=$(ls -t reports/compliance-report-*.md | head -1)
-
-          echo "## 📊 Repository Compliance Report" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          cat "$REPORT_FILE" >> $GITHUB_STEP_SUMMARY
-
-      - name: Checkout private reports repository
-        uses: actions/checkout@v4
-        with:
-          repository: labrats-work/repo-compliance-reports
-          path: reports-repo
-          token: ${{ steps.app-token.outputs.token }}
-
-      - name: Commit reports to private repository
-        run: |
-          cd ${{ github.workspace }}/reports-repo
-
-          # Copy reports from github-repo-standards
-          cp ${{ github.workspace }}/github-repo-standards/reports/compliance-report-*.md . || true
-          cp ${{ github.workspace }}/github-repo-standards/reports/compliance-report-*.json . || true
-
-          git config user.name "compliance-checker[bot]"
-          git config user.email "compliance-checker[bot]@users.noreply.github.com"
-
-          git add *.md *.json
-          if git diff --staged --quiet; then
-            echo "No changes to commit"
-          else
-            git commit -m "Add compliance report for $(date +%Y-%m-%d)" \
-                       -m "🤖 Generated by Labrats-Work Repo Standards" \
-                       -m "Co-Authored-By: GitHub App <noreply@github.com>"
-            git push
-          fi
-        env:
-          GH_TOKEN: ${{ steps.app-token.outputs.token }}
-
-      - name: Create issues in repositories with critical failures
-        if: always()
-        run: |
-          cd ${{ github.workspace }}/github-repo-standards
-
-          JSON_REPORT=$(ls -t reports/compliance-report-*.json | head -1)
-
-          # Process each repository based on their configured min_score_for_issue
-          jq -r '.repositories[] | @json' "$JSON_REPORT" | while read -r repo_json; do
-            REPO_NAME=$(echo "$repo_json" | jq -r '.repository')
-            SCORE=$(echo "$repo_json" | jq -r '.compliance_score')
-            TIER=$(echo "$repo_json" | jq -r '.tier')
-            PASSED=$(echo "$repo_json" | jq -r '.passed')
-            FAILED=$(echo "$repo_json" | jq -r '.failed')
-
-            # Read minimum priority threshold from .compliance.yml (default: HIGH)
-            # Valid values: CRITICAL, HIGH, MEDIUM, LOW
-            REPO_PATH="${{ github.workspace }}/repos/$REPO_NAME"
-            MIN_PRIORITY="HIGH"
-            if [ -f "$REPO_PATH/.compliance.yml" ]; then
-              CONFIGURED_PRIORITY=$(grep "^min_priority_for_issue:" "$REPO_PATH/.compliance.yml" | awk '{print $2}' | tr -d '\r' | tr '[:lower:]' '[:upper:]')
-              if [ -n "$CONFIGURED_PRIORITY" ]; then
-                MIN_PRIORITY="$CONFIGURED_PRIORITY"
-              fi
-            fi
-
-            # Check for failures at each priority level
-            HAS_CRITICAL_FAILURES=$(echo "$repo_json" | jq -r '.checks[] | select(.result.status == "fail" and .priority == "CRITICAL") | .result.check_id' | head -1)
-            HAS_HIGH_FAILURES=$(echo "$repo_json" | jq -r '.checks[] | select(.result.status == "fail" and .priority == "HIGH") | .result.check_id' | head -1)
-            HAS_MEDIUM_FAILURES=$(echo "$repo_json" | jq -r '.checks[] | select(.result.status == "fail" and .priority == "MEDIUM") | .result.check_id' | head -1)
-            HAS_LOW_FAILURES=$(echo "$repo_json" | jq -r '.checks[] | select(.result.status == "fail" and .priority == "LOW") | .result.check_id' | head -1)
-
-            # Determine if issue should be created based on priority threshold
-            SHOULD_CREATE_ISSUE=false
-            ISSUE_REASON=""
-
-            case "$MIN_PRIORITY" in
-              CRITICAL)
-                if [ -n "$HAS_CRITICAL_FAILURES" ]; then
-                  SHOULD_CREATE_ISSUE=true
-                  ISSUE_REASON="CRITICAL priority failures detected"
-                fi
-                ;;
-              HIGH)
-                if [ -n "$HAS_CRITICAL_FAILURES" ]; then
-                  SHOULD_CREATE_ISSUE=true
-                  ISSUE_REASON="CRITICAL priority failures detected"
-                elif [ -n "$HAS_HIGH_FAILURES" ]; then
-                  SHOULD_CREATE_ISSUE=true
-                  ISSUE_REASON="HIGH priority failures detected"
-                fi
-                ;;
-              MEDIUM)
-                if [ -n "$HAS_CRITICAL_FAILURES" ]; then
-                  SHOULD_CREATE_ISSUE=true
-                  ISSUE_REASON="CRITICAL priority failures detected"
-                elif [ -n "$HAS_HIGH_FAILURES" ]; then
-                  SHOULD_CREATE_ISSUE=true
-                  ISSUE_REASON="HIGH priority failures detected"
-                elif [ -n "$HAS_MEDIUM_FAILURES" ]; then
-                  SHOULD_CREATE_ISSUE=true
-                  ISSUE_REASON="MEDIUM priority failures detected"
-                fi
-                ;;
-              LOW)
-                if [ -n "$HAS_CRITICAL_FAILURES" ]; then
-                  SHOULD_CREATE_ISSUE=true
-                  ISSUE_REASON="CRITICAL priority failures detected"
-                elif [ -n "$HAS_HIGH_FAILURES" ]; then
-                  SHOULD_CREATE_ISSUE=true
-                  ISSUE_REASON="HIGH priority failures detected"
-                elif [ -n "$HAS_MEDIUM_FAILURES" ]; then
-                  SHOULD_CREATE_ISSUE=true
-                  ISSUE_REASON="MEDIUM priority failures detected"
-                elif [ -n "$HAS_LOW_FAILURES" ]; then
-                  SHOULD_CREATE_ISSUE=true
-                  ISSUE_REASON="LOW priority failures detected"
-                fi
-                ;;
-            esac
-
-            if [ "$SHOULD_CREATE_ISSUE" = "false" ]; then
-              echo "Skipping $REPO_NAME: no failures at or above $MIN_PRIORITY priority threshold"
-              continue
-            fi
-
-            echo "Processing $REPO_NAME: $ISSUE_REASON"
-
-            # Ensure labels exist in private reports repository
-            gh label create compliance --description "Compliance checking related" --color "0e8a16" --repo "labrats-work/repo-compliance-reports" 2>/dev/null || true
-            gh label create critical --description "Critical issues requiring immediate attention" --color "d73a4a" --repo "labrats-work/repo-compliance-reports" 2>/dev/null || true
-            gh label create "repo:$REPO_NAME" --description "Issues for $REPO_NAME repository" --color "ededed" --repo "labrats-work/repo-compliance-reports" 2>/dev/null || true
-
-            # Build checks table (save to temp file to avoid sed multiline issues)
-            # Sort by: priority (CRITICAL->HIGH->MEDIUM->LOW), then by status (fail first)
-            CHECKS_TABLE_FILE=$(mktemp)
-
-            # Sort checks: priority rank (1=CRITICAL, 2=HIGH, 3=MEDIUM, 4=LOW), then status rank (0=fail, 1=skip, 2=pass)
-            echo "$repo_json" | jq -r '.checks[] |
-              . as $check |
-              (if .priority == "CRITICAL" then 1
-               elif .priority == "HIGH" then 2
-               elif .priority == "MEDIUM" then 3
-               elif .priority == "LOW" then 4
-               else 5 end) as $priority_rank |
-              (if .result.status == "fail" then 0
-               elif .result.status == "skip" then 1
-               else 2 end) as $status_rank |
-              "\($priority_rank)|\($status_rank)|\($check | @json)"
-            ' | sort -t'|' -k1,1n -k2,2n | cut -d'|' -f3- | while read -r check_json; do
-              CHECK_ID=$(echo "$check_json" | jq -r '.result.check_id')
-              CHECK_NAME=$(echo "$check_json" | jq -r '.result.name')
-              PRIORITY=$(echo "$check_json" | jq -r '.priority')
-              STATUS=$(echo "$check_json" | jq -r '.result.status')
-              MESSAGE=$(echo "$check_json" | jq -r '.result.message')
-
-              # Status icon
-              if [ "$STATUS" = "pass" ]; then
-                STATUS_ICON="✅ Pass"
-              elif [ "$STATUS" = "fail" ]; then
-                STATUS_ICON="❌ Fail"
-              else
-                STATUS_ICON="⏭️ Skip"
-              fi
-
-              # Priority icon
-              case "$PRIORITY" in
-                CRITICAL) PRIORITY_ICON="🔴 CRITICAL" ;;
-                HIGH) PRIORITY_ICON="🟠 HIGH" ;;
-                MEDIUM) PRIORITY_ICON="🟡 MEDIUM" ;;
-                LOW) PRIORITY_ICON="🟢 LOW" ;;
-                *) PRIORITY_ICON="$PRIORITY" ;;
-              esac
-
-              # Only show details for failures
-              if [ "$STATUS" = "fail" ]; then
-                echo "| $CHECK_ID | $CHECK_NAME | $PRIORITY_ICON | $STATUS_ICON | $MESSAGE |" >> "$CHECKS_TABLE_FILE"
-              else
-                echo "| $CHECK_ID | $CHECK_NAME | $PRIORITY_ICON | $STATUS_ICON | - |" >> "$CHECKS_TABLE_FILE"
-              fi
-            done
-
-            # Create issue body from template
-            ISSUE_FILE=$(mktemp)
-            cp .github/ISSUE_TEMPLATE_COMPLIANCE_FAILURE.md "$ISSUE_FILE"
-
-            # Replace simple placeholders with sed
-            sed -i "s/{{SCORE}}/$SCORE/g" "$ISSUE_FILE"
-            sed -i "s/{{TIER}}/$TIER/g" "$ISSUE_FILE"
-            sed -i "s/{{PASSED}}/$PASSED/g" "$ISSUE_FILE"
-            sed -i "s/{{FAILED}}/$FAILED/g" "$ISSUE_FILE"
-            sed -i "s|{{REPORT_FILE}}|$(basename $JSON_REPORT)|g" "$ISSUE_FILE"
-            sed -i "s/{{DATE}}/$(date +%Y-%m-%d)/g" "$ISSUE_FILE"
-
-            # Replace multiline CHECKS_TABLE using awk to avoid sed issues
-            awk -v checks_table_file="$CHECKS_TABLE_FILE" '
-            /{{CHECKS_TABLE}}/ {
-                while ((getline line < checks_table_file) > 0) {
-                    print line
-                }
-                close(checks_table_file)
-                next
-            }
-            { print }
-            ' "$ISSUE_FILE" > "$ISSUE_FILE.tmp"
-            mv "$ISSUE_FILE.tmp" "$ISSUE_FILE"
-            rm -f "$CHECKS_TABLE_FILE"
-
-            # Count failures by priority level
-            CRITICAL_FAILURES=$(echo "$repo_json" | jq -r '[.checks[] | select(.result.status == "fail" and .priority == "CRITICAL")] | length')
-            HIGH_FAILURES=$(echo "$repo_json" | jq -r '[.checks[] | select(.result.status == "fail" and .priority == "HIGH")] | length')
-            MEDIUM_FAILURES=$(echo "$repo_json" | jq -r '[.checks[] | select(.result.status == "fail" and .priority == "MEDIUM")] | length')
-            LOW_FAILURES=$(echo "$repo_json" | jq -r '[.checks[] | select(.result.status == "fail" and .priority == "LOW")] | length')
-
-            # Build title with failure counts and repository name
-            ISSUE_TITLE="🚨 [$REPO_NAME] Compliance Check [$CRITICAL_FAILURES critical, $HIGH_FAILURES high, $MEDIUM_FAILURES med, $LOW_FAILURES low]"
-
-            # Check if compliance issue already exists for this repo (open issues only)
-            EXISTING_ISSUE=$(gh issue list --repo "labrats-work/repo-compliance-reports" --label "compliance" --label "repo:$REPO_NAME" --state open --json number --jq '.[0].number // ""')
-
-            if [ -n "$EXISTING_ISSUE" ]; then
-              echo "Updating existing compliance issue for $REPO_NAME (#$EXISTING_ISSUE): [$CRITICAL_FAILURES,$HIGH_FAILURES,$MEDIUM_FAILURES,$LOW_FAILURES]"
-
-              # Update existing issue with new title and body
-              gh issue edit "$EXISTING_ISSUE" \
-                --repo "labrats-work/repo-compliance-reports" \
-                --title "$ISSUE_TITLE" \
-                --body-file "$ISSUE_FILE" || echo "Failed to update issue in repo-compliance-reports"
-            else
-              echo "Creating compliance issue for $REPO_NAME: [$CRITICAL_FAILURES,$HIGH_FAILURES,$MEDIUM_FAILURES,$LOW_FAILURES]"
-
-              # Create issue from file in private repo
-              gh issue create \
-                --repo "labrats-work/repo-compliance-reports" \
-                --title "$ISSUE_TITLE" \
-                --label "compliance" \
-                --label "critical" \
-                --label "repo:$REPO_NAME" \
-                --body-file "$ISSUE_FILE" || echo "Failed to create issue in repo-compliance-reports"
-            fi
-
-            rm -f "$ISSUE_FILE"
-          done
-
-          # Close compliance issues for repositories that no longer have failures at or above the priority threshold
-          jq -r '.repositories[] | @json' "$JSON_REPORT" | while read -r repo_json; do
-            REPO_NAME=$(echo "$repo_json" | jq -r '.repository')
-            SCORE=$(echo "$repo_json" | jq -r '.compliance_score')
-
-            # Read minimum priority threshold from .compliance.yml (default: HIGH)
-            REPO_PATH="${{ github.workspace }}/repos/$REPO_NAME"
-            MIN_PRIORITY="HIGH"
-            if [ -f "$REPO_PATH/.compliance.yml" ]; then
-              CONFIGURED_PRIORITY=$(grep "^min_priority_for_issue:" "$REPO_PATH/.compliance.yml" | awk '{print $2}' | tr -d '\r' | tr '[:lower:]' '[:upper:]')
-              if [ -n "$CONFIGURED_PRIORITY" ]; then
-                MIN_PRIORITY="$CONFIGURED_PRIORITY"
-              fi
-            fi
-
-            # Check for failures at each priority level
-            HAS_CRITICAL_FAILURES=$(echo "$repo_json" | jq -r '.checks[] | select(.result.status == "fail" and .priority == "CRITICAL") | .result.check_id' | head -1)
-            HAS_HIGH_FAILURES=$(echo "$repo_json" | jq -r '.checks[] | select(.result.status == "fail" and .priority == "HIGH") | .result.check_id' | head -1)
-            HAS_MEDIUM_FAILURES=$(echo "$repo_json" | jq -r '.checks[] | select(.result.status == "fail" and .priority == "MEDIUM") | .result.check_id' | head -1)
-            HAS_LOW_FAILURES=$(echo "$repo_json" | jq -r '.checks[] | select(.result.status == "fail" and .priority == "LOW") | .result.check_id' | head -1)
-
-            # Determine if issue should remain open based on priority threshold
-            SHOULD_KEEP_OPEN=false
-            KEEP_OPEN_REASON=""
-
-            case "$MIN_PRIORITY" in
-              CRITICAL)
-                if [ -n "$HAS_CRITICAL_FAILURES" ]; then
-                  SHOULD_KEEP_OPEN=true
-                  KEEP_OPEN_REASON="CRITICAL priority failures still present"
-                fi
-                ;;
-              HIGH)
-                if [ -n "$HAS_CRITICAL_FAILURES" ]; then
-                  SHOULD_KEEP_OPEN=true
-                  KEEP_OPEN_REASON="CRITICAL priority failures still present"
-                elif [ -n "$HAS_HIGH_FAILURES" ]; then
-                  SHOULD_KEEP_OPEN=true
-                  KEEP_OPEN_REASON="HIGH priority failures still present"
-                fi
-                ;;
-              MEDIUM)
-                if [ -n "$HAS_CRITICAL_FAILURES" ]; then
-                  SHOULD_KEEP_OPEN=true
-                  KEEP_OPEN_REASON="CRITICAL priority failures still present"
-                elif [ -n "$HAS_HIGH_FAILURES" ]; then
-                  SHOULD_KEEP_OPEN=true
-                  KEEP_OPEN_REASON="HIGH priority failures still present"
-                elif [ -n "$HAS_MEDIUM_FAILURES" ]; then
-                  SHOULD_KEEP_OPEN=true
-                  KEEP_OPEN_REASON="MEDIUM priority failures still present"
-                fi
-                ;;
-              LOW)
-                if [ -n "$HAS_CRITICAL_FAILURES" ]; then
-                  SHOULD_KEEP_OPEN=true
-                  KEEP_OPEN_REASON="CRITICAL priority failures still present"
-                elif [ -n "$HAS_HIGH_FAILURES" ]; then
-                  SHOULD_KEEP_OPEN=true
-                  KEEP_OPEN_REASON="HIGH priority failures still present"
-                elif [ -n "$HAS_MEDIUM_FAILURES" ]; then
-                  SHOULD_KEEP_OPEN=true
-                  KEEP_OPEN_REASON="MEDIUM priority failures still present"
-                elif [ -n "$HAS_LOW_FAILURES" ]; then
-                  SHOULD_KEEP_OPEN=true
-                  KEEP_OPEN_REASON="LOW priority failures still present"
-                fi
-                ;;
-            esac
-
-            # Don't close if failures at or above threshold are present
-            if [ "$SHOULD_KEEP_OPEN" = "true" ]; then
-              echo "NOT closing compliance issue for $REPO_NAME - $KEEP_OPEN_REASON"
-              continue
-            fi
-
-            # Check if compliance issue exists for this repo (open issues only)
-            EXISTING_ISSUE=$(gh issue list --repo "labrats-work/repo-compliance-reports" --label "compliance" --label "repo:$REPO_NAME" --state open --json number --jq '.[0].number // ""')
-
-            if [ -n "$EXISTING_ISSUE" ]; then
-              echo "Closing compliance issue for $REPO_NAME (#$EXISTING_ISSUE) - now at $SCORE%"
-
-              # Close issue with success comment
-              gh issue close "$EXISTING_ISSUE" \
-                --repo "labrats-work/repo-compliance-reports" \
-                --comment "✅ Compliance check now passing with score: **${SCORE}%**. All critical compliance issues have been resolved. This issue is now closed. Updated: $(date +%Y-%m-%d)" || echo "Failed to close issue in repo-compliance-reports"
-            fi
-          done
-        env:
-          GH_TOKEN: ${{ steps.app-token.outputs.token }}
-
-      - name: Create pipeline metrics issue
-        if: always()
-        run: |
-          cd ${{ github.workspace }}/github-repo-standards
-
-          JSON_REPORT=$(ls -t reports/compliance-report-*.json | head -1)
-          MARKDOWN_REPORT=$(ls -t reports/compliance-report-*.md | head -1)
-
-          # Get workflow run information
-          RUN_ID="${{ github.run_id }}"
-          RUN_NUMBER="${{ github.run_number }}"
-          RUN_URL="https://github.com/${{ github.repository }}/actions/runs/${RUN_ID}"
-          TRIGGER_TYPE="${{ github.event_name }}"
-          COMPLETION_TIME=$(date -u +"%Y-%m-%d %H:%M:%S UTC")
-          DATE=$(date +%Y-%m-%d)
-          TIME=$(date +%H:%M:%S)
-
-          # Calculate repository summary
-          TOTAL_REPOS=$(jq '.repositories | length' "$JSON_REPORT")
-          PASSING_COUNT=$(jq '[.repositories[] | select(.compliance_score >= 50)] | length' "$JSON_REPORT")
-          FAILING_COUNT=$(jq '[.repositories[] | select(.compliance_score < 50)] | length' "$JSON_REPORT")
-          PASSING_PERCENT=$((PASSING_COUNT * 100 / TOTAL_REPOS))
-          FAILING_PERCENT=$((FAILING_COUNT * 100 / TOTAL_REPOS))
-
-          # Count issues created/updated/closed (from previous step logs)
-          # Note: This is approximate based on echo statements in previous step
-          ISSUES_CREATED=0
-          ISSUES_UPDATED=0
-          ISSUES_CLOSED=0
-
-          # Build repository summary table with detailed check breakdown
-          REPO_SUMMARY=$(mktemp)
-          echo "| Repository | Score | Tier | Passed | Failed | Skipped | Details |" > "$REPO_SUMMARY"
-          echo "|------------|-------|------|--------|--------|---------|---------|" >> "$REPO_SUMMARY"
-
-          jq -r '.repositories[] | @json' "$JSON_REPORT" | while read -r repo_json; do
-            REPO_NAME=$(echo "$repo_json" | jq -r '.repository')
-            SCORE=$(echo "$repo_json" | jq -r '.compliance_score')
-            TIER=$(echo "$repo_json" | jq -r '.tier')
-            PASSED=$(echo "$repo_json" | jq -r '.passed')
-            FAILED=$(echo "$repo_json" | jq -r '.failed')
-            SKIPPED=$(echo "$repo_json" | jq -r '.skipped // 0')
-
-            # Build details dropdown with per-check status
-            DETAILS_FILE=$(mktemp)
-            echo "<details><summary>View checks</summary>" > "$DETAILS_FILE"
-            echo "" >> "$DETAILS_FILE"
-            echo "**Passed:**<br>" >> "$DETAILS_FILE"
-            echo "$repo_json" | jq -r '.checks[] | select(.result.status == "pass") | "✅ \(.result.name)"' | while read -r line; do
-              echo "• $line<br>" >> "$DETAILS_FILE"
-            done
-            echo "" >> "$DETAILS_FILE"
-
-            if [ "$FAILED" -gt 0 ]; then
-              echo "**Failed:**<br>" >> "$DETAILS_FILE"
-              echo "$repo_json" | jq -r '.checks[] | select(.result.status == "fail") | "❌ \(.result.name)"' | while read -r line; do
-                echo "• $line<br>" >> "$DETAILS_FILE"
-              done
-              echo "" >> "$DETAILS_FILE"
-            fi
-
-            if [ "$SKIPPED" -gt 0 ]; then
-              echo "**Skipped:**<br>" >> "$DETAILS_FILE"
-              echo "$repo_json" | jq -r '.checks[] | select(.result.status == "skip") | "⏭️ \(.result.name)"' | while read -r line; do
-                echo "• $line<br>" >> "$DETAILS_FILE"
-              done
-            fi
-            echo "</details>" >> "$DETAILS_FILE"
-
-            # Create single line entry with details
-            DETAILS_CONTENT=$(cat "$DETAILS_FILE" | tr '\n' ' ')
-            echo "| $REPO_NAME | ${SCORE}% | $TIER | $PASSED | $FAILED | $SKIPPED | $DETAILS_CONTENT |" >> "$REPO_SUMMARY"
-            rm -f "$DETAILS_FILE"
-          done
-
-          # Build check statistics table
-          CHECK_STATISTICS=$(mktemp)
-          echo "| Check ID | Check Name | Pass | Fail | Skip | Pass Rate |" > "$CHECK_STATISTICS"
-          echo "|----------|------------|------|------|------|-----------|" >> "$CHECK_STATISTICS"
-
-          # Get all unique check IDs and calculate statistics
-          jq -r '[.repositories[].checks[].result.check_id] | unique | .[]' "$JSON_REPORT" | sort | while read -r check_id; do
-            CHECK_NAME=$(jq -r --arg id "$check_id" '[.repositories[].checks[] | select(.result.check_id == $id) | .result.name] | .[0]' "$JSON_REPORT")
-            PASS_COUNT=$(jq -r --arg id "$check_id" '[.repositories[].checks[] | select(.result.check_id == $id and .result.status == "pass")] | length' "$JSON_REPORT")
-            FAIL_COUNT=$(jq -r --arg id "$check_id" '[.repositories[].checks[] | select(.result.check_id == $id and .result.status == "fail")] | length' "$JSON_REPORT")
-            SKIP_COUNT=$(jq -r --arg id "$check_id" '[.repositories[].checks[] | select(.result.check_id == $id and .result.status == "skip")] | length' "$JSON_REPORT")
-
-            TOTAL_APPLICABLE=$((PASS_COUNT + FAIL_COUNT))
-            if [ "$TOTAL_APPLICABLE" -gt 0 ]; then
-              PASS_RATE=$((PASS_COUNT * 100 / TOTAL_APPLICABLE))
-            else
-              PASS_RATE=0
-            fi
-
-            echo "| $check_id | $CHECK_NAME | $PASS_COUNT | $FAIL_COUNT | $SKIP_COUNT | ${PASS_RATE}% |" >> "$CHECK_STATISTICS"
-          done
-
-          # Build tier breakdown
-          TIER_BREAKDOWN=$(mktemp)
-          echo "| Tier | Count | Repositories |" > "$TIER_BREAKDOWN"
-          echo "|------|-------|--------------|" >> "$TIER_BREAKDOWN"
-
-          for tier in "🟢 Excellent" "🟡 Good" "🟠 Needs Improvement" "🔴 Critical Issues"; do
-            COUNT=$(jq -r --arg tier "$tier" '[.repositories[] | select(.tier == $tier)] | length' "$JSON_REPORT")
-            REPOS=$(jq -r --arg tier "$tier" '[.repositories[] | select(.tier == $tier) | .repository] | join(", ")' "$JSON_REPORT")
-            if [ "$COUNT" -gt 0 ]; then
-              echo "| $tier | $COUNT | $REPOS |" >> "$TIER_BREAKDOWN"
-            fi
-          done
-
-          # Find top failing checks across all repositories
-          TOP_FAILING_CHECKS=$(mktemp)
-          echo "| Check | Failures | Affected Repositories |" > "$TOP_FAILING_CHECKS"
-          echo "|-------|----------|-----------------------|" >> "$TOP_FAILING_CHECKS"
-
-          jq -r '[.repositories[].checks[] | select(.result.status == "fail") | .result.check_id] | group_by(.) | map({check: .[0], count: length}) | sort_by(.count) | reverse | .[0:5] | .[] | "\(.check)|\(.count)"' "$JSON_REPORT" | while IFS='|' read -r check_id count; do
-            CHECK_NAME=$(jq -r --arg id "$check_id" '.repositories[].checks[] | select(.result.check_id == $id) | .result.name' "$JSON_REPORT" | head -1)
-            AFFECTED=$(jq -r --arg id "$check_id" '[.repositories[] | select(.checks[] | select(.result.check_id == $id and .result.status == "fail")) | .repository] | join(", ")' "$JSON_REPORT")
-            echo "| $CHECK_NAME ($check_id) | $count | $AFFECTED |" >> "$TOP_FAILING_CHECKS"
-          done
-
-          # Get previous report for trend analysis
-          PREV_REPORT=$(ls -t reports/compliance-report-*.json | sed -n '2p')
-          TREND_DATA=$(mktemp)
-          if [ -f "$PREV_REPORT" ] && [ -n "$PREV_REPORT" ]; then
-            echo "**Comparison with previous run:**" > "$TREND_DATA"
-            echo "" >> "$TREND_DATA"
-            echo "| Repository | Previous | Current | Change |" >> "$TREND_DATA"
-            echo "|------------|----------|---------|--------|" >> "$TREND_DATA"
-
-            # Build trend data using temp file to avoid subshell issues
-            TREND_TEMP=$(mktemp)
-            jq -r '.repositories[] | @json' "$JSON_REPORT" | while read -r repo_json; do
-              REPO_NAME=$(echo "$repo_json" | jq -r '.repository')
-              CURRENT_SCORE=$(echo "$repo_json" | jq -r '.compliance_score')
-
-              # Get previous score for this repository
-              PREV_SCORE=$(jq -r --arg repo "$REPO_NAME" '[.repositories[] | select(.repository == $repo) | .compliance_score] | .[0] // empty' "$PREV_REPORT")
-
-              # If no previous score found, use current as baseline (no change)
-              if [ -z "$PREV_SCORE" ]; then
-                PREV_SCORE=$CURRENT_SCORE
-              fi
-
-              CHANGE=$((CURRENT_SCORE - PREV_SCORE))
-              if [ "$CHANGE" -gt 0 ]; then
-                CHANGE_STR="📈 +${CHANGE}%"
-              elif [ "$CHANGE" -lt 0 ]; then
-                CHANGE_STR="📉 ${CHANGE}%"
-              else
-                CHANGE_STR="➡️ 0%"
-              fi
-
-              echo "| $REPO_NAME | ${PREV_SCORE}% | ${CURRENT_SCORE}% | $CHANGE_STR |" >> "$TREND_TEMP"
-            done
-            cat "$TREND_TEMP" >> "$TREND_DATA"
-            rm -f "$TREND_TEMP"
-          else
-            echo "*This is the first compliance check run. No trend data available.*" > "$TREND_DATA"
-          fi
-
-          # Fetch workflow timing from GitHub API
-          WORKFLOW_DATA=$(gh api "/repos/${{ github.repository }}/actions/runs/${RUN_ID}" --jq '{created: .created_at, updated: .updated_at}')
-          START_TIME=$(echo "$WORKFLOW_DATA" | jq -r '.created')
-          END_TIME=$(echo "$WORKFLOW_DATA" | jq -r '.updated')
-
-          # Calculate duration (simplified - using date if available)
-          TOTAL_DURATION="Calculating..."
-          if command -v date >/dev/null 2>&1; then
-            START_SEC=$(date -d "$START_TIME" +%s 2>/dev/null || echo "0")
-            END_SEC=$(date -d "$END_TIME" +%s 2>/dev/null || echo "0")
-            if [ "$START_SEC" != "0" ] && [ "$END_SEC" != "0" ]; then
-              DURATION_SEC=$((END_SEC - START_SEC))
-              MINUTES=$((DURATION_SEC / 60))
-              SECONDS=$((DURATION_SEC % 60))
-              TOTAL_DURATION="${MINUTES}m ${SECONDS}s"
-            fi
-          fi
-
-          # For now, set other durations as placeholders
-          SETUP_DURATION="~1m"
-          CHECKS_DURATION="~2-3m"
-          REPORT_DURATION="~30s"
-          ISSUE_DURATION="~1m"
-
-          # Create issue body from template
-          ISSUE_FILE=$(mktemp)
-          cp .github/ISSUE_TEMPLATE_PIPELINE_METRICS.md "$ISSUE_FILE"
-
-          # Replace placeholders
-          sed -i "s|{{RUN_NUMBER}}|$RUN_NUMBER|g" "$ISSUE_FILE"
-          sed -i "s|{{RUN_URL}}|$RUN_URL|g" "$ISSUE_FILE"
-          sed -i "s|{{TRIGGER_TYPE}}|$TRIGGER_TYPE|g" "$ISSUE_FILE"
-          sed -i "s|{{COMPLETION_TIME}}|$COMPLETION_TIME|g" "$ISSUE_FILE"
-          sed -i "s|{{TOTAL_DURATION}}|$TOTAL_DURATION|g" "$ISSUE_FILE"
-          sed -i "s|{{SETUP_DURATION}}|$SETUP_DURATION|g" "$ISSUE_FILE"
-          sed -i "s|{{CHECKS_DURATION}}|$CHECKS_DURATION|g" "$ISSUE_FILE"
-          sed -i "s|{{REPORT_DURATION}}|$REPORT_DURATION|g" "$ISSUE_FILE"
-          sed -i "s|{{ISSUE_DURATION}}|$ISSUE_DURATION|g" "$ISSUE_FILE"
-          sed -i "s|{{TOTAL_REPOS}}|$TOTAL_REPOS|g" "$ISSUE_FILE"
-          sed -i "s|{{PASSING_COUNT}}|$PASSING_COUNT|g" "$ISSUE_FILE"
-          sed -i "s|{{FAILING_COUNT}}|$FAILING_COUNT|g" "$ISSUE_FILE"
-          sed -i "s|{{PASSING_PERCENT}}|$PASSING_PERCENT|g" "$ISSUE_FILE"
-          sed -i "s|{{FAILING_PERCENT}}|$FAILING_PERCENT|g" "$ISSUE_FILE"
-          sed -i "s|{{ISSUES_CREATED}}|$ISSUES_CREATED|g" "$ISSUE_FILE"
-          sed -i "s|{{ISSUES_UPDATED}}|$ISSUES_UPDATED|g" "$ISSUE_FILE"
-          sed -i "s|{{ISSUES_CLOSED}}|$ISSUES_CLOSED|g" "$ISSUE_FILE"
-          sed -i "s|{{DATE}}|$DATE|g" "$ISSUE_FILE"
-          sed -i "s|{{TIME}}|$TIME|g" "$ISSUE_FILE"
-
-          # Replace multiline placeholders using awk
-          awk -v file="$REPO_SUMMARY" '/{{REPO_SUMMARY}}/ {while((getline line < file) > 0) print line; close(file); next} {print}' "$ISSUE_FILE" > "$ISSUE_FILE.tmp" && mv "$ISSUE_FILE.tmp" "$ISSUE_FILE"
-          awk -v file="$CHECK_STATISTICS" '/{{CHECK_STATISTICS}}/ {while((getline line < file) > 0) print line; close(file); next} {print}' "$ISSUE_FILE" > "$ISSUE_FILE.tmp" && mv "$ISSUE_FILE.tmp" "$ISSUE_FILE"
-          awk -v file="$TIER_BREAKDOWN" '/{{TIER_BREAKDOWN}}/ {while((getline line < file) > 0) print line; close(file); next} {print}' "$ISSUE_FILE" > "$ISSUE_FILE.tmp" && mv "$ISSUE_FILE.tmp" "$ISSUE_FILE"
-          awk -v file="$TOP_FAILING_CHECKS" '/{{TOP_FAILING_CHECKS}}/ {while((getline line < file) > 0) print line; close(file); next} {print}' "$ISSUE_FILE" > "$ISSUE_FILE.tmp" && mv "$ISSUE_FILE.tmp" "$ISSUE_FILE"
-          awk -v file="$TREND_DATA" '/{{TREND_DATA}}/ {while((getline line < file) > 0) print line; close(file); next} {print}' "$ISSUE_FILE" > "$ISSUE_FILE.tmp" && mv "$ISSUE_FILE.tmp" "$ISSUE_FILE"
-
-          # Check if pipeline metrics issue already exists (open issues only)
-          EXISTING_ISSUE=$(gh issue list --repo "labrats-work/github-repo-standards" --label "pipeline-metrics" --state open --json number --jq '.[0].number // ""')
-
-          # Create labels if they don't exist
-          gh label create pipeline-metrics --description "Pipeline execution metrics and statistics" --color "1f77b4" --repo "labrats-work/github-repo-standards" 2>/dev/null || true
-          gh label create automation --description "Automated processes and workflows" --color "0e8a16" --repo "labrats-work/github-repo-standards" 2>/dev/null || true
-
-          if [ -n "$EXISTING_ISSUE" ]; then
-            echo "Closing previous pipeline metrics issue (#$EXISTING_ISSUE)"
-            gh issue close "$EXISTING_ISSUE" \
-              --repo "labrats-work/github-repo-standards" \
-              --comment "Superseded by new pipeline run." || echo "Failed to close previous issue"
-          fi
-
-          echo "Creating new pipeline metrics issue"
-          gh issue create \
-            --repo "labrats-work/github-repo-standards" \
-            --title "📊 Pipeline Metrics: Compliance Check #${RUN_NUMBER} (${DATE})" \
-            --label "pipeline-metrics" \
-            --label "automation" \
-            --body-file "$ISSUE_FILE" || echo "Failed to create pipeline metrics issue"
-
-          # Cleanup
-          rm -f "$REPO_SUMMARY" "$CHECK_STATISTICS" "$TIER_BREAKDOWN" "$TOP_FAILING_CHECKS" "$TREND_DATA" "$ISSUE_FILE"
-        env:
-          GH_TOKEN: ${{ steps.app-token.outputs.token }}
-
-      - name: Create workflow health reports
-        if: always()
-        run: |
-          cd ${{ github.workspace }}/github-repo-standards
-
-          DATE=$(date +%Y-%m-%d)
-          TIME=$(date +%H:%M:%S)
-          DAYS=30  # Analyze last 30 days
-
-          # Read list of repositories from previous step
-          while IFS= read -r repo; do
-            if [ -z "$repo" ] || [ "$repo" = "github-repo-standards" ]; then
-              continue
-            fi
-
-            echo "Analyzing workflow health for $repo..."
-
-            # Get all workflows for this repository
-            WORKFLOWS_JSON=$(gh api "/repos/labrats-work/$repo/actions/workflows" --jq '.workflows' 2>/dev/null || echo "[]")
-            TOTAL_WORKFLOWS=$(echo "$WORKFLOWS_JSON" | jq 'length')
-
-            if [ "$TOTAL_WORKFLOWS" -eq 0 ]; then
-              echo "No workflows found in $repo, skipping..."
-              continue
-            fi
-
-            # Analyze each workflow
-            WORKFLOW_STATS_FILE=$(mktemp)
-            echo "| Workflow | Total Runs | Success | Failure | Success Rate | Last Run |" > "$WORKFLOW_STATS_FILE"
-            echo "|----------|------------|---------|---------|--------------|----------|" >> "$WORKFLOW_STATS_FILE"
-
-            TOTAL_RUNS=0
-            TOTAL_SUCCESS=0
-            TOTAL_FAILURE=0
-            ACTIVE_WORKFLOWS=0
-
-            RECENT_FAILURES_FILE=$(mktemp)
-            echo "| Workflow | Run | Date | Conclusion | Link |" > "$RECENT_FAILURES_FILE"
-            echo "|----------|-----|------|------------|------|" >> "$RECENT_FAILURES_FILE"
-            FAILURE_COUNT=0
-
-            echo "$WORKFLOWS_JSON" | jq -r '.[] | @json' | while read -r workflow_json; do
-              WORKFLOW_NAME=$(echo "$workflow_json" | jq -r '.name')
-              WORKFLOW_ID=$(echo "$workflow_json" | jq -r '.id')
-
-              # Get recent runs for this workflow (last 30 days)
-              RUNS=$(gh api "/repos/labrats-work/$repo/actions/workflows/$WORKFLOW_ID/runs?per_page=100" --jq '.workflow_runs' 2>/dev/null || echo "[]")
-
-              # Filter runs from last N days
-              CUTOFF_DATE=$(date -d "$DAYS days ago" +%Y-%m-%d 2>/dev/null || date -v-${DAYS}d +%Y-%m-%d 2>/dev/null || echo "2025-11-01")
-              RECENT_RUNS=$(echo "$RUNS" | jq --arg cutoff "$CUTOFF_DATE" '[.[] | select(.created_at >= $cutoff)]')
-
-              RUN_COUNT=$(echo "$RECENT_RUNS" | jq 'length')
-
-              if [ "$RUN_COUNT" -eq 0 ]; then
+          cd ${{ env.STANDARDS_REPO_NAME }}
+
+          echo "=================================================="
+          echo "Running compliance checks for: ${{ matrix.repo }}"
+          echo "=================================================="
+          echo ""
+
+          # Initialize result structure
+          echo '{"repository":"${{ matrix.repo }}","path":"../repo-to-check","checks":[]}' > compliance-result.json
+
+          # Load check priorities
+          PRIORITIES_FILE="compliance/check-priorities.json"
+
+          # Run each check script and collect results
+          TOTAL_SCORE=0
+          MAX_SCORE=0
+          PASSED_COUNT=0
+          FAILED_COUNT=0
+
+          echo "Discovering check scripts..."
+          for check_script in compliance/checks/check-*.sh; do
+            if [ -f "$check_script" ]; then
+              CHECK_NAME=$(basename "$check_script")
+              echo "Running: $CHECK_NAME"
+
+              # Run check and capture output
+              CHECK_OUTPUT=$(bash "$check_script" ../repo-to-check 2>&1) || true
+
+              # Extract check ID from output
+              CHECK_ID=$(echo "$CHECK_OUTPUT" | jq -r '.check_id // ""' 2>/dev/null || echo "")
+
+              if [ -z "$CHECK_ID" ]; then
+                echo "  ⚠️  Warning: Could not extract check_id from $CHECK_NAME"
                 continue
               fi
 
-              SUCCESS_COUNT=$(echo "$RECENT_RUNS" | jq '[.[] | select(.conclusion == "success")] | length')
-              FAILURE_COUNT_WF=$(echo "$RECENT_RUNS" | jq '[.[] | select(.conclusion == "failure")] | length')
+              # Look up priority for this check
+              PRIORITY=$(jq -r --arg id "$CHECK_ID" '.[$id].priority // "MEDIUM"' "$PRIORITIES_FILE")
+              POINTS=$(jq -r --arg id "$CHECK_ID" '.[$id].points // 2' "$PRIORITIES_FILE")
 
-              if [ "$RUN_COUNT" -gt 0 ]; then
-                SUCCESS_RATE=$((SUCCESS_COUNT * 100 / RUN_COUNT))
+              # Parse check result
+              STATUS=$(echo "$CHECK_OUTPUT" | jq -r '.status // "fail"')
+
+              # Update counters
+              MAX_SCORE=$((MAX_SCORE + POINTS))
+              if [ "$STATUS" = "pass" ]; then
+                TOTAL_SCORE=$((TOTAL_SCORE + POINTS))
+                PASSED_COUNT=$((PASSED_COUNT + 1))
               else
-                SUCCESS_RATE=0
+                FAILED_COUNT=$((FAILED_COUNT + 1))
               fi
 
-              LAST_RUN_DATE=$(echo "$RECENT_RUNS" | jq -r '.[0].created_at // "Never"' | cut -d'T' -f1)
+              # Add check result with priority to results
+              TEMP_RESULT=$(echo "$CHECK_OUTPUT" | jq --arg priority "$PRIORITY" --arg script "$CHECK_NAME" '. + {priority: $priority, script: $script}')
+              jq --argjson check "{\"priority\":\"$PRIORITY\",\"script\":\"$CHECK_NAME\",\"result\":$CHECK_OUTPUT}" '.checks += [$check]' compliance-result.json > compliance-result-temp.json
+              mv compliance-result-temp.json compliance-result.json
 
-              echo "| $WORKFLOW_NAME | $RUN_COUNT | $SUCCESS_COUNT | $FAILURE_COUNT_WF | ${SUCCESS_RATE}% | $LAST_RUN_DATE |" >> "$WORKFLOW_STATS_FILE"
-
-              # Track totals
-              TOTAL_RUNS=$((TOTAL_RUNS + RUN_COUNT))
-              TOTAL_SUCCESS=$((TOTAL_SUCCESS + SUCCESS_COUNT))
-              TOTAL_FAILURE=$((TOTAL_FAILURE + FAILURE_COUNT_WF))
-              ACTIVE_WORKFLOWS=$((ACTIVE_WORKFLOWS + 1))
-
-              # Collect recent failures (last 5)
-              echo "$RECENT_RUNS" | jq -r --arg wf "$WORKFLOW_NAME" '.[] | select(.conclusion == "failure") | "\($wf)|\(.run_number)|\(.created_at[:10])|\(.conclusion)|\(.html_url)"' | head -5 | while IFS='|' read -r wf_name run_num date concl url; do
-                echo "| $wf_name | #$run_num | $date | $concl | [View]($url) |" >> "$RECENT_FAILURES_FILE"
-                FAILURE_COUNT=$((FAILURE_COUNT + 1))
-              done
-            done
-
-            # Calculate overall success rate
-            if [ "$TOTAL_RUNS" -gt 0 ]; then
-              OVERALL_SUCCESS_RATE=$((TOTAL_SUCCESS * 100 / TOTAL_RUNS))
-            else
-              OVERALL_SUCCESS_RATE=100
+              echo "  ✓ $CHECK_ID: $STATUS ($PRIORITY)"
             fi
+          done
 
-            # Determine health status
-            if [ "$OVERALL_SUCCESS_RATE" -ge 95 ]; then
-              HEALTH_STATUS="🟢 Excellent - Workflows are healthy"
-            elif [ "$OVERALL_SUCCESS_RATE" -ge 85 ]; then
-              HEALTH_STATUS="🟡 Good - Minor issues detected"
-            elif [ "$OVERALL_SUCCESS_RATE" -ge 70 ]; then
-              HEALTH_STATUS="🟠 Needs Attention - Frequent failures"
-            else
-              HEALTH_STATUS="🔴 Critical - Many workflows failing"
+          # Calculate compliance score
+          if [ $MAX_SCORE -gt 0 ]; then
+            COMPLIANCE_SCORE=$((TOTAL_SCORE * 100 / MAX_SCORE))
+          else
+            COMPLIANCE_SCORE=0
+          fi
+
+          # Determine tier
+          if [ $COMPLIANCE_SCORE -ge 90 ]; then
+            TIER="🟢 Excellent"
+          elif [ $COMPLIANCE_SCORE -ge 75 ]; then
+            TIER="🟡 Good"
+          elif [ $COMPLIANCE_SCORE -ge 50 ]; then
+            TIER="🟠 Needs Improvement"
+          else
+            TIER="🔴 Critical Issues"
+          fi
+
+          # Add summary to result
+          jq --arg score "$COMPLIANCE_SCORE" \
+             --arg tier "$TIER" \
+             --arg passed "$PASSED_COUNT" \
+             --arg failed "$FAILED_COUNT" \
+             --arg total_score "$TOTAL_SCORE" \
+             --arg max_score "$MAX_SCORE" \
+             '. + {compliance_score: ($score | tonumber), tier: $tier, passed: ($passed | tonumber), failed: ($failed | tonumber), total_score: ($total_score | tonumber), max_score: ($max_score | tonumber)}' \
+             compliance-result.json > compliance-result-temp.json
+          mv compliance-result-temp.json compliance-result.json
+
+          # Extract key metrics for GitHub outputs
+          SCORE=$(jq -r '.compliance_score' compliance-result.json)
+          TIER=$(jq -r '.tier' compliance-result.json)
+          PASSED=$(jq -r '.passed' compliance-result.json)
+          FAILED=$(jq -r '.failed' compliance-result.json)
+
+          echo "score=$SCORE" >> $GITHUB_OUTPUT
+          echo "tier=$TIER" >> $GITHUB_OUTPUT
+          echo "passed=$PASSED" >> $GITHUB_OUTPUT
+          echo "failed=$FAILED" >> $GITHUB_OUTPUT
+
+          # Count failures by priority
+          CRITICAL=$(jq '[.checks[] | select(.result.status == "fail" and .priority == "CRITICAL")] | length' compliance-result.json)
+          HIGH=$(jq '[.checks[] | select(.result.status == "fail" and .priority == "HIGH")] | length' compliance-result.json)
+
+          echo "critical=$CRITICAL" >> $GITHUB_OUTPUT
+          echo "high=$HIGH" >> $GITHUB_OUTPUT
+
+          echo ""
+          echo "=================================================="
+          echo "Compliance Summary"
+          echo "=================================================="
+          echo "Score: $SCORE% - $TIER"
+          echo "Passed: $PASSED | Failed: $FAILED"
+          echo "Critical Failures: $CRITICAL | High Failures: $HIGH"
+          echo "Total: $TOTAL_SCORE / $MAX_SCORE points"
+          echo ""
+          echo "=================================================="
+          echo "Detailed Check Results"
+          echo "=================================================="
+          echo ""
+
+          # Display each check result with details
+          jq -r '.checks[] | "Check: " + (.result.check_id // "N/A") + " - " + (.result.name // "Unknown") + "\nPriority: " + .priority + "\nStatus: " + (.result.status | ascii_upcase) + "\nMessage: " + (.result.message // "No message") + "\n" + (if .result.details then "Details: " + .result.details + "\n" else "" end) + "--------------------------------------------------"' compliance-result.json
+
+          echo ""
+          echo "=================================================="
+        env:
+          GH_TOKEN: ${{ steps.repo-standards-token.outputs.token }}
+
+      - name: Upload compliance result
+        uses: actions/upload-artifact@v4
+        with:
+          name: compliance-${{ matrix.repo }}
+          path: ${{ env.STANDARDS_REPO_NAME }}/compliance-result.json
+          retention-days: ${{ fromJson(env.ARTIFACT_RETENTION_DAYS) }}
+
+      - name: Create/update compliance issue
+        run: |
+          REPO_NAME="${{ matrix.repo }}"
+          RESULT_FILE="${{ env.STANDARDS_REPO_NAME }}/compliance-result.json"
+
+          CRITICAL=${{ steps.compliance.outputs.critical }}
+          HIGH=${{ steps.compliance.outputs.high }}
+          SCORE=${{ steps.compliance.outputs.score }}
+
+          # Count medium and low failures
+          MEDIUM=$(jq '[.checks[] | select(.result.status == "fail" and .priority == "MEDIUM")] | length' "$RESULT_FILE")
+          LOW=$(jq '[.checks[] | select(.result.status == "fail" and .priority == "LOW")] | length' "$RESULT_FILE")
+
+          # Count passed and failed checks
+          PASSED=$(jq '[.checks[] | select(.result.status == "pass")] | length' "$RESULT_FILE")
+          FAILED=$(jq '[.checks[] | select(.result.status == "fail")] | length' "$RESULT_FILE")
+
+          # Determine tier
+          if [ "$SCORE" -ge 90 ]; then
+            TIER="🟢 Excellent"
+          elif [ "$SCORE" -ge 75 ]; then
+            TIER="🟡 Good"
+          elif [ "$SCORE" -ge 50 ]; then
+            TIER="🟠 Needs Improvement"
+          else
+            TIER="🔴 Critical Issues"
+          fi
+
+          # Determine if we should create/update an issue
+          if [ "$CRITICAL" -gt 0 ] || [ "$HIGH" -gt 0 ]; then
+            echo "Creating/updating issue for $REPO_NAME"
+
+            # Check if issues are enabled (by trying to list issues)
+            ISSUES_CHECK=$(gh issue list --repo "${{ github.repository_owner }}/$REPO_NAME" --limit 1 2>&1) || true
+            if echo "$ISSUES_CHECK" | grep -q "has disabled issues"; then
+              echo "⚠️  Skipping $REPO_NAME - issues are disabled"
+              exit 0
             fi
-
-            # Build issues detected section
-            ISSUES_DETECTED_FILE=$(mktemp)
-            if [ "$OVERALL_SUCCESS_RATE" -lt 85 ]; then
-              echo "**Failures Detected:**" > "$ISSUES_DETECTED_FILE"
-              echo "" >> "$ISSUES_DETECTED_FILE"
-              echo "- Overall success rate is below 85% (currently ${OVERALL_SUCCESS_RATE}%)" >> "$ISSUES_DETECTED_FILE"
-              echo "- $TOTAL_FAILURE workflow runs failed in the last $DAYS days" >> "$ISSUES_DETECTED_FILE"
-              echo "" >> "$ISSUES_DETECTED_FILE"
-            else
-              echo "*No significant issues detected. Workflow health is good.* ✅" > "$ISSUES_DETECTED_FILE"
-            fi
-
-            # Build recommendations
-            RECOMMENDATIONS_FILE=$(mktemp)
-            if [ "$OVERALL_SUCCESS_RATE" -lt 85 ]; then
-              echo "**Recommended Actions:**" > "$RECOMMENDATIONS_FILE"
-              echo "" >> "$RECOMMENDATIONS_FILE"
-              echo "1. Review recent failure logs to identify common patterns" >> "$RECOMMENDATIONS_FILE"
-              echo "2. Check if failures are environment-related or code issues" >> "$RECOMMENDATIONS_FILE"
-              echo "3. Consider adding retry logic for flaky tests" >> "$RECOMMENDATIONS_FILE"
-              echo "4. Update dependencies that may be causing failures" >> "$RECOMMENDATIONS_FILE"
-              echo "" >> "$RECOMMENDATIONS_FILE"
-            else
-              echo "*No immediate actions required. Continue monitoring workflow health.* ✅" > "$RECOMMENDATIONS_FILE"
-            fi
-
-            # Check if recent failures exist
-            if [ "$FAILURE_COUNT" -eq 0 ]; then
-              echo "*No failures in the last $DAYS days.* ✅" > "$RECENT_FAILURES_FILE"
-            fi
-
-            # Create issue body from template
-            ISSUE_FILE=$(mktemp)
-            cp .github/ISSUE_TEMPLATE_WORKFLOW_HEALTH.md "$ISSUE_FILE"
-
-            # Replace placeholders
-            sed -i "s|{{DATE}}|$DATE|g" "$ISSUE_FILE"
-            sed -i "s|{{TIME}}|$TIME|g" "$ISSUE_FILE"
-            sed -i "s|{{DAYS}}|$DAYS|g" "$ISSUE_FILE"
-            sed -i "s|{{REPOSITORY}}|$repo|g" "$ISSUE_FILE"
-            sed -i "s|{{TOTAL_WORKFLOWS}}|$TOTAL_WORKFLOWS|g" "$ISSUE_FILE"
-            sed -i "s|{{ACTIVE_WORKFLOWS}}|$ACTIVE_WORKFLOWS|g" "$ISSUE_FILE"
-            sed -i "s|{{OVERALL_SUCCESS_RATE}}|$OVERALL_SUCCESS_RATE|g" "$ISSUE_FILE"
-            sed -i "s|{{TOTAL_RUNS}}|$TOTAL_RUNS|g" "$ISSUE_FILE"
-            sed -i "s|{{HEALTH_STATUS}}|$HEALTH_STATUS|g" "$ISSUE_FILE"
-
-            # Replace multiline placeholders
-            awk -v file="$WORKFLOW_STATS_FILE" '/{{WORKFLOW_STATS}}/ {while((getline line < file) > 0) print line; close(file); next} {print}' "$ISSUE_FILE" > "$ISSUE_FILE.tmp" && mv "$ISSUE_FILE.tmp" "$ISSUE_FILE"
-            awk -v file="$ISSUES_DETECTED_FILE" '/{{ISSUES_DETECTED}}/ {while((getline line < file) > 0) print line; close(file); next} {print}' "$ISSUE_FILE" > "$ISSUE_FILE.tmp" && mv "$ISSUE_FILE.tmp" "$ISSUE_FILE"
-            awk -v file="$RECOMMENDATIONS_FILE" '/{{RECOMMENDATIONS}}/ {while((getline line < file) > 0) print line; close(file); next} {print}' "$ISSUE_FILE" > "$ISSUE_FILE.tmp" && mv "$ISSUE_FILE.tmp" "$ISSUE_FILE"
-            awk -v file="$RECENT_FAILURES_FILE" '/{{RECENT_FAILURES}}/ {while((getline line < file) > 0) print line; close(file); next} {print}' "$ISSUE_FILE" > "$ISSUE_FILE.tmp" && mv "$ISSUE_FILE.tmp" "$ISSUE_FILE"
 
             # Create labels if they don't exist
-            gh label create workflow-health --description "Workflow health monitoring" --color "0366d6" --repo "labrats-work/$repo" 2>/dev/null || true
-            gh label create automation --description "Automated processes" --color "0e8a16" --repo "labrats-work/$repo" 2>/dev/null || true
+            gh label create "${{ env.COMPLIANCE_LABEL }}" --description "Compliance checking related" --color "0e8a16" --repo "${{ github.repository_owner }}/$REPO_NAME" 2>/dev/null || true
+            gh label create "${{ env.CRITICAL_LABEL }}" --description "Critical issues" --color "d73a4a" --repo "${{ github.repository_owner }}/$REPO_NAME" 2>/dev/null || true
 
-            # Check if workflow health issue already exists (open issues only)
-            EXISTING_ISSUE=$(gh issue list --repo "labrats-work/$repo" --label "workflow-health" --state open --json number --jq '.[0].number // ""')
+            # Build issue title
+            ISSUE_TITLE="🚨 Compliance Check [$CRITICAL critical, $HIGH high, $MEDIUM med, $LOW low]"
+
+            # Check for existing open compliance issue
+            EXISTING_ISSUE=$(gh issue list --repo "${{ github.repository_owner }}/$REPO_NAME" --label "${{ env.COMPLIANCE_LABEL }}" --state open --json number --jq '.[0].number // ""' 2>/dev/null || echo "")
+
+            # Create detailed issue body with check results
+            {
+              echo "## Compliance Check Results"
+              echo ""
+              echo "**Score:** ${SCORE}% - ${TIER}"
+              echo "**Passed:** ${PASSED} checks"
+              echo "**Failed:** ${FAILED} checks (${CRITICAL} critical, ${HIGH} high, ${MEDIUM} medium, ${LOW} low)"
+              echo ""
+              echo "---"
+              echo ""
+              echo "### ❌ Failed Checks"
+              echo ""
+              jq -r '.checks[] | select(.result.status == "fail") | "#### " + (.result.check_id // "N/A") + " - " + (.result.name // "Unknown") + "\n- **Priority:** " + .priority + "\n- **Message:** " + (.result.message // "No message") + "\n" + (if .result.details then "- **Details:** " + .result.details + "\n" else "" end)' "$RESULT_FILE"
+              echo ""
+              echo "---"
+              echo ""
+              echo "### ✅ Passed Checks"
+              echo ""
+              jq -r '.checks[] | select(.result.status == "pass") | "- " + (.result.check_id // "N/A") + ": " + (.result.name // "Unknown")' "$RESULT_FILE"
+              echo ""
+              echo "---"
+              echo ""
+              echo "**Generated:** $(date -u +"%Y-%m-%d %H:%M:%S UTC")"
+              echo "**Workflow Run:** https://github.com/${{ github.repository_owner }}/${{ env.STANDARDS_REPO_NAME }}/actions/runs/${{ github.run_id }}"
+            } > /tmp/issue-body.md
 
             if [ -n "$EXISTING_ISSUE" ]; then
-              echo "Closing previous workflow health issue for $repo (#$EXISTING_ISSUE)"
-              gh issue close "$EXISTING_ISSUE" \
-                --repo "labrats-work/$repo" \
-                --comment "Superseded by new workflow health report." || echo "Failed to close previous issue"
-            fi
-
-            # Only create issue if there are concerns (success rate < 95%) or if it's the first report
-            if [ "$OVERALL_SUCCESS_RATE" -lt 95 ] || [ -z "$EXISTING_ISSUE" ]; then
-              echo "Creating workflow health issue for $repo (success rate: ${OVERALL_SUCCESS_RATE}%)"
-              gh issue create \
-                --repo "labrats-work/$repo" \
-                --title "🔄 Workflow Health Report: ${OVERALL_SUCCESS_RATE}% Success Rate (${DATE})" \
-                --label "workflow-health" \
-                --label "automation" \
-                --body-file "$ISSUE_FILE" || echo "Failed to create workflow health issue in $repo"
+              echo "Updating existing issue #$EXISTING_ISSUE"
+              gh issue edit "$EXISTING_ISSUE" \
+                --repo "${{ github.repository_owner }}/$REPO_NAME" \
+                --title "$ISSUE_TITLE" \
+                --body-file /tmp/issue-body.md || echo "Failed to update issue"
             else
-              echo "Skipping workflow health issue for $repo - success rate is healthy (${OVERALL_SUCCESS_RATE}%)"
+              echo "Creating new issue"
+              CREATE_RESULT=$(gh issue create \
+                --repo "${{ github.repository_owner }}/$REPO_NAME" \
+                --title "$ISSUE_TITLE" \
+                --label "${{ env.COMPLIANCE_LABEL }}" \
+                --label "${{ env.CRITICAL_LABEL }}" \
+                --body-file /tmp/issue-body.md 2>&1) || true
+
+              if echo "$CREATE_RESULT" | grep -q "has disabled issues"; then
+                echo "⚠️  Skipping $REPO_NAME - issues are disabled"
+              elif echo "$CREATE_RESULT" | grep -q "https://"; then
+                echo "$CREATE_RESULT"
+              else
+                echo "Failed to create issue in $REPO_NAME: $CREATE_RESULT"
+              fi
+            fi
+          else
+            echo "No critical/high failures for $REPO_NAME, checking if we should close existing issues"
+
+            # Check if issues are enabled
+            ISSUES_CHECK=$(gh issue list --repo "${{ github.repository_owner }}/$REPO_NAME" --limit 1 2>&1) || true
+            if echo "$ISSUES_CHECK" | grep -q "has disabled issues"; then
+              echo "⚠️  Skipping $REPO_NAME - issues are disabled"
+              exit 0
             fi
 
-            # Cleanup
-            rm -f "$WORKFLOW_STATS_FILE" "$ISSUES_DETECTED_FILE" "$RECOMMENDATIONS_FILE" "$RECENT_FAILURES_FILE" "$ISSUE_FILE"
+            # Check if there's an open compliance issue to close
+            EXISTING_ISSUE=$(gh issue list --repo "${{ github.repository_owner }}/$REPO_NAME" --label "${{ env.COMPLIANCE_LABEL }}" --state open --json number --jq '.[0].number // ""' 2>/dev/null || echo "")
 
-          done < /tmp/repo-list.txt
+            if [ -n "$EXISTING_ISSUE" ]; then
+              echo "Closing compliance issue #$EXISTING_ISSUE for $REPO_NAME"
+              gh issue close "$EXISTING_ISSUE" \
+                --repo "${{ github.repository_owner }}/$REPO_NAME" \
+                --comment "✅ Compliance check now passing with score: $SCORE%. All critical and high priority issues resolved." || echo "Failed to close issue"
+            fi
+          fi
         env:
-          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+          GH_TOKEN: ${{ steps.repo-standards-token.outputs.token }}
 
-      - name: Create actions usage report
-        if: always()
+      - name: Summary
         run: |
-          cd ${{ github.workspace }}
+          cd ${{ env.STANDARDS_REPO_NAME }}
 
-          DATE=$(date +%Y-%m-%d)
-          TIME=$(date +%H:%M:%S)
+          echo "## 📊 ${{ matrix.repo }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "- **Score:** ${{ steps.compliance.outputs.score }}% ${{ steps.compliance.outputs.tier }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Passed:** ${{ steps.compliance.outputs.passed }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Failed:** ${{ steps.compliance.outputs.failed }} (Critical: ${{ steps.compliance.outputs.critical }}, High: ${{ steps.compliance.outputs.high }})" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
 
-          # Create temporary files for tracking
-          ACTIONS_LIST=$(mktemp)
-          ACTIONS_COUNT=$(mktemp)
-          ACTIONS_BY_REPO_FILE=$(mktemp)
+          # Add detailed check results table if there are failures
+          if [ "${{ steps.compliance.outputs.failed }}" -gt 0 ]; then
+            echo "### ❌ Failed Checks" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "| Check | Priority | Message |" >> $GITHUB_STEP_SUMMARY
+            echo "|-------|----------|---------|" >> $GITHUB_STEP_SUMMARY
+            jq -r '.checks[] | select(.result.status == "fail") | "| " + (.result.check_id // "N/A") + " - " + (.result.name // "Unknown") + " | " + .priority + " | " + (.result.message // "No message") + " |"' compliance-result.json >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+          fi
 
-          TOTAL_REPOS=0
-          TOTAL_WORKFLOWS=0
+          # Add summary of passed checks
+          if [ "${{ steps.compliance.outputs.passed }}" -gt 0 ]; then
+            echo "### ✅ Passed Checks (${{ steps.compliance.outputs.passed }})" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            jq -r '.checks[] | select(.result.status == "pass") | "- " + (.result.check_id // "N/A") + ": " + (.result.name // "Unknown")' compliance-result.json >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+          fi
 
-          echo "| Repository | Workflow Count | Actions Used |" > "$ACTIONS_BY_REPO_FILE"
-          echo "|------------|----------------|--------------|" >> "$ACTIONS_BY_REPO_FILE"
+  # Third job: Aggregate results and create PR
+  aggregate-results:
+    needs: [discover-repos, check-compliance]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      issues: write
+      pull-requests: write
 
-          # Scan all repositories for workflow files
-          for repo_dir in repos/*/; do
-            if [ ! -d "$repo_dir" ]; then
-              continue
-            fi
+    steps:
+      - name: Generate Internal Automation App Token
+        id: internal-automation-token
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: ${{ secrets.INTERNAL_AUTOMATION_APP_ID }}
+          private-key: ${{ secrets.INTERNAL_AUTOMATION_APP_PRIVATE_KEY }}
+          owner: ${{ github.repository_owner }}
+          repositories: ${{ env.STANDARDS_REPO_NAME }}
 
-            REPO_NAME=$(basename "$repo_dir")
-            WORKFLOW_DIR="$repo_dir/.github/workflows"
+      - name: Checkout github-repo-standards
+        uses: actions/checkout@v4
+        with:
+          token: ${{ steps.internal-automation-token.outputs.token }}
 
-            if [ ! -d "$WORKFLOW_DIR" ]; then
-              continue
-            fi
+      - name: Download all compliance results
+        uses: actions/download-artifact@v4
+        with:
+          path: compliance-results
 
-            TOTAL_REPOS=$((TOTAL_REPOS + 1))
-            WORKFLOW_COUNT=$(find "$WORKFLOW_DIR" -name "*.yml" -o -name "*.yaml" | wc -l)
-            TOTAL_WORKFLOWS=$((TOTAL_WORKFLOWS + WORKFLOW_COUNT))
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y jq
 
-            REPO_ACTIONS=$(mktemp)
+      - name: Aggregate results
+        run: |
+          mkdir -p reports
 
-            # Extract actions from workflow files
-            find "$WORKFLOW_DIR" -name "*.yml" -o -name "*.yaml" | while read -r workflow_file; do
-              # Extract "uses:" lines and parse action names
-              grep -h "uses:" "$workflow_file" | sed 's/.*uses: *//; s/ *#.*//' | tr -d "'" | tr -d '"' | while read -r action; do
-                if [ -n "$action" ] && [[ "$action" != ./* ]]; then
-                  echo "$action" >> "$ACTIONS_LIST"
-                  echo "$REPO_NAME|$action" >> "$REPO_ACTIONS"
-                fi
-              done
-            done
+          # Combine all JSON results into a single report
+          echo '{"generated_at":"'$(date -u +"%Y-%m-%dT%H:%M:%SZ")'","repositories":[]}' > reports/compliance-report-$(date +%Y-%m-%d).json
 
-            # Get unique actions for this repo
-            UNIQUE_REPO_ACTIONS=$(sort "$REPO_ACTIONS" | cut -d'|' -f2 | uniq | wc -l)
+          # Process each repository result
+          for dir in compliance-results/compliance-*; do
+            if [ -f "$dir/compliance-result.json" ]; then
+              REPO_NAME=$(basename "$dir" | sed 's/compliance-//')
 
-            echo "| $REPO_NAME | $WORKFLOW_COUNT | $UNIQUE_REPO_ACTIONS |" >> "$ACTIONS_BY_REPO_FILE"
-            rm -f "$REPO_ACTIONS"
-          done
+              # Add repository name to the result
+              jq --arg repo "$REPO_NAME" '. + {repository: $repo}' "$dir/compliance-result.json" > /tmp/repo-result.json
 
-          # Count action usage
-          sort "$ACTIONS_LIST" | uniq -c | sort -rn > "$ACTIONS_COUNT"
-
-          TOTAL_UNIQUE_ACTIONS=$(sort "$ACTIONS_LIST" | uniq | wc -l)
-
-          # Build actions summary table
-          ACTIONS_SUMMARY_FILE=$(mktemp)
-          echo "| Action | Usage Count | Repositories |" > "$ACTIONS_SUMMARY_FILE"
-          echo "|--------|-------------|--------------|" >> "$ACTIONS_SUMMARY_FILE"
-
-          while read -r count action; do
-            # Extract base action name (without version)
-            BASE_ACTION=$(echo "$action" | cut -d'@' -f1)
-
-            # Count how many repos use this action
-            REPO_COUNT=$(grep "$BASE_ACTION" "$ACTIONS_LIST" | wc -l)
-
-            echo "| \`$action\` | $count | $REPO_COUNT |" >> "$ACTIONS_SUMMARY_FILE"
-          done < "$ACTIONS_COUNT"
-
-          # Build top actions table (top 10)
-          TOP_ACTIONS_FILE=$(mktemp)
-          echo "| Rank | Action | Total Uses | Across Repos |" > "$TOP_ACTIONS_FILE"
-          echo "|------|--------|------------|--------------|" >> "$TOP_ACTIONS_FILE"
-
-          RANK=1
-          head -10 "$ACTIONS_COUNT" | while read -r count action; do
-            BASE_ACTION=$(echo "$action" | cut -d'@' -f1)
-            REPOS_USING=$(grep "$BASE_ACTION" "$ACTIONS_LIST" | wc -l)
-            REPO_PERCENT=$((REPOS_USING * 100 / TOTAL_REPOS))
-            echo "| $RANK | \`$action\` | $count uses | ${REPO_PERCENT}% ($REPOS_USING repos) |" >> "$TOP_ACTIONS_FILE"
-            RANK=$((RANK + 1))
-          done
-
-          # Version analysis - find actions with multiple versions
-          VERSION_ANALYSIS_FILE=$(mktemp)
-          echo "**Actions with Multiple Versions:**" > "$VERSION_ANALYSIS_FILE"
-          echo "" >> "$VERSION_ANALYSIS_FILE"
-
-          # Group by base action and count versions
-          sort "$ACTIONS_LIST" | cut -d'@' -f1 | uniq | while read -r base_action; do
-            VERSIONS=$(grep "^$base_action@" "$ACTIONS_LIST" | sort | uniq)
-            VERSION_COUNT=$(echo "$VERSIONS" | wc -l)
-
-            if [ "$VERSION_COUNT" -gt 1 ]; then
-              echo "- **$base_action**: $VERSION_COUNT versions in use" >> "$VERSION_ANALYSIS_FILE"
-              echo "$VERSIONS" | while read -r versioned_action; do
-                USES=$(grep -c "^$versioned_action$" "$ACTIONS_LIST")
-                echo "  - \`$versioned_action\` ($USES uses)" >> "$VERSION_ANALYSIS_FILE"
-              done
-              echo "" >> "$VERSION_ANALYSIS_FILE"
+              # Append to combined report
+              jq --slurpfile new /tmp/repo-result.json '.repositories += $new' reports/compliance-report-$(date +%Y-%m-%d).json > /tmp/combined.json
+              mv /tmp/combined.json reports/compliance-report-$(date +%Y-%m-%d).json
             fi
           done
 
-          # If no version inconsistencies, show positive message
-          if ! grep -q "versions in use" "$VERSION_ANALYSIS_FILE"; then
-            echo "*All actions use consistent versions across repositories.* ✅" > "$VERSION_ANALYSIS_FILE"
+      - name: Generate markdown report
+        run: |
+          JSON_REPORT=$(ls -t reports/compliance-report-*.json | head -1)
+          MD_REPORT="${JSON_REPORT%.json}.md"
+
+          # Generate markdown from JSON
+          cat > "$MD_REPORT" <<'EOF'
+          # Repository Compliance Report
+
+          **Generated:** $(date -u +"%Y-%m-%d %H:%M:%S UTC")
+
+          ## Summary
+
+          EOF
+
+          # Add summary statistics
+          TOTAL_REPOS=$(jq '.repositories | length' "$JSON_REPORT")
+          echo "- **Total Repositories:** $TOTAL_REPOS" >> "$MD_REPORT"
+          echo "" >> "$MD_REPORT"
+
+          # Add per-repository details
+          echo "## Repository Details" >> "$MD_REPORT"
+          echo "" >> "$MD_REPORT"
+
+          jq -r '.repositories[] | "### \(.repository)\n- **Score:** \(.compliance_score)% \(.tier)\n- **Passed:** \(.passed)/\(.passed + .failed)\n"' "$JSON_REPORT" >> "$MD_REPORT"
+
+      - name: Create PR with reports
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+          git add reports/
+
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+            echo "pr_created=false" >> $GITHUB_ENV
+          else
+            # Create a new branch for the PR
+            BRANCH_NAME="compliance-reports-$(date +%Y-%m-%d-%H%M%S)"
+            git checkout -b "$BRANCH_NAME"
+
+            git commit -m "chore: Update compliance reports ($(date +%Y-%m-%d))"
+            git push -u origin "$BRANCH_NAME"
+
+            # Check if a PR already exists for compliance reports
+            EXISTING_PR=$(gh pr list --head "$BRANCH_NAME" --state open --json number --jq '.[0].number // ""')
+
+            if [ -z "$EXISTING_PR" ]; then
+              # Create new PR
+              PR_URL=$(gh pr create \
+                --title "chore: Update compliance reports ($(date +%Y-%m-%d))" \
+                --body "Automated compliance report update from weekly scan.
+
+          This PR contains the latest compliance check results for all repositories.
+
+          **Generated:** $(date -u +%Y-%m-%d\ %H:%M:%S\ UTC)
+          **Workflow Run:** https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}" \
+                --base ${{ env.DEFAULT_BRANCH }} \
+                --head "$BRANCH_NAME")
+
+              PR_NUMBER=$(echo "$PR_URL" | grep -o '[0-9]*$')
+              echo "pr_number=$PR_NUMBER" >> $GITHUB_ENV
+              echo "pr_created=true" >> $GITHUB_ENV
+              echo "Created PR #$PR_NUMBER: $PR_URL"
+            else
+              echo "PR already exists: #$EXISTING_PR"
+              echo "pr_number=$EXISTING_PR" >> $GITHUB_ENV
+              echo "pr_created=false" >> $GITHUB_ENV
+            fi
           fi
-
-          # Build recommendations
-          RECOMMENDATIONS_FILE=$(mktemp)
-          echo "**Best Practices:**" > "$RECOMMENDATIONS_FILE"
-          echo "" >> "$RECOMMENDATIONS_FILE"
-          echo "1. **Pin to specific versions** - Use \`@v1.2.3\` instead of \`@v1\` or \`@main\`" >> "$RECOMMENDATIONS_FILE"
-          echo "2. **Keep actions updated** - Regularly update to latest stable versions" >> "$RECOMMENDATIONS_FILE"
-          echo "3. **Review security advisories** - Check for known vulnerabilities in actions" >> "$RECOMMENDATIONS_FILE"
-          echo "4. **Standardize versions** - Use same version across all repositories when possible" >> "$RECOMMENDATIONS_FILE"
-          echo "5. **Audit third-party actions** - Review code of community actions before use" >> "$RECOMMENDATIONS_FILE"
-          echo "" >> "$RECOMMENDATIONS_FILE"
-
-          # Check for outdated version patterns
-          if grep -q "@v[0-9]$" "$ACTIONS_LIST"; then
-            echo "⚠️ **Warning:** Some actions use major version tags (\`@v1\`, \`@v2\`) which auto-update. Consider pinning to specific versions." >> "$RECOMMENDATIONS_FILE"
-          fi
-
-          # Create issue body from template
-          ISSUE_FILE=$(mktemp)
-          cp github-repo-standards/.github/ISSUE_TEMPLATE_ACTIONS_USAGE.md "$ISSUE_FILE"
-
-          # Replace placeholders
-          sed -i "s|{{DATE}}|$DATE|g" "$ISSUE_FILE"
-          sed -i "s|{{TIME}}|$TIME|g" "$ISSUE_FILE"
-          sed -i "s|{{TOTAL_REPOS}}|$TOTAL_REPOS|g" "$ISSUE_FILE"
-          sed -i "s|{{TOTAL_WORKFLOWS}}|$TOTAL_WORKFLOWS|g" "$ISSUE_FILE"
-          sed -i "s|{{TOTAL_UNIQUE_ACTIONS}}|$TOTAL_UNIQUE_ACTIONS|g" "$ISSUE_FILE"
-
-          # Replace multiline placeholders
-          awk -v file="$ACTIONS_SUMMARY_FILE" '/{{ACTIONS_SUMMARY}}/ {while((getline line < file) > 0) print line; close(file); next} {print}' "$ISSUE_FILE" > "$ISSUE_FILE.tmp" && mv "$ISSUE_FILE.tmp" "$ISSUE_FILE"
-          awk -v file="$TOP_ACTIONS_FILE" '/{{TOP_ACTIONS}}/ {while((getline line < file) > 0) print line; close(file); next} {print}' "$ISSUE_FILE" > "$ISSUE_FILE.tmp" && mv "$ISSUE_FILE.tmp" "$ISSUE_FILE"
-          awk -v file="$VERSION_ANALYSIS_FILE" '/{{VERSION_ANALYSIS}}/ {while((getline line < file) > 0) print line; close(file); next} {print}' "$ISSUE_FILE" > "$ISSUE_FILE.tmp" && mv "$ISSUE_FILE.tmp" "$ISSUE_FILE"
-          awk -v file="$ACTIONS_BY_REPO_FILE" '/{{ACTIONS_BY_REPO}}/ {while((getline line < file) > 0) print line; close(file); next} {print}' "$ISSUE_FILE" > "$ISSUE_FILE.tmp" && mv "$ISSUE_FILE.tmp" "$ISSUE_FILE"
-          awk -v file="$RECOMMENDATIONS_FILE" '/{{RECOMMENDATIONS}}/ {while((getline line < file) > 0) print line; close(file); next} {print}' "$ISSUE_FILE" > "$ISSUE_FILE.tmp" && mv "$ISSUE_FILE.tmp" "$ISSUE_FILE"
-
-          # Create labels if they don't exist
-          gh label create actions-usage --description "GitHub Actions usage tracking" --color "2ea44f" --repo "labrats-work/github-repo-standards" 2>/dev/null || true
-
-          # Check if actions usage issue already exists (open issues only)
-          EXISTING_ISSUE=$(gh issue list --repo "labrats-work/github-repo-standards" --label "actions-usage" --state open --json number --jq '.[0].number // ""')
-
-          if [ -n "$EXISTING_ISSUE" ]; then
-            echo "Closing previous actions usage issue (#$EXISTING_ISSUE)"
-            gh issue close "$EXISTING_ISSUE" \
-              --repo "labrats-work/github-repo-standards" \
-              --comment "Superseded by new actions usage report." || echo "Failed to close previous issue"
-          fi
-
-          echo "Creating actions usage report issue"
-          gh issue create \
-            --repo "labrats-work/github-repo-standards" \
-            --title "🔌 GitHub Actions Usage Report (${DATE})" \
-            --label "actions-usage" \
-            --label "automation" \
-            --body-file "$ISSUE_FILE" || echo "Failed to create actions usage issue"
-
-          # Cleanup
-          rm -f "$ACTIONS_LIST" "$ACTIONS_COUNT" "$ACTIONS_BY_REPO_FILE" "$ACTIONS_SUMMARY_FILE" "$TOP_ACTIONS_FILE" "$VERSION_ANALYSIS_FILE" "$RECOMMENDATIONS_FILE" "$ISSUE_FILE"
         env:
-          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+          GH_TOKEN: ${{ steps.internal-automation-token.outputs.token }}
+
+      - name: Approve and merge compliance reports PR
+        if: env.pr_number != ''
+        run: |
+          echo "Approving and merging PR #${{ env.pr_number }}"
+
+          # Approve the PR
+          gh pr review ${{ env.pr_number }} --approve --body "Automated approval for compliance reports" || echo "Failed to approve PR (may already be approved)"
+
+          # Merge the PR
+          gh pr merge ${{ env.pr_number }} --squash --delete-branch || echo "Failed to merge PR"
+        env:
+          GH_TOKEN: ${{ steps.internal-automation-token.outputs.token }}
