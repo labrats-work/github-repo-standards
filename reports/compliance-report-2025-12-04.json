@@ -1,0 +1,5060 @@
+{
+  "generated": "2025-12-04T17:18:05Z",
+  "repositories": [
+{"repository":"action-ansible","path":"/home/runner/work/labrats-compliance/labrats-compliance/repos/action-ansible","compliance_score":15,"tier":"🔴 Critical Issues","passed":2,"failed":14,"total_score":12,"max_score":76,"checks":[
+  {
+    "script": "check-adr-pattern.sh",
+    "priority": "MEDIUM",
+    "result": {
+      "check_id": "COMP-009",
+      "name": "ADR Pattern",
+      "status": "fail",
+      "message": "ADR directory not found (docs/adr/)"
+    }
+  },
+  {
+    "script": "check-adr-quality.sh",
+    "priority": "MEDIUM",
+    "result": {
+      "check_id": "COMP-014",
+      "name": "ADR Quality",
+      "status": "skip",
+      "message": "ADR directory not found (checked by COMP-009)"
+    }
+  },
+  {
+    "script": "check-branch-protection.sh",
+    "priority": "HIGH",
+    "result": {
+      "check_id": "COMP-016",
+      "name": "Branch Protection",
+      "status": "fail",
+      "message": "Unable to check branch protection (API error)"
+    }
+  },
+  {
+    "script": "check-claude-config.sh",
+    "priority": "MEDIUM",
+    "result": {
+      "check_id": "COMP-010",
+      "name": ".claude/ Configuration",
+      "status": "fail",
+      "message": ".claude/ directory not found"
+    }
+  },
+  {
+    "script": "check-claude-md-exists.sh",
+    "priority": "CRITICAL",
+    "result": {
+      "check_id": "COMP-004",
+      "name": "CLAUDE.md Exists",
+      "status": "fail",
+      "message": "CLAUDE.md not found in repository root"
+    }
+  },
+  {
+    "script": "check-contributing.sh",
+    "priority": "LOW",
+    "result": {
+      "check_id": "COMP-011",
+      "name": "CONTRIBUTING.md",
+      "status": "fail",
+      "message": "CONTRIBUTING.md not found"
+    }
+  },
+  {
+    "script": "check-deprecated-actions.sh",
+    "priority": "HIGH",
+    "result": {
+      "check_id": "COMP-015",
+      "name": "Deprecated Actions",
+      "status": "fail",
+      "message": "Found 3 deprecated action(s): actions/checkout@v3 in dev-build.yml, actions/checkout@v3 in test-action.yml, actions/checkout@v3 in main-build.yml"
+    }
+  },
+  {
+    "script": "check-docs-directory.sh",
+    "priority": "HIGH",
+    "result": {
+      "check_id": "COMP-006",
+      "name": "docs/ Directory",
+      "status": "fail",
+      "message": "docs/ directory not found"
+    }
+  },
+  {
+    "script": "check-gitignore-exists.sh",
+    "priority": "CRITICAL",
+    "result": {
+      "check_id": "COMP-003",
+      "name": ".gitignore Exists",
+      "status": "fail",
+      "message": ".gitignore not found in repository root"
+    }
+  },
+  {
+    "script": "check-issue-templates.sh",
+    "priority": "MEDIUM",
+    "result": {
+      "check_id": "COMP-008",
+      "name": "Issue Templates",
+      "status": "fail",
+      "message": "No issue templates found (.github/ISSUE_TEMPLATE/ not found)"
+    }
+  },
+  {
+    "script": "check-license-exists.sh",
+    "priority": "CRITICAL",
+    "result": {
+      "check_id": "COMP-002",
+      "name": "LICENSE File Exists",
+      "status": "fail",
+      "message": "LICENSE file not found (checked LICENSE, LICENSE.md, LICENSE.txt, LICENCE)"
+    }
+  },
+  {
+    "script": "check-mkdocs.sh",
+    "priority": "LOW",
+    "result": {
+      "check_id": "COMP-013",
+      "name": "MkDocs Configuration",
+      "status": "fail",
+      "message": "mkdocs.yml not found"
+    }
+  },
+  {
+    "script": "check-readme-exists.sh",
+    "priority": "CRITICAL",
+    "result": {
+      "check_id": "COMP-001",
+      "name": "README.md Exists",
+      "status": "pass",
+      "message": "README.md found"
+    }
+  },
+  {
+    "script": "check-readme-structure.sh",
+    "priority": "HIGH",
+    "result": {
+      "check_id": "COMP-005",
+      "name": "README Structure",
+      "status": "fail",
+      "message": "README missing required sections: Purpose,Quick Start,Structure"
+    }
+  },
+  {
+    "script": "check-repo-settings.sh",
+    "priority": "HIGH",
+    "result": {
+      "check_id": "COMP-017",
+      "name": "Repository Settings",
+      "status": "fail",
+      "message": "Unable to fetch repository information (API error)"
+    }
+  },
+  {
+    "script": "check-security.sh",
+    "priority": "LOW",
+    "result": {
+      "check_id": "COMP-012",
+      "name": "SECURITY.md",
+      "status": "fail",
+      "message": "SECURITY.md not found"
+    }
+  }
+]}
+,
+{"repository":"action-terraform","path":"/home/runner/work/labrats-compliance/labrats-compliance/repos/action-terraform","compliance_score":15,"tier":"🔴 Critical Issues","passed":2,"failed":14,"total_score":12,"max_score":76,"checks":[
+  {
+    "script": "check-adr-pattern.sh",
+    "priority": "MEDIUM",
+    "result": {
+      "check_id": "COMP-009",
+      "name": "ADR Pattern",
+      "status": "fail",
+      "message": "ADR directory not found (docs/adr/)"
+    }
+  },
+  {
+    "script": "check-adr-quality.sh",
+    "priority": "MEDIUM",
+    "result": {
+      "check_id": "COMP-014",
+      "name": "ADR Quality",
+      "status": "skip",
+      "message": "ADR directory not found (checked by COMP-009)"
+    }
+  },
+  {
+    "script": "check-branch-protection.sh",
+    "priority": "HIGH",
+    "result": {
+      "check_id": "COMP-016",
+      "name": "Branch Protection",
+      "status": "fail",
+      "message": "Unable to check branch protection (API error)"
+    }
+  },
+  {
+    "script": "check-claude-config.sh",
+    "priority": "MEDIUM",
+    "result": {
+      "check_id": "COMP-010",
+      "name": ".claude/ Configuration",
+      "status": "fail",
+      "message": ".claude/ directory not found"
+    }
+  },
+  {
+    "script": "check-claude-md-exists.sh",
+    "priority": "CRITICAL",
+    "result": {
+      "check_id": "COMP-004",
+      "name": "CLAUDE.md Exists",
+      "status": "fail",
+      "message": "CLAUDE.md not found in repository root"
+    }
+  },
+  {
+    "script": "check-contributing.sh",
+    "priority": "LOW",
+    "result": {
+      "check_id": "COMP-011",
+      "name": "CONTRIBUTING.md",
+      "status": "fail",
+      "message": "CONTRIBUTING.md not found"
+    }
+  },
+  {
+    "script": "check-deprecated-actions.sh",
+    "priority": "HIGH",
+    "result": {
+      "check_id": "COMP-015",
+      "name": "Deprecated Actions",
+      "status": "fail",
+      "message": "Found 3 deprecated action(s): actions/checkout@v3 in dev-build.yml, actions/checkout@v3 in test-action.yml, actions/checkout@v3 in main-build.yml"
+    }
+  },
+  {
+    "script": "check-docs-directory.sh",
+    "priority": "HIGH",
+    "result": {
+      "check_id": "COMP-006",
+      "name": "docs/ Directory",
+      "status": "fail",
+      "message": "docs/ directory not found"
+    }
+  },
+  {
+    "script": "check-gitignore-exists.sh",
+    "priority": "CRITICAL",
+    "result": {
+      "check_id": "COMP-003",
+      "name": ".gitignore Exists",
+      "status": "fail",
+      "message": ".gitignore not found in repository root"
+    }
+  },
+  {
+    "script": "check-issue-templates.sh",
+    "priority": "MEDIUM",
+    "result": {
+      "check_id": "COMP-008",
+      "name": "Issue Templates",
+      "status": "fail",
+      "message": "No issue templates found (.github/ISSUE_TEMPLATE/ not found)"
+    }
+  },
+  {
+    "script": "check-license-exists.sh",
+    "priority": "CRITICAL",
+    "result": {
+      "check_id": "COMP-002",
+      "name": "LICENSE File Exists",
+      "status": "fail",
+      "message": "LICENSE file not found (checked LICENSE, LICENSE.md, LICENSE.txt, LICENCE)"
+    }
+  },
+  {
+    "script": "check-mkdocs.sh",
+    "priority": "LOW",
+    "result": {
+      "check_id": "COMP-013",
+      "name": "MkDocs Configuration",
+      "status": "fail",
+      "message": "mkdocs.yml not found"
+    }
+  },
+  {
+    "script": "check-readme-exists.sh",
+    "priority": "CRITICAL",
+    "result": {
+      "check_id": "COMP-001",
+      "name": "README.md Exists",
+      "status": "pass",
+      "message": "README.md found"
+    }
+  },
+  {
+    "script": "check-readme-structure.sh",
+    "priority": "HIGH",
+    "result": {
+      "check_id": "COMP-005",
+      "name": "README Structure",
+      "status": "fail",
+      "message": "README missing required sections: Purpose,Quick Start,Structure"
+    }
+  },
+  {
+    "script": "check-repo-settings.sh",
+    "priority": "HIGH",
+    "result": {
+      "check_id": "COMP-017",
+      "name": "Repository Settings",
+      "status": "fail",
+      "message": "Unable to fetch repository information (API error)"
+    }
+  },
+  {
+    "script": "check-security.sh",
+    "priority": "LOW",
+    "result": {
+      "check_id": "COMP-012",
+      "name": "SECURITY.md",
+      "status": "fail",
+      "message": "SECURITY.md not found"
+    }
+  }
+]}
+,
+{"repository":"actions.common","path":"/home/runner/work/labrats-compliance/labrats-compliance/repos/actions.common","compliance_score":15,"tier":"🔴 Critical Issues","passed":3,"failed":13,"total_score":12,"max_score":76,"checks":[
+  {
+    "script": "check-adr-pattern.sh",
+    "priority": "MEDIUM",
+    "result": {
+      "check_id": "COMP-009",
+      "name": "ADR Pattern",
+      "status": "fail",
+      "message": "ADR directory not found (docs/adr/)"
+    }
+  },
+  {
+    "script": "check-adr-quality.sh",
+    "priority": "MEDIUM",
+    "result": {
+      "check_id": "COMP-014",
+      "name": "ADR Quality",
+      "status": "skip",
+      "message": "ADR directory not found (checked by COMP-009)"
+    }
+  },
+  {
+    "script": "check-branch-protection.sh",
+    "priority": "HIGH",
+    "result": {
+      "check_id": "COMP-016",
+      "name": "Branch Protection",
+      "status": "skip",
+      "message": "Could not parse GitHub repository from remote URL"
+    }
+  },
+  {
+    "script": "check-claude-config.sh",
+    "priority": "MEDIUM",
+    "result": {
+      "check_id": "COMP-010",
+      "name": ".claude/ Configuration",
+      "status": "fail",
+      "message": ".claude/ directory not found"
+    }
+  },
+  {
+    "script": "check-claude-md-exists.sh",
+    "priority": "CRITICAL",
+    "result": {
+      "check_id": "COMP-004",
+      "name": "CLAUDE.md Exists",
+      "status": "fail",
+      "message": "CLAUDE.md not found in repository root"
+    }
+  },
+  {
+    "script": "check-contributing.sh",
+    "priority": "LOW",
+    "result": {
+      "check_id": "COMP-011",
+      "name": "CONTRIBUTING.md",
+      "status": "fail",
+      "message": "CONTRIBUTING.md not found"
+    }
+  },
+  {
+    "script": "check-deprecated-actions.sh",
+    "priority": "HIGH",
+    "result": {
+      "check_id": "COMP-015",
+      "name": "Deprecated Actions",
+      "status": "fail",
+      "message": "Found 2 deprecated action(s): actions/checkout@v3 in repo-info.yml, actions/checkout@v3 in verify-contrib-file.yml"
+    }
+  },
+  {
+    "script": "check-docs-directory.sh",
+    "priority": "HIGH",
+    "result": {
+      "check_id": "COMP-006",
+      "name": "docs/ Directory",
+      "status": "fail",
+      "message": "docs/ directory not found"
+    }
+  },
+  {
+    "script": "check-gitignore-exists.sh",
+    "priority": "CRITICAL",
+    "result": {
+      "check_id": "COMP-003",
+      "name": ".gitignore Exists",
+      "status": "fail",
+      "message": ".gitignore not found in repository root"
+    }
+  },
+  {
+    "script": "check-issue-templates.sh",
+    "priority": "MEDIUM",
+    "result": {
+      "check_id": "COMP-008",
+      "name": "Issue Templates",
+      "status": "fail",
+      "message": "No issue templates found (.github/ISSUE_TEMPLATE/ not found)"
+    }
+  },
+  {
+    "script": "check-license-exists.sh",
+    "priority": "CRITICAL",
+    "result": {
+      "check_id": "COMP-002",
+      "name": "LICENSE File Exists",
+      "status": "fail",
+      "message": "LICENSE file not found (checked LICENSE, LICENSE.md, LICENSE.txt, LICENCE)"
+    }
+  },
+  {
+    "script": "check-mkdocs.sh",
+    "priority": "LOW",
+    "result": {
+      "check_id": "COMP-013",
+      "name": "MkDocs Configuration",
+      "status": "fail",
+      "message": "mkdocs.yml not found"
+    }
+  },
+  {
+    "script": "check-readme-exists.sh",
+    "priority": "CRITICAL",
+    "result": {
+      "check_id": "COMP-001",
+      "name": "README.md Exists",
+      "status": "fail",
+      "message": "README.md not found in repository root"
+    }
+  },
+  {
+    "script": "check-readme-structure.sh",
+    "priority": "HIGH",
+    "result": {
+      "check_id": "COMP-005",
+      "name": "README Structure",
+      "status": "fail",
+      "message": "README.md not found, cannot check structure"
+    }
+  },
+  {
+    "script": "check-repo-settings.sh",
+    "priority": "HIGH",
+    "result": {
+      "check_id": "COMP-017",
+      "name": "Repository Settings",
+      "status": "skip",
+      "message": "Could not parse GitHub repository from remote URL"
+    }
+  },
+  {
+    "script": "check-security.sh",
+    "priority": "LOW",
+    "result": {
+      "check_id": "COMP-012",
+      "name": "SECURITY.md",
+      "status": "fail",
+      "message": "SECURITY.md not found"
+    }
+  }
+]}
+,
+{"repository":"actions.terraform","path":"/home/runner/work/labrats-compliance/labrats-compliance/repos/actions.terraform","compliance_score":15,"tier":"🔴 Critical Issues","passed":3,"failed":13,"total_score":12,"max_score":76,"checks":[
+  {
+    "script": "check-adr-pattern.sh",
+    "priority": "MEDIUM",
+    "result": {
+      "check_id": "COMP-009",
+      "name": "ADR Pattern",
+      "status": "fail",
+      "message": "ADR directory not found (docs/adr/)"
+    }
+  },
+  {
+    "script": "check-adr-quality.sh",
+    "priority": "MEDIUM",
+    "result": {
+      "check_id": "COMP-014",
+      "name": "ADR Quality",
+      "status": "skip",
+      "message": "ADR directory not found (checked by COMP-009)"
+    }
+  },
+  {
+    "script": "check-branch-protection.sh",
+    "priority": "HIGH",
+    "result": {
+      "check_id": "COMP-016",
+      "name": "Branch Protection",
+      "status": "skip",
+      "message": "Could not parse GitHub repository from remote URL"
+    }
+  },
+  {
+    "script": "check-claude-config.sh",
+    "priority": "MEDIUM",
+    "result": {
+      "check_id": "COMP-010",
+      "name": ".claude/ Configuration",
+      "status": "fail",
+      "message": ".claude/ directory not found"
+    }
+  },
+  {
+    "script": "check-claude-md-exists.sh",
+    "priority": "CRITICAL",
+    "result": {
+      "check_id": "COMP-004",
+      "name": "CLAUDE.md Exists",
+      "status": "fail",
+      "message": "CLAUDE.md not found in repository root"
+    }
+  },
+  {
+    "script": "check-contributing.sh",
+    "priority": "LOW",
+    "result": {
+      "check_id": "COMP-011",
+      "name": "CONTRIBUTING.md",
+      "status": "fail",
+      "message": "CONTRIBUTING.md not found"
+    }
+  },
+  {
+    "script": "check-deprecated-actions.sh",
+    "priority": "HIGH",
+    "result": {
+      "check_id": "COMP-015",
+      "name": "Deprecated Actions",
+      "status": "skip",
+      "message": "No workflows directory found"
+    }
+  },
+  {
+    "script": "check-docs-directory.sh",
+    "priority": "HIGH",
+    "result": {
+      "check_id": "COMP-006",
+      "name": "docs/ Directory",
+      "status": "fail",
+      "message": "docs/ directory not found"
+    }
+  },
+  {
+    "script": "check-gitignore-exists.sh",
+    "priority": "CRITICAL",
+    "result": {
+      "check_id": "COMP-003",
+      "name": ".gitignore Exists",
+      "status": "fail",
+      "message": ".gitignore not found in repository root"
+    }
+  },
+  {
+    "script": "check-issue-templates.sh",
+    "priority": "MEDIUM",
+    "result": {
+      "check_id": "COMP-008",
+      "name": "Issue Templates",
+      "status": "fail",
+      "message": "No issue templates found (.github/ISSUE_TEMPLATE/ not found)"
+    }
+  },
+  {
+    "script": "check-license-exists.sh",
+    "priority": "CRITICAL",
+    "result": {
+      "check_id": "COMP-002",
+      "name": "LICENSE File Exists",
+      "status": "fail",
+      "message": "LICENSE file not found (checked LICENSE, LICENSE.md, LICENSE.txt, LICENCE)"
+    }
+  },
+  {
+    "script": "check-mkdocs.sh",
+    "priority": "LOW",
+    "result": {
+      "check_id": "COMP-013",
+      "name": "MkDocs Configuration",
+      "status": "fail",
+      "message": "mkdocs.yml not found"
+    }
+  },
+  {
+    "script": "check-readme-exists.sh",
+    "priority": "CRITICAL",
+    "result": {
+      "check_id": "COMP-001",
+      "name": "README.md Exists",
+      "status": "fail",
+      "message": "README.md not found in repository root"
+    }
+  },
+  {
+    "script": "check-readme-structure.sh",
+    "priority": "HIGH",
+    "result": {
+      "check_id": "COMP-005",
+      "name": "README Structure",
+      "status": "fail",
+      "message": "README.md not found, cannot check structure"
+    }
+  },
+  {
+    "script": "check-repo-settings.sh",
+    "priority": "HIGH",
+    "result": {
+      "check_id": "COMP-017",
+      "name": "Repository Settings",
+      "status": "skip",
+      "message": "Could not parse GitHub repository from remote URL"
+    }
+  },
+  {
+    "script": "check-security.sh",
+    "priority": "LOW",
+    "result": {
+      "check_id": "COMP-012",
+      "name": "SECURITY.md",
+      "status": "fail",
+      "message": "SECURITY.md not found"
+    }
+  }
+]}
+,
+{"repository":"awesome.mikrotik","path":"/home/runner/work/labrats-compliance/labrats-compliance/repos/awesome.mikrotik","compliance_score":35,"tier":"🔴 Critical Issues","passed":5,"failed":11,"total_score":27,"max_score":76,"checks":[]}
+,
+{"repository":"bor.infra.network","path":"/home/runner/work/labrats-compliance/labrats-compliance/repos/bor.infra.network","compliance_score":69,"tier":"🟠 Needs Improvement","passed":9,"failed":7,"total_score":53,"max_score":76,"checks":[
+  {
+    "script": "check-adr-pattern.sh",
+    "priority": "MEDIUM",
+    "result": {
+      "check_id": "COMP-009",
+      "name": "ADR Pattern",
+      "status": "fail",
+      "message": "ADR directory not found (docs/adr/)"
+    }
+  },
+  {
+    "script": "check-adr-quality.sh",
+    "priority": "MEDIUM",
+    "result": {
+      "check_id": "COMP-014",
+      "name": "ADR Quality",
+      "status": "skip",
+      "message": "ADR directory not found (checked by COMP-009)"
+    }
+  },
+  {
+    "script": "check-branch-protection.sh",
+    "priority": "HIGH",
+    "result": {
+      "check_id": "COMP-016",
+      "name": "Branch Protection",
+      "status": "skip",
+      "message": "Could not parse GitHub repository from remote URL"
+    }
+  },
+  {
+    "script": "check-claude-config.sh",
+    "priority": "MEDIUM",
+    "result": {
+      "check_id": "COMP-010",
+      "name": ".claude/ Configuration",
+      "status": "fail",
+      "message": ".claude/ directory not found"
+    }
+  },
+  {
+    "script": "check-claude-md-exists.sh",
+    "priority": "CRITICAL",
+    "result": {
+      "check_id": "COMP-004",
+      "name": "CLAUDE.md Exists",
+      "status": "pass",
+      "message": "CLAUDE.md found with content (247 lines)"
+    }
+  },
+  {
+    "script": "check-contributing.sh",
+    "priority": "LOW",
+    "result": {
+      "check_id": "COMP-011",
+      "name": "CONTRIBUTING.md",
+      "status": "fail",
+      "message": "CONTRIBUTING.md not found"
+    }
+  },
+  {
+    "script": "check-deprecated-actions.sh",
+    "priority": "HIGH",
+    "result": {
+      "check_id": "COMP-015",
+      "name": "Deprecated Actions",
+      "status": "pass",
+      "message": "No deprecated actions found in 4 workflow(s)"
+    }
+  },
+  {
+    "script": "check-docs-directory.sh",
+    "priority": "HIGH",
+    "result": {
+      "check_id": "COMP-006",
+      "name": "docs/ Directory",
+      "status": "pass",
+      "message": "docs/ directory exists with README.md and 9 markdown files"
+    }
+  },
+  {
+    "script": "check-gitignore-exists.sh",
+    "priority": "CRITICAL",
+    "result": {
+      "check_id": "COMP-003",
+      "name": ".gitignore Exists",
+      "status": "pass",
+      "message": ".gitignore found and not empty"
+    }
+  },
+  {
+    "script": "check-issue-templates.sh",
+    "priority": "MEDIUM",
+    "result": {
+      "check_id": "COMP-008",
+      "name": "Issue Templates",
+      "status": "fail",
+      "message": "No issue templates found (.github/ISSUE_TEMPLATE/ not found)"
+    }
+  },
+  {
+    "script": "check-license-exists.sh",
+    "priority": "CRITICAL",
+    "result": {
+      "check_id": "COMP-002",
+      "name": "LICENSE File Exists",
+      "status": "fail",
+      "message": "LICENSE file not found (checked LICENSE, LICENSE.md, LICENSE.txt, LICENCE)"
+    }
+  },
+  {
+    "script": "check-mkdocs.sh",
+    "priority": "LOW",
+    "result": {
+      "check_id": "COMP-013",
+      "name": "MkDocs Configuration",
+      "status": "pass",
+      "message": "MkDocs configured with 9 markdown files"
+    }
+  },
+  {
+    "script": "check-readme-exists.sh",
+    "priority": "CRITICAL",
+    "result": {
+      "check_id": "COMP-001",
+      "name": "README.md Exists",
+      "status": "pass",
+      "message": "README.md found"
+    }
+  },
+  {
+    "script": "check-readme-structure.sh",
+    "priority": "HIGH",
+    "result": {
+      "check_id": "COMP-005",
+      "name": "README Structure",
+      "status": "fail",
+      "message": "README missing required sections: Purpose,Quick Start"
+    }
+  },
+  {
+    "script": "check-repo-settings.sh",
+    "priority": "HIGH",
+    "result": {
+      "check_id": "COMP-017",
+      "name": "Repository Settings",
+      "status": "skip",
+      "message": "Could not parse GitHub repository from remote URL"
+    }
+  },
+  {
+    "script": "check-security.sh",
+    "priority": "LOW",
+    "result": {
+      "check_id": "COMP-012",
+      "name": "SECURITY.md",
+      "status": "fail",
+      "message": "SECURITY.md not found"
+    }
+  }
+]}
+,
+{"repository":"bor.infra.proxmox","path":"/home/runner/work/labrats-compliance/labrats-compliance/repos/bor.infra.proxmox","compliance_score":42,"tier":"🔴 Critical Issues","passed":5,"failed":11,"total_score":32,"max_score":76,"checks":[
+  {
+    "script": "check-adr-pattern.sh",
+    "priority": "MEDIUM",
+    "result": {
+      "check_id": "COMP-009",
+      "name": "ADR Pattern",
+      "status": "fail",
+      "message": "ADR directory not found (docs/adr/)"
+    }
+  },
+  {
+    "script": "check-adr-quality.sh",
+    "priority": "MEDIUM",
+    "result": {
+      "check_id": "COMP-014",
+      "name": "ADR Quality",
+      "status": "skip",
+      "message": "ADR directory not found (checked by COMP-009)"
+    }
+  },
+  {
+    "script": "check-branch-protection.sh",
+    "priority": "HIGH",
+    "result": {
+      "check_id": "COMP-016",
+      "name": "Branch Protection",
+      "status": "skip",
+      "message": "Could not parse GitHub repository from remote URL"
+    }
+  },
+  {
+    "script": "check-claude-config.sh",
+    "priority": "MEDIUM",
+    "result": {
+      "check_id": "COMP-010",
+      "name": ".claude/ Configuration",
+      "status": "fail",
+      "message": ".claude/ directory not found"
+    }
+  },
+  {
+    "script": "check-claude-md-exists.sh",
+    "priority": "CRITICAL",
+    "result": {
+      "check_id": "COMP-004",
+      "name": "CLAUDE.md Exists",
+      "status": "fail",
+      "message": "CLAUDE.md not found in repository root"
+    }
+  },
+  {
+    "script": "check-contributing.sh",
+    "priority": "LOW",
+    "result": {
+      "check_id": "COMP-011",
+      "name": "CONTRIBUTING.md",
+      "status": "fail",
+      "message": "CONTRIBUTING.md not found"
+    }
+  },
+  {
+    "script": "check-deprecated-actions.sh",
+    "priority": "HIGH",
+    "result": {
+      "check_id": "COMP-015",
+      "name": "Deprecated Actions",
+      "status": "skip",
+      "message": "No workflows directory found"
+    }
+  },
+  {
+    "script": "check-docs-directory.sh",
+    "priority": "HIGH",
+    "result": {
+      "check_id": "COMP-006",
+      "name": "docs/ Directory",
+      "status": "fail",
+      "message": "docs/ directory not found"
+    }
+  },
+  {
+    "script": "check-gitignore-exists.sh",
+    "priority": "CRITICAL",
+    "result": {
+      "check_id": "COMP-003",
+      "name": ".gitignore Exists",
+      "status": "pass",
+      "message": ".gitignore found and not empty"
+    }
+  },
+  {
+    "script": "check-issue-templates.sh",
+    "priority": "MEDIUM",
+    "result": {
+      "check_id": "COMP-008",
+      "name": "Issue Templates",
+      "status": "fail",
+      "message": "No issue templates found (.github/ISSUE_TEMPLATE/ not found)"
+    }
+  },
+  {
+    "script": "check-license-exists.sh",
+    "priority": "CRITICAL",
+    "result": {
+      "check_id": "COMP-002",
+      "name": "LICENSE File Exists",
+      "status": "pass",
+      "message": "LICENSE file found"
+    }
+  },
+  {
+    "script": "check-mkdocs.sh",
+    "priority": "LOW",
+    "result": {
+      "check_id": "COMP-013",
+      "name": "MkDocs Configuration",
+      "status": "fail",
+      "message": "mkdocs.yml not found"
+    }
+  },
+  {
+    "script": "check-readme-exists.sh",
+    "priority": "CRITICAL",
+    "result": {
+      "check_id": "COMP-001",
+      "name": "README.md Exists",
+      "status": "fail",
+      "message": "README.md not found in repository root"
+    }
+  },
+  {
+    "script": "check-readme-structure.sh",
+    "priority": "HIGH",
+    "result": {
+      "check_id": "COMP-005",
+      "name": "README Structure",
+      "status": "fail",
+      "message": "README.md not found, cannot check structure"
+    }
+  },
+  {
+    "script": "check-repo-settings.sh",
+    "priority": "HIGH",
+    "result": {
+      "check_id": "COMP-017",
+      "name": "Repository Settings",
+      "status": "skip",
+      "message": "Could not parse GitHub repository from remote URL"
+    }
+  },
+  {
+    "script": "check-security.sh",
+    "priority": "LOW",
+    "result": {
+      "check_id": "COMP-012",
+      "name": "SECURITY.md",
+      "status": "fail",
+      "message": "SECURITY.md not found"
+    }
+  }
+]}
+,
+{"repository":"github-app-tools","path":"/home/runner/work/labrats-compliance/labrats-compliance/repos/github-app-tools","compliance_score":81,"tier":"🟡 Good","passed":11,"failed":4,"total_score":61,"max_score":75,"checks":[
+  {
+    "script": "check-adr-pattern.sh",
+    "priority": "MEDIUM",
+    "result": {
+      "check_id": "COMP-009",
+      "name": "ADR Pattern",
+      "status": "fail",
+      "message": "docs/adr/ exists but contains no ADR files"
+    }
+  },
+  {
+    "script": "check-adr-quality.sh",
+    "priority": "MEDIUM",
+    "result": {
+      "check_id": "COMP-014",
+      "name": "ADR Quality",
+      "status": "fail",
+      "message": "1 ADR(s) with only 57% avg quality. ADRs below standard: ADR-001-manifest-flow.md: 4/7 sections"
+    }
+  },
+  {
+    "script": "check-branch-protection.sh",
+    "priority": "HIGH",
+    "result": {
+      "check_id": "COMP-016",
+      "name": "Branch Protection",
+      "status": "fail",
+      "message": "Unable to check branch protection (API error)"
+    }
+  },
+  {
+    "script": "check-claude-config.sh",
+    "priority": "MEDIUM",
+    "result": {
+      "check_id": "COMP-010",
+      "name": ".claude/ Configuration",
+      "status": "pass",
+      "message": ".claude/ directory exists with 1 file(s)"
+    }
+  },
+  {
+    "script": "check-claude-md-exists.sh",
+    "priority": "CRITICAL",
+    "result": {
+      "check_id": "COMP-004",
+      "name": "CLAUDE.md Exists",
+      "status": "pass",
+      "message": "CLAUDE.md found with content (275 lines)"
+    }
+  },
+  {
+    "script": "check-contributing.sh",
+    "priority": "LOW",
+    "result": {
+      "check_id": "COMP-011",
+      "name": "CONTRIBUTING.md",
+      "status": "pass",
+      "message": "CONTRIBUTING.md found"
+    }
+  },
+  {
+    "script": "check-deprecated-actions.sh",
+    "priority": "HIGH",
+    "result": {
+      "check_id": "COMP-015",
+      "name": "Deprecated Actions",
+      "status": "pass",
+      "message": "No deprecated actions found in 1 workflow(s)"
+    }
+  },
+  {
+    "script": "check-docs-directory.sh",
+    "priority": "HIGH",
+    "result": {
+      "check_id": "COMP-006",
+      "name": "docs/ Directory",
+      "status": "pass",
+      "message": "docs/ directory exists with README.md and 3 markdown files"
+    }
+  },
+  {
+    "script": "check-gitignore-exists.sh",
+    "priority": "CRITICAL",
+    "result": {
+      "check_id": "COMP-003",
+      "name": ".gitignore Exists",
+      "status": "pass",
+      "message": ".gitignore found and not empty"
+    }
+  },
+  {
+    "script": "check-issue-templates.sh",
+    "priority": "MEDIUM",
+    "result": {
+      "check_id": "COMP-008",
+      "name": "Issue Templates",
+      "status": "pass",
+      "message": "Found 2 issue template(s)"
+    }
+  },
+  {
+    "script": "check-license-exists.sh",
+    "priority": "CRITICAL",
+    "result": {
+      "check_id": "COMP-002",
+      "name": "LICENSE File Exists",
+      "status": "pass",
+      "message": "LICENSE file found"
+    }
+  },
+  {
+    "script": "check-mkdocs.sh",
+    "priority": "LOW",
+    "result": {
+      "check_id": "COMP-013",
+      "name": "Skipped",
+      "status": "skip",
+      "message": "Disabled in .compliance.yml"
+    }
+  },
+  {
+    "script": "check-readme-exists.sh",
+    "priority": "CRITICAL",
+    "result": {
+      "check_id": "COMP-001",
+      "name": "README.md Exists",
+      "status": "pass",
+      "message": "README.md found"
+    }
+  },
+  {
+    "script": "check-readme-structure.sh",
+    "priority": "HIGH",
+    "result": {
+      "check_id": "COMP-005",
+      "name": "README Structure",
+      "status": "pass",
+      "message": "README contains all required sections"
+    }
+  },
+  {
+    "script": "check-repo-settings.sh",
+    "priority": "HIGH",
+    "result": {
+      "check_id": "COMP-017",
+      "name": "Repository Settings",
+      "status": "fail",
+      "message": "Unable to fetch repository information (API error)"
+    }
+  },
+  {
+    "script": "check-security.sh",
+    "priority": "LOW",
+    "result": {
+      "check_id": "COMP-012",
+      "name": "SECURITY.md",
+      "status": "pass",
+      "message": "SECURITY.md found"
+    }
+  }
+]}
+,
+{"repository":"github-repo-standards","path":"/home/runner/work/labrats-compliance/labrats-compliance/repos/github-repo-standards","compliance_score":82,"tier":"🟡 Good","passed":11,"failed":5,"total_score":63,"max_score":76,"checks":[
+  {
+    "script": "check-adr-pattern.sh",
+    "priority": "MEDIUM",
+    "result": {
+      "check_id": "COMP-009",
+      "name": "ADR Pattern",
+      "status": "pass",
+      "message": "Found 4 ADR(s) with INDEX.md"
+    }
+  },
+  {
+    "script": "check-adr-quality.sh",
+    "priority": "MEDIUM",
+    "result": {
+      "check_id": "COMP-014",
+      "name": "ADR Quality",
+      "status": "pass",
+      "message": "4 ADR(s) with 67% avg quality (1 below standard: 0000-adr-template.md: 4/7 sections)"
+    }
+  },
+  {
+    "script": "check-branch-protection.sh",
+    "priority": "HIGH",
+    "result": {
+      "check_id": "COMP-016",
+      "name": "Branch Protection",
+      "status": "fail",
+      "message": "Unable to check branch protection (API error)"
+    }
+  },
+  {
+    "script": "check-claude-config.sh",
+    "priority": "MEDIUM",
+    "result": {
+      "check_id": "COMP-010",
+      "name": ".claude/ Configuration",
+      "status": "pass",
+      "message": ".claude/ directory exists with 1 file(s)"
+    }
+  },
+  {
+    "script": "check-claude-md-exists.sh",
+    "priority": "CRITICAL",
+    "result": {
+      "check_id": "COMP-004",
+      "name": "CLAUDE.md Exists",
+      "status": "pass",
+      "message": "CLAUDE.md found with content (204 lines)"
+    }
+  },
+  {
+    "script": "check-contributing.sh",
+    "priority": "LOW",
+    "result": {
+      "check_id": "COMP-011",
+      "name": "CONTRIBUTING.md",
+      "status": "fail",
+      "message": "CONTRIBUTING.md not found"
+    }
+  },
+  {
+    "script": "check-deprecated-actions.sh",
+    "priority": "HIGH",
+    "result": {
+      "check_id": "COMP-015",
+      "name": "Deprecated Actions",
+      "status": "pass",
+      "message": "No deprecated actions found in 1 workflow(s)"
+    }
+  },
+  {
+    "script": "check-docs-directory.sh",
+    "priority": "HIGH",
+    "result": {
+      "check_id": "COMP-006",
+      "name": "docs/ Directory",
+      "status": "pass",
+      "message": "docs/ directory exists with README.md and 7 markdown files"
+    }
+  },
+  {
+    "script": "check-gitignore-exists.sh",
+    "priority": "CRITICAL",
+    "result": {
+      "check_id": "COMP-003",
+      "name": ".gitignore Exists",
+      "status": "pass",
+      "message": ".gitignore found and not empty"
+    }
+  },
+  {
+    "script": "check-issue-templates.sh",
+    "priority": "MEDIUM",
+    "result": {
+      "check_id": "COMP-008",
+      "name": "Issue Templates",
+      "status": "pass",
+      "message": "Found 3 issue template(s)"
+    }
+  },
+  {
+    "script": "check-license-exists.sh",
+    "priority": "CRITICAL",
+    "result": {
+      "check_id": "COMP-002",
+      "name": "LICENSE File Exists",
+      "status": "pass",
+      "message": "LICENSE file found"
+    }
+  },
+  {
+    "script": "check-mkdocs.sh",
+    "priority": "LOW",
+    "result": {
+      "check_id": "COMP-013",
+      "name": "MkDocs Configuration",
+      "status": "fail",
+      "message": "mkdocs.yml not found"
+    }
+  },
+  {
+    "script": "check-readme-exists.sh",
+    "priority": "CRITICAL",
+    "result": {
+      "check_id": "COMP-001",
+      "name": "README.md Exists",
+      "status": "pass",
+      "message": "README.md found"
+    }
+  },
+  {
+    "script": "check-readme-structure.sh",
+    "priority": "HIGH",
+    "result": {
+      "check_id": "COMP-005",
+      "name": "README Structure",
+      "status": "pass",
+      "message": "README contains all required sections"
+    }
+  },
+  {
+    "script": "check-repo-settings.sh",
+    "priority": "HIGH",
+    "result": {
+      "check_id": "COMP-017",
+      "name": "Repository Settings",
+      "status": "fail",
+      "message": "Unable to fetch repository information (API error)"
+    }
+  },
+  {
+    "script": "check-security.sh",
+    "priority": "LOW",
+    "result": {
+      "check_id": "COMP-012",
+      "name": "SECURITY.md",
+      "status": "fail",
+      "message": "SECURITY.md not found"
+    }
+  }
+]}
+,
+{"repository":"infra","path":"/home/runner/work/labrats-compliance/labrats-compliance/repos/infra","compliance_score":35,"tier":"🔴 Critical Issues","passed":4,"failed":12,"total_score":27,"max_score":76,"checks":[
+  {
+    "script": "check-adr-pattern.sh",
+    "priority": "MEDIUM",
+    "result": {
+      "check_id": "COMP-009",
+      "name": "ADR Pattern",
+      "status": "fail",
+      "message": "ADR directory not found (docs/adr/)"
+    }
+  },
+  {
+    "script": "check-adr-quality.sh",
+    "priority": "MEDIUM",
+    "result": {
+      "check_id": "COMP-014",
+      "name": "ADR Quality",
+      "status": "skip",
+      "message": "ADR directory not found (checked by COMP-009)"
+    }
+  },
+  {
+    "script": "check-branch-protection.sh",
+    "priority": "HIGH",
+    "result": {
+      "check_id": "COMP-016",
+      "name": "Branch Protection",
+      "status": "fail",
+      "message": "Unable to check branch protection (API error)"
+    }
+  },
+  {
+    "script": "check-claude-config.sh",
+    "priority": "MEDIUM",
+    "result": {
+      "check_id": "COMP-010",
+      "name": ".claude/ Configuration",
+      "status": "fail",
+      "message": ".claude/ directory not found"
+    }
+  },
+  {
+    "script": "check-claude-md-exists.sh",
+    "priority": "CRITICAL",
+    "result": {
+      "check_id": "COMP-004",
+      "name": "CLAUDE.md Exists",
+      "status": "fail",
+      "message": "CLAUDE.md not found in repository root"
+    }
+  },
+  {
+    "script": "check-contributing.sh",
+    "priority": "LOW",
+    "result": {
+      "check_id": "COMP-011",
+      "name": "CONTRIBUTING.md",
+      "status": "fail",
+      "message": "CONTRIBUTING.md not found"
+    }
+  },
+  {
+    "script": "check-deprecated-actions.sh",
+    "priority": "HIGH",
+    "result": {
+      "check_id": "COMP-015",
+      "name": "Deprecated Actions",
+      "status": "pass",
+      "message": "No deprecated actions found in 2 workflow(s)"
+    }
+  },
+  {
+    "script": "check-docs-directory.sh",
+    "priority": "HIGH",
+    "result": {
+      "check_id": "COMP-006",
+      "name": "docs/ Directory",
+      "status": "fail",
+      "message": "docs/ directory exists but missing README.md"
+    }
+  },
+  {
+    "script": "check-gitignore-exists.sh",
+    "priority": "CRITICAL",
+    "result": {
+      "check_id": "COMP-003",
+      "name": ".gitignore Exists",
+      "status": "pass",
+      "message": ".gitignore found and not empty"
+    }
+  },
+  {
+    "script": "check-issue-templates.sh",
+    "priority": "MEDIUM",
+    "result": {
+      "check_id": "COMP-008",
+      "name": "Issue Templates",
+      "status": "fail",
+      "message": "No issue templates found (.github/ISSUE_TEMPLATE/ not found)"
+    }
+  },
+  {
+    "script": "check-license-exists.sh",
+    "priority": "CRITICAL",
+    "result": {
+      "check_id": "COMP-002",
+      "name": "LICENSE File Exists",
+      "status": "fail",
+      "message": "LICENSE file not found (checked LICENSE, LICENSE.md, LICENSE.txt, LICENCE)"
+    }
+  },
+  {
+    "script": "check-mkdocs.sh",
+    "priority": "LOW",
+    "result": {
+      "check_id": "COMP-013",
+      "name": "MkDocs Configuration",
+      "status": "fail",
+      "message": "mkdocs.yml not found"
+    }
+  },
+  {
+    "script": "check-readme-exists.sh",
+    "priority": "CRITICAL",
+    "result": {
+      "check_id": "COMP-001",
+      "name": "README.md Exists",
+      "status": "pass",
+      "message": "README.md found"
+    }
+  },
+  {
+    "script": "check-readme-structure.sh",
+    "priority": "HIGH",
+    "result": {
+      "check_id": "COMP-005",
+      "name": "README Structure",
+      "status": "fail",
+      "message": "README missing required sections: Purpose,Quick Start,Structure"
+    }
+  },
+  {
+    "script": "check-repo-settings.sh",
+    "priority": "HIGH",
+    "result": {
+      "check_id": "COMP-017",
+      "name": "Repository Settings",
+      "status": "fail",
+      "message": "Unable to fetch repository information (API error)"
+    }
+  },
+  {
+    "script": "check-security.sh",
+    "priority": "LOW",
+    "result": {
+      "check_id": "COMP-012",
+      "name": "SECURITY.md",
+      "status": "fail",
+      "message": "SECURITY.md not found"
+    }
+  }
+]}
+,
+{"repository":"infra.bor.labrats.work","path":"/home/runner/work/labrats-compliance/labrats-compliance/repos/infra.bor.labrats.work","compliance_score":28,"tier":"🔴 Critical Issues","passed":4,"failed":12,"total_score":22,"max_score":76,"checks":[
+  {
+    "script": "check-adr-pattern.sh",
+    "priority": "MEDIUM",
+    "result": {
+      "check_id": "COMP-009",
+      "name": "ADR Pattern",
+      "status": "fail",
+      "message": "ADR directory not found (docs/adr/)"
+    }
+  },
+  {
+    "script": "check-adr-quality.sh",
+    "priority": "MEDIUM",
+    "result": {
+      "check_id": "COMP-014",
+      "name": "ADR Quality",
+      "status": "skip",
+      "message": "ADR directory not found (checked by COMP-009)"
+    }
+  },
+  {
+    "script": "check-branch-protection.sh",
+    "priority": "HIGH",
+    "result": {
+      "check_id": "COMP-016",
+      "name": "Branch Protection",
+      "status": "skip",
+      "message": "Could not parse GitHub repository from remote URL"
+    }
+  },
+  {
+    "script": "check-claude-config.sh",
+    "priority": "MEDIUM",
+    "result": {
+      "check_id": "COMP-010",
+      "name": ".claude/ Configuration",
+      "status": "fail",
+      "message": ".claude/ directory not found"
+    }
+  },
+  {
+    "script": "check-claude-md-exists.sh",
+    "priority": "CRITICAL",
+    "result": {
+      "check_id": "COMP-004",
+      "name": "CLAUDE.md Exists",
+      "status": "fail",
+      "message": "CLAUDE.md not found in repository root"
+    }
+  },
+  {
+    "script": "check-contributing.sh",
+    "priority": "LOW",
+    "result": {
+      "check_id": "COMP-011",
+      "name": "CONTRIBUTING.md",
+      "status": "fail",
+      "message": "CONTRIBUTING.md not found"
+    }
+  },
+  {
+    "script": "check-deprecated-actions.sh",
+    "priority": "HIGH",
+    "result": {
+      "check_id": "COMP-015",
+      "name": "Deprecated Actions",
+      "status": "fail",
+      "message": "Found 3 deprecated action(s): actions/checkout@v3 in kvm002-hardening.yml, actions/checkout@v3 in kvm002-kvm.yml, actions/checkout@v3 in kvm002-common.yml"
+    }
+  },
+  {
+    "script": "check-docs-directory.sh",
+    "priority": "HIGH",
+    "result": {
+      "check_id": "COMP-006",
+      "name": "docs/ Directory",
+      "status": "fail",
+      "message": "docs/ directory not found"
+    }
+  },
+  {
+    "script": "check-gitignore-exists.sh",
+    "priority": "CRITICAL",
+    "result": {
+      "check_id": "COMP-003",
+      "name": ".gitignore Exists",
+      "status": "pass",
+      "message": ".gitignore found and not empty"
+    }
+  },
+  {
+    "script": "check-issue-templates.sh",
+    "priority": "MEDIUM",
+    "result": {
+      "check_id": "COMP-008",
+      "name": "Issue Templates",
+      "status": "fail",
+      "message": "No issue templates found (.github/ISSUE_TEMPLATE/ not found)"
+    }
+  },
+  {
+    "script": "check-license-exists.sh",
+    "priority": "CRITICAL",
+    "result": {
+      "check_id": "COMP-002",
+      "name": "LICENSE File Exists",
+      "status": "fail",
+      "message": "LICENSE file not found (checked LICENSE, LICENSE.md, LICENSE.txt, LICENCE)"
+    }
+  },
+  {
+    "script": "check-mkdocs.sh",
+    "priority": "LOW",
+    "result": {
+      "check_id": "COMP-013",
+      "name": "MkDocs Configuration",
+      "status": "fail",
+      "message": "mkdocs.yml not found"
+    }
+  },
+  {
+    "script": "check-readme-exists.sh",
+    "priority": "CRITICAL",
+    "result": {
+      "check_id": "COMP-001",
+      "name": "README.md Exists",
+      "status": "fail",
+      "message": "README.md not found in repository root"
+    }
+  },
+  {
+    "script": "check-readme-structure.sh",
+    "priority": "HIGH",
+    "result": {
+      "check_id": "COMP-005",
+      "name": "README Structure",
+      "status": "fail",
+      "message": "README.md not found, cannot check structure"
+    }
+  },
+  {
+    "script": "check-repo-settings.sh",
+    "priority": "HIGH",
+    "result": {
+      "check_id": "COMP-017",
+      "name": "Repository Settings",
+      "status": "skip",
+      "message": "Could not parse GitHub repository from remote URL"
+    }
+  },
+  {
+    "script": "check-security.sh",
+    "priority": "LOW",
+    "result": {
+      "check_id": "COMP-012",
+      "name": "SECURITY.md",
+      "status": "fail",
+      "message": "SECURITY.md not found"
+    }
+  }
+]}
+,
+{"repository":"labrats-compliance","path":"/home/runner/work/labrats-compliance/labrats-compliance/repos/labrats-compliance","compliance_score":82,"tier":"🟡 Good","passed":11,"failed":5,"total_score":63,"max_score":76,"checks":[
+  {
+    "script": "check-adr-pattern.sh",
+    "priority": "MEDIUM",
+    "result": {
+      "check_id": "COMP-009",
+      "name": "ADR Pattern",
+      "status": "pass",
+      "message": "Found 4 ADR(s) with INDEX.md"
+    }
+  },
+  {
+    "script": "check-adr-quality.sh",
+    "priority": "MEDIUM",
+    "result": {
+      "check_id": "COMP-014",
+      "name": "ADR Quality",
+      "status": "pass",
+      "message": "4 ADR(s) with 67% avg quality (1 below standard: 0000-adr-template.md: 4/7 sections)"
+    }
+  },
+  {
+    "script": "check-branch-protection.sh",
+    "priority": "HIGH",
+    "result": {
+      "check_id": "COMP-016",
+      "name": "Branch Protection",
+      "status": "fail",
+      "message": "Unable to check branch protection (API error)"
+    }
+  },
+  {
+    "script": "check-claude-config.sh",
+    "priority": "MEDIUM",
+    "result": {
+      "check_id": "COMP-010",
+      "name": ".claude/ Configuration",
+      "status": "pass",
+      "message": ".claude/ directory exists with 1 file(s)"
+    }
+  },
+  {
+    "script": "check-claude-md-exists.sh",
+    "priority": "CRITICAL",
+    "result": {
+      "check_id": "COMP-004",
+      "name": "CLAUDE.md Exists",
+      "status": "pass",
+      "message": "CLAUDE.md found with content (204 lines)"
+    }
+  },
+  {
+    "script": "check-contributing.sh",
+    "priority": "LOW",
+    "result": {
+      "check_id": "COMP-011",
+      "name": "CONTRIBUTING.md",
+      "status": "fail",
+      "message": "CONTRIBUTING.md not found"
+    }
+  },
+  {
+    "script": "check-deprecated-actions.sh",
+    "priority": "HIGH",
+    "result": {
+      "check_id": "COMP-015",
+      "name": "Deprecated Actions",
+      "status": "pass",
+      "message": "No deprecated actions found in 1 workflow(s)"
+    }
+  },
+  {
+    "script": "check-docs-directory.sh",
+    "priority": "HIGH",
+    "result": {
+      "check_id": "COMP-006",
+      "name": "docs/ Directory",
+      "status": "pass",
+      "message": "docs/ directory exists with README.md and 7 markdown files"
+    }
+  },
+  {
+    "script": "check-gitignore-exists.sh",
+    "priority": "CRITICAL",
+    "result": {
+      "check_id": "COMP-003",
+      "name": ".gitignore Exists",
+      "status": "pass",
+      "message": ".gitignore found and not empty"
+    }
+  },
+  {
+    "script": "check-issue-templates.sh",
+    "priority": "MEDIUM",
+    "result": {
+      "check_id": "COMP-008",
+      "name": "Issue Templates",
+      "status": "pass",
+      "message": "Found 3 issue template(s)"
+    }
+  },
+  {
+    "script": "check-license-exists.sh",
+    "priority": "CRITICAL",
+    "result": {
+      "check_id": "COMP-002",
+      "name": "LICENSE File Exists",
+      "status": "pass",
+      "message": "LICENSE file found"
+    }
+  },
+  {
+    "script": "check-mkdocs.sh",
+    "priority": "LOW",
+    "result": {
+      "check_id": "COMP-013",
+      "name": "MkDocs Configuration",
+      "status": "fail",
+      "message": "mkdocs.yml not found"
+    }
+  },
+  {
+    "script": "check-readme-exists.sh",
+    "priority": "CRITICAL",
+    "result": {
+      "check_id": "COMP-001",
+      "name": "README.md Exists",
+      "status": "pass",
+      "message": "README.md found"
+    }
+  },
+  {
+    "script": "check-readme-structure.sh",
+    "priority": "HIGH",
+    "result": {
+      "check_id": "COMP-005",
+      "name": "README Structure",
+      "status": "pass",
+      "message": "README contains all required sections"
+    }
+  },
+  {
+    "script": "check-repo-settings.sh",
+    "priority": "HIGH",
+    "result": {
+      "check_id": "COMP-017",
+      "name": "Repository Settings",
+      "status": "fail",
+      "message": "Unable to fetch repository information (API error)"
+    }
+  },
+  {
+    "script": "check-security.sh",
+    "priority": "LOW",
+    "result": {
+      "check_id": "COMP-012",
+      "name": "SECURITY.md",
+      "status": "fail",
+      "message": "SECURITY.md not found"
+    }
+  }
+]}
+,
+{"repository":"labrats.work.budget","path":"/home/runner/work/labrats-compliance/labrats-compliance/repos/labrats.work.budget","compliance_score":35,"tier":"🔴 Critical Issues","passed":5,"failed":11,"total_score":27,"max_score":76,"checks":[
+  {
+    "script": "check-adr-pattern.sh",
+    "priority": "MEDIUM",
+    "result": {
+      "check_id": "COMP-009",
+      "name": "ADR Pattern",
+      "status": "fail",
+      "message": "ADR directory not found (docs/adr/)"
+    }
+  },
+  {
+    "script": "check-adr-quality.sh",
+    "priority": "MEDIUM",
+    "result": {
+      "check_id": "COMP-014",
+      "name": "ADR Quality",
+      "status": "skip",
+      "message": "ADR directory not found (checked by COMP-009)"
+    }
+  },
+  {
+    "script": "check-branch-protection.sh",
+    "priority": "HIGH",
+    "result": {
+      "check_id": "COMP-016",
+      "name": "Branch Protection",
+      "status": "skip",
+      "message": "Could not parse GitHub repository from remote URL"
+    }
+  },
+  {
+    "script": "check-claude-config.sh",
+    "priority": "MEDIUM",
+    "result": {
+      "check_id": "COMP-010",
+      "name": ".claude/ Configuration",
+      "status": "fail",
+      "message": ".claude/ directory not found"
+    }
+  },
+  {
+    "script": "check-claude-md-exists.sh",
+    "priority": "CRITICAL",
+    "result": {
+      "check_id": "COMP-004",
+      "name": "CLAUDE.md Exists",
+      "status": "fail",
+      "message": "CLAUDE.md not found in repository root"
+    }
+  },
+  {
+    "script": "check-contributing.sh",
+    "priority": "LOW",
+    "result": {
+      "check_id": "COMP-011",
+      "name": "CONTRIBUTING.md",
+      "status": "fail",
+      "message": "CONTRIBUTING.md not found"
+    }
+  },
+  {
+    "script": "check-deprecated-actions.sh",
+    "priority": "HIGH",
+    "result": {
+      "check_id": "COMP-015",
+      "name": "Deprecated Actions",
+      "status": "pass",
+      "message": "No deprecated actions found in 3 workflow(s)"
+    }
+  },
+  {
+    "script": "check-docs-directory.sh",
+    "priority": "HIGH",
+    "result": {
+      "check_id": "COMP-006",
+      "name": "docs/ Directory",
+      "status": "fail",
+      "message": "docs/ directory not found"
+    }
+  },
+  {
+    "script": "check-gitignore-exists.sh",
+    "priority": "CRITICAL",
+    "result": {
+      "check_id": "COMP-003",
+      "name": ".gitignore Exists",
+      "status": "pass",
+      "message": ".gitignore found and not empty"
+    }
+  },
+  {
+    "script": "check-issue-templates.sh",
+    "priority": "MEDIUM",
+    "result": {
+      "check_id": "COMP-008",
+      "name": "Issue Templates",
+      "status": "fail",
+      "message": "No issue templates found (.github/ISSUE_TEMPLATE/ not found)"
+    }
+  },
+  {
+    "script": "check-license-exists.sh",
+    "priority": "CRITICAL",
+    "result": {
+      "check_id": "COMP-002",
+      "name": "LICENSE File Exists",
+      "status": "fail",
+      "message": "LICENSE file not found (checked LICENSE, LICENSE.md, LICENSE.txt, LICENCE)"
+    }
+  },
+  {
+    "script": "check-mkdocs.sh",
+    "priority": "LOW",
+    "result": {
+      "check_id": "COMP-013",
+      "name": "MkDocs Configuration",
+      "status": "fail",
+      "message": "mkdocs.yml not found"
+    }
+  },
+  {
+    "script": "check-readme-exists.sh",
+    "priority": "CRITICAL",
+    "result": {
+      "check_id": "COMP-001",
+      "name": "README.md Exists",
+      "status": "fail",
+      "message": "README.md not found in repository root"
+    }
+  },
+  {
+    "script": "check-readme-structure.sh",
+    "priority": "HIGH",
+    "result": {
+      "check_id": "COMP-005",
+      "name": "README Structure",
+      "status": "fail",
+      "message": "README.md not found, cannot check structure"
+    }
+  },
+  {
+    "script": "check-repo-settings.sh",
+    "priority": "HIGH",
+    "result": {
+      "check_id": "COMP-017",
+      "name": "Repository Settings",
+      "status": "skip",
+      "message": "Could not parse GitHub repository from remote URL"
+    }
+  },
+  {
+    "script": "check-security.sh",
+    "priority": "LOW",
+    "result": {
+      "check_id": "COMP-012",
+      "name": "SECURITY.md",
+      "status": "fail",
+      "message": "SECURITY.md not found"
+    }
+  }
+]}
+,
+{"repository":"labrats.work.data.jenkins","path":"/home/runner/work/labrats-compliance/labrats-compliance/repos/labrats.work.data.jenkins","compliance_score":15,"tier":"🔴 Critical Issues","passed":3,"failed":13,"total_score":12,"max_score":76,"checks":[
+  {
+    "script": "check-adr-pattern.sh",
+    "priority": "MEDIUM",
+    "result": {
+      "check_id": "COMP-009",
+      "name": "ADR Pattern",
+      "status": "fail",
+      "message": "ADR directory not found (docs/adr/)"
+    }
+  },
+  {
+    "script": "check-adr-quality.sh",
+    "priority": "MEDIUM",
+    "result": {
+      "check_id": "COMP-014",
+      "name": "ADR Quality",
+      "status": "skip",
+      "message": "ADR directory not found (checked by COMP-009)"
+    }
+  },
+  {
+    "script": "check-branch-protection.sh",
+    "priority": "HIGH",
+    "result": {
+      "check_id": "COMP-016",
+      "name": "Branch Protection",
+      "status": "skip",
+      "message": "Could not parse GitHub repository from remote URL"
+    }
+  },
+  {
+    "script": "check-claude-config.sh",
+    "priority": "MEDIUM",
+    "result": {
+      "check_id": "COMP-010",
+      "name": ".claude/ Configuration",
+      "status": "fail",
+      "message": ".claude/ directory not found"
+    }
+  },
+  {
+    "script": "check-claude-md-exists.sh",
+    "priority": "CRITICAL",
+    "result": {
+      "check_id": "COMP-004",
+      "name": "CLAUDE.md Exists",
+      "status": "fail",
+      "message": "CLAUDE.md not found in repository root"
+    }
+  },
+  {
+    "script": "check-contributing.sh",
+    "priority": "LOW",
+    "result": {
+      "check_id": "COMP-011",
+      "name": "CONTRIBUTING.md",
+      "status": "fail",
+      "message": "CONTRIBUTING.md not found"
+    }
+  },
+  {
+    "script": "check-deprecated-actions.sh",
+    "priority": "HIGH",
+    "result": {
+      "check_id": "COMP-015",
+      "name": "Deprecated Actions",
+      "status": "skip",
+      "message": "No workflows directory found"
+    }
+  },
+  {
+    "script": "check-docs-directory.sh",
+    "priority": "HIGH",
+    "result": {
+      "check_id": "COMP-006",
+      "name": "docs/ Directory",
+      "status": "fail",
+      "message": "docs/ directory not found"
+    }
+  },
+  {
+    "script": "check-gitignore-exists.sh",
+    "priority": "CRITICAL",
+    "result": {
+      "check_id": "COMP-003",
+      "name": ".gitignore Exists",
+      "status": "fail",
+      "message": ".gitignore not found in repository root"
+    }
+  },
+  {
+    "script": "check-issue-templates.sh",
+    "priority": "MEDIUM",
+    "result": {
+      "check_id": "COMP-008",
+      "name": "Issue Templates",
+      "status": "fail",
+      "message": "No issue templates found (.github/ISSUE_TEMPLATE/ not found)"
+    }
+  },
+  {
+    "script": "check-license-exists.sh",
+    "priority": "CRITICAL",
+    "result": {
+      "check_id": "COMP-002",
+      "name": "LICENSE File Exists",
+      "status": "fail",
+      "message": "LICENSE file not found (checked LICENSE, LICENSE.md, LICENSE.txt, LICENCE)"
+    }
+  },
+  {
+    "script": "check-mkdocs.sh",
+    "priority": "LOW",
+    "result": {
+      "check_id": "COMP-013",
+      "name": "MkDocs Configuration",
+      "status": "fail",
+      "message": "mkdocs.yml not found"
+    }
+  },
+  {
+    "script": "check-readme-exists.sh",
+    "priority": "CRITICAL",
+    "result": {
+      "check_id": "COMP-001",
+      "name": "README.md Exists",
+      "status": "fail",
+      "message": "README.md not found in repository root"
+    }
+  },
+  {
+    "script": "check-readme-structure.sh",
+    "priority": "HIGH",
+    "result": {
+      "check_id": "COMP-005",
+      "name": "README Structure",
+      "status": "fail",
+      "message": "README.md not found, cannot check structure"
+    }
+  },
+  {
+    "script": "check-repo-settings.sh",
+    "priority": "HIGH",
+    "result": {
+      "check_id": "COMP-017",
+      "name": "Repository Settings",
+      "status": "skip",
+      "message": "Could not parse GitHub repository from remote URL"
+    }
+  },
+  {
+    "script": "check-security.sh",
+    "priority": "LOW",
+    "result": {
+      "check_id": "COMP-012",
+      "name": "SECURITY.md",
+      "status": "fail",
+      "message": "SECURITY.md not found"
+    }
+  }
+]}
+,
+{"repository":"labrats.work.discord","path":"/home/runner/work/labrats-compliance/labrats-compliance/repos/labrats.work.discord","compliance_score":15,"tier":"🔴 Critical Issues","passed":3,"failed":13,"total_score":12,"max_score":76,"checks":[
+  {
+    "script": "check-adr-pattern.sh",
+    "priority": "MEDIUM",
+    "result": {
+      "check_id": "COMP-009",
+      "name": "ADR Pattern",
+      "status": "fail",
+      "message": "ADR directory not found (docs/adr/)"
+    }
+  },
+  {
+    "script": "check-adr-quality.sh",
+    "priority": "MEDIUM",
+    "result": {
+      "check_id": "COMP-014",
+      "name": "ADR Quality",
+      "status": "skip",
+      "message": "ADR directory not found (checked by COMP-009)"
+    }
+  },
+  {
+    "script": "check-branch-protection.sh",
+    "priority": "HIGH",
+    "result": {
+      "check_id": "COMP-016",
+      "name": "Branch Protection",
+      "status": "skip",
+      "message": "Could not parse GitHub repository from remote URL"
+    }
+  },
+  {
+    "script": "check-claude-config.sh",
+    "priority": "MEDIUM",
+    "result": {
+      "check_id": "COMP-010",
+      "name": ".claude/ Configuration",
+      "status": "fail",
+      "message": ".claude/ directory not found"
+    }
+  },
+  {
+    "script": "check-claude-md-exists.sh",
+    "priority": "CRITICAL",
+    "result": {
+      "check_id": "COMP-004",
+      "name": "CLAUDE.md Exists",
+      "status": "fail",
+      "message": "CLAUDE.md not found in repository root"
+    }
+  },
+  {
+    "script": "check-contributing.sh",
+    "priority": "LOW",
+    "result": {
+      "check_id": "COMP-011",
+      "name": "CONTRIBUTING.md",
+      "status": "fail",
+      "message": "CONTRIBUTING.md not found"
+    }
+  },
+  {
+    "script": "check-deprecated-actions.sh",
+    "priority": "HIGH",
+    "result": {
+      "check_id": "COMP-015",
+      "name": "Deprecated Actions",
+      "status": "skip",
+      "message": "No workflows directory found"
+    }
+  },
+  {
+    "script": "check-docs-directory.sh",
+    "priority": "HIGH",
+    "result": {
+      "check_id": "COMP-006",
+      "name": "docs/ Directory",
+      "status": "fail",
+      "message": "docs/ directory not found"
+    }
+  },
+  {
+    "script": "check-gitignore-exists.sh",
+    "priority": "CRITICAL",
+    "result": {
+      "check_id": "COMP-003",
+      "name": ".gitignore Exists",
+      "status": "fail",
+      "message": ".gitignore not found in repository root"
+    }
+  },
+  {
+    "script": "check-issue-templates.sh",
+    "priority": "MEDIUM",
+    "result": {
+      "check_id": "COMP-008",
+      "name": "Issue Templates",
+      "status": "fail",
+      "message": "No issue templates found (.github/ISSUE_TEMPLATE/ not found)"
+    }
+  },
+  {
+    "script": "check-license-exists.sh",
+    "priority": "CRITICAL",
+    "result": {
+      "check_id": "COMP-002",
+      "name": "LICENSE File Exists",
+      "status": "fail",
+      "message": "LICENSE file not found (checked LICENSE, LICENSE.md, LICENSE.txt, LICENCE)"
+    }
+  },
+  {
+    "script": "check-mkdocs.sh",
+    "priority": "LOW",
+    "result": {
+      "check_id": "COMP-013",
+      "name": "MkDocs Configuration",
+      "status": "fail",
+      "message": "mkdocs.yml not found"
+    }
+  },
+  {
+    "script": "check-readme-exists.sh",
+    "priority": "CRITICAL",
+    "result": {
+      "check_id": "COMP-001",
+      "name": "README.md Exists",
+      "status": "fail",
+      "message": "README.md not found in repository root"
+    }
+  },
+  {
+    "script": "check-readme-structure.sh",
+    "priority": "HIGH",
+    "result": {
+      "check_id": "COMP-005",
+      "name": "README Structure",
+      "status": "fail",
+      "message": "README.md not found, cannot check structure"
+    }
+  },
+  {
+    "script": "check-repo-settings.sh",
+    "priority": "HIGH",
+    "result": {
+      "check_id": "COMP-017",
+      "name": "Repository Settings",
+      "status": "skip",
+      "message": "Could not parse GitHub repository from remote URL"
+    }
+  },
+  {
+    "script": "check-security.sh",
+    "priority": "LOW",
+    "result": {
+      "check_id": "COMP-012",
+      "name": "SECURITY.md",
+      "status": "fail",
+      "message": "SECURITY.md not found"
+    }
+  }
+]}
+,
+{"repository":"labrats.work.discordbot","path":"/home/runner/work/labrats-compliance/labrats-compliance/repos/labrats.work.discordbot","compliance_score":48,"tier":"🔴 Critical Issues","passed":6,"failed":10,"total_score":37,"max_score":76,"checks":[
+  {
+    "script": "check-adr-pattern.sh",
+    "priority": "MEDIUM",
+    "result": {
+      "check_id": "COMP-009",
+      "name": "ADR Pattern",
+      "status": "fail",
+      "message": "ADR directory not found (docs/adr/)"
+    }
+  },
+  {
+    "script": "check-adr-quality.sh",
+    "priority": "MEDIUM",
+    "result": {
+      "check_id": "COMP-014",
+      "name": "ADR Quality",
+      "status": "skip",
+      "message": "ADR directory not found (checked by COMP-009)"
+    }
+  },
+  {
+    "script": "check-branch-protection.sh",
+    "priority": "HIGH",
+    "result": {
+      "check_id": "COMP-016",
+      "name": "Branch Protection",
+      "status": "skip",
+      "message": "Could not parse GitHub repository from remote URL"
+    }
+  },
+  {
+    "script": "check-claude-config.sh",
+    "priority": "MEDIUM",
+    "result": {
+      "check_id": "COMP-010",
+      "name": ".claude/ Configuration",
+      "status": "fail",
+      "message": ".claude/ directory not found"
+    }
+  },
+  {
+    "script": "check-claude-md-exists.sh",
+    "priority": "CRITICAL",
+    "result": {
+      "check_id": "COMP-004",
+      "name": "CLAUDE.md Exists",
+      "status": "fail",
+      "message": "CLAUDE.md not found in repository root"
+    }
+  },
+  {
+    "script": "check-contributing.sh",
+    "priority": "LOW",
+    "result": {
+      "check_id": "COMP-011",
+      "name": "CONTRIBUTING.md",
+      "status": "fail",
+      "message": "CONTRIBUTING.md not found"
+    }
+  },
+  {
+    "script": "check-deprecated-actions.sh",
+    "priority": "HIGH",
+    "result": {
+      "check_id": "COMP-015",
+      "name": "Deprecated Actions",
+      "status": "pass",
+      "message": "No deprecated actions found in 2 workflow(s)"
+    }
+  },
+  {
+    "script": "check-docs-directory.sh",
+    "priority": "HIGH",
+    "result": {
+      "check_id": "COMP-006",
+      "name": "docs/ Directory",
+      "status": "fail",
+      "message": "docs/ directory not found"
+    }
+  },
+  {
+    "script": "check-gitignore-exists.sh",
+    "priority": "CRITICAL",
+    "result": {
+      "check_id": "COMP-003",
+      "name": ".gitignore Exists",
+      "status": "pass",
+      "message": ".gitignore found and not empty"
+    }
+  },
+  {
+    "script": "check-issue-templates.sh",
+    "priority": "MEDIUM",
+    "result": {
+      "check_id": "COMP-008",
+      "name": "Issue Templates",
+      "status": "fail",
+      "message": "No issue templates found (.github/ISSUE_TEMPLATE/ not found)"
+    }
+  },
+  {
+    "script": "check-license-exists.sh",
+    "priority": "CRITICAL",
+    "result": {
+      "check_id": "COMP-002",
+      "name": "LICENSE File Exists",
+      "status": "fail",
+      "message": "LICENSE file not found (checked LICENSE, LICENSE.md, LICENSE.txt, LICENCE)"
+    }
+  },
+  {
+    "script": "check-mkdocs.sh",
+    "priority": "LOW",
+    "result": {
+      "check_id": "COMP-013",
+      "name": "MkDocs Configuration",
+      "status": "fail",
+      "message": "mkdocs.yml not found"
+    }
+  },
+  {
+    "script": "check-readme-exists.sh",
+    "priority": "CRITICAL",
+    "result": {
+      "check_id": "COMP-001",
+      "name": "README.md Exists",
+      "status": "pass",
+      "message": "README.md found"
+    }
+  },
+  {
+    "script": "check-readme-structure.sh",
+    "priority": "HIGH",
+    "result": {
+      "check_id": "COMP-005",
+      "name": "README Structure",
+      "status": "fail",
+      "message": "README missing required sections: Purpose,Quick Start,Structure"
+    }
+  },
+  {
+    "script": "check-repo-settings.sh",
+    "priority": "HIGH",
+    "result": {
+      "check_id": "COMP-017",
+      "name": "Repository Settings",
+      "status": "skip",
+      "message": "Could not parse GitHub repository from remote URL"
+    }
+  },
+  {
+    "script": "check-security.sh",
+    "priority": "LOW",
+    "result": {
+      "check_id": "COMP-012",
+      "name": "SECURITY.md",
+      "status": "fail",
+      "message": "SECURITY.md not found"
+    }
+  }
+]}
+,
+{"repository":"labrats.work.docs","path":"/home/runner/work/labrats-compliance/labrats-compliance/repos/labrats.work.docs","compliance_score":15,"tier":"🔴 Critical Issues","passed":3,"failed":13,"total_score":12,"max_score":76,"checks":[
+  {
+    "script": "check-adr-pattern.sh",
+    "priority": "MEDIUM",
+    "result": {
+      "check_id": "COMP-009",
+      "name": "ADR Pattern",
+      "status": "fail",
+      "message": "ADR directory not found (docs/adr/)"
+    }
+  },
+  {
+    "script": "check-adr-quality.sh",
+    "priority": "MEDIUM",
+    "result": {
+      "check_id": "COMP-014",
+      "name": "ADR Quality",
+      "status": "skip",
+      "message": "ADR directory not found (checked by COMP-009)"
+    }
+  },
+  {
+    "script": "check-branch-protection.sh",
+    "priority": "HIGH",
+    "result": {
+      "check_id": "COMP-016",
+      "name": "Branch Protection",
+      "status": "skip",
+      "message": "Could not parse GitHub repository from remote URL"
+    }
+  },
+  {
+    "script": "check-claude-config.sh",
+    "priority": "MEDIUM",
+    "result": {
+      "check_id": "COMP-010",
+      "name": ".claude/ Configuration",
+      "status": "fail",
+      "message": ".claude/ directory not found"
+    }
+  },
+  {
+    "script": "check-claude-md-exists.sh",
+    "priority": "CRITICAL",
+    "result": {
+      "check_id": "COMP-004",
+      "name": "CLAUDE.md Exists",
+      "status": "fail",
+      "message": "CLAUDE.md not found in repository root"
+    }
+  },
+  {
+    "script": "check-contributing.sh",
+    "priority": "LOW",
+    "result": {
+      "check_id": "COMP-011",
+      "name": "CONTRIBUTING.md",
+      "status": "fail",
+      "message": "CONTRIBUTING.md not found"
+    }
+  },
+  {
+    "script": "check-deprecated-actions.sh",
+    "priority": "HIGH",
+    "result": {
+      "check_id": "COMP-015",
+      "name": "Deprecated Actions",
+      "status": "skip",
+      "message": "No workflows directory found"
+    }
+  },
+  {
+    "script": "check-docs-directory.sh",
+    "priority": "HIGH",
+    "result": {
+      "check_id": "COMP-006",
+      "name": "docs/ Directory",
+      "status": "fail",
+      "message": "docs/ directory exists but missing README.md"
+    }
+  },
+  {
+    "script": "check-gitignore-exists.sh",
+    "priority": "CRITICAL",
+    "result": {
+      "check_id": "COMP-003",
+      "name": ".gitignore Exists",
+      "status": "fail",
+      "message": ".gitignore not found in repository root"
+    }
+  },
+  {
+    "script": "check-issue-templates.sh",
+    "priority": "MEDIUM",
+    "result": {
+      "check_id": "COMP-008",
+      "name": "Issue Templates",
+      "status": "fail",
+      "message": "No issue templates found (.github/ISSUE_TEMPLATE/ not found)"
+    }
+  },
+  {
+    "script": "check-license-exists.sh",
+    "priority": "CRITICAL",
+    "result": {
+      "check_id": "COMP-002",
+      "name": "LICENSE File Exists",
+      "status": "fail",
+      "message": "LICENSE file not found (checked LICENSE, LICENSE.md, LICENSE.txt, LICENCE)"
+    }
+  },
+  {
+    "script": "check-mkdocs.sh",
+    "priority": "LOW",
+    "result": {
+      "check_id": "COMP-013",
+      "name": "MkDocs Configuration",
+      "status": "fail",
+      "message": "mkdocs.yml not found"
+    }
+  },
+  {
+    "script": "check-readme-exists.sh",
+    "priority": "CRITICAL",
+    "result": {
+      "check_id": "COMP-001",
+      "name": "README.md Exists",
+      "status": "fail",
+      "message": "README.md not found in repository root"
+    }
+  },
+  {
+    "script": "check-readme-structure.sh",
+    "priority": "HIGH",
+    "result": {
+      "check_id": "COMP-005",
+      "name": "README Structure",
+      "status": "fail",
+      "message": "README.md not found, cannot check structure"
+    }
+  },
+  {
+    "script": "check-repo-settings.sh",
+    "priority": "HIGH",
+    "result": {
+      "check_id": "COMP-017",
+      "name": "Repository Settings",
+      "status": "skip",
+      "message": "Could not parse GitHub repository from remote URL"
+    }
+  },
+  {
+    "script": "check-security.sh",
+    "priority": "LOW",
+    "result": {
+      "check_id": "COMP-012",
+      "name": "SECURITY.md",
+      "status": "fail",
+      "message": "SECURITY.md not found"
+    }
+  }
+]}
+,
+{"repository":"labrats.work.flux","path":"/home/runner/work/labrats-compliance/labrats-compliance/repos/labrats.work.flux","compliance_score":15,"tier":"🔴 Critical Issues","passed":3,"failed":13,"total_score":12,"max_score":76,"checks":[
+  {
+    "script": "check-adr-pattern.sh",
+    "priority": "MEDIUM",
+    "result": {
+      "check_id": "COMP-009",
+      "name": "ADR Pattern",
+      "status": "fail",
+      "message": "ADR directory not found (docs/adr/)"
+    }
+  },
+  {
+    "script": "check-adr-quality.sh",
+    "priority": "MEDIUM",
+    "result": {
+      "check_id": "COMP-014",
+      "name": "ADR Quality",
+      "status": "skip",
+      "message": "ADR directory not found (checked by COMP-009)"
+    }
+  },
+  {
+    "script": "check-branch-protection.sh",
+    "priority": "HIGH",
+    "result": {
+      "check_id": "COMP-016",
+      "name": "Branch Protection",
+      "status": "skip",
+      "message": "Could not parse GitHub repository from remote URL"
+    }
+  },
+  {
+    "script": "check-claude-config.sh",
+    "priority": "MEDIUM",
+    "result": {
+      "check_id": "COMP-010",
+      "name": ".claude/ Configuration",
+      "status": "fail",
+      "message": ".claude/ directory not found"
+    }
+  },
+  {
+    "script": "check-claude-md-exists.sh",
+    "priority": "CRITICAL",
+    "result": {
+      "check_id": "COMP-004",
+      "name": "CLAUDE.md Exists",
+      "status": "fail",
+      "message": "CLAUDE.md not found in repository root"
+    }
+  },
+  {
+    "script": "check-contributing.sh",
+    "priority": "LOW",
+    "result": {
+      "check_id": "COMP-011",
+      "name": "CONTRIBUTING.md",
+      "status": "fail",
+      "message": "CONTRIBUTING.md not found"
+    }
+  },
+  {
+    "script": "check-deprecated-actions.sh",
+    "priority": "HIGH",
+    "result": {
+      "check_id": "COMP-015",
+      "name": "Deprecated Actions",
+      "status": "skip",
+      "message": "No workflows directory found"
+    }
+  },
+  {
+    "script": "check-docs-directory.sh",
+    "priority": "HIGH",
+    "result": {
+      "check_id": "COMP-006",
+      "name": "docs/ Directory",
+      "status": "fail",
+      "message": "docs/ directory not found"
+    }
+  },
+  {
+    "script": "check-gitignore-exists.sh",
+    "priority": "CRITICAL",
+    "result": {
+      "check_id": "COMP-003",
+      "name": ".gitignore Exists",
+      "status": "fail",
+      "message": ".gitignore not found in repository root"
+    }
+  },
+  {
+    "script": "check-issue-templates.sh",
+    "priority": "MEDIUM",
+    "result": {
+      "check_id": "COMP-008",
+      "name": "Issue Templates",
+      "status": "fail",
+      "message": "No issue templates found (.github/ISSUE_TEMPLATE/ not found)"
+    }
+  },
+  {
+    "script": "check-license-exists.sh",
+    "priority": "CRITICAL",
+    "result": {
+      "check_id": "COMP-002",
+      "name": "LICENSE File Exists",
+      "status": "fail",
+      "message": "LICENSE file not found (checked LICENSE, LICENSE.md, LICENSE.txt, LICENCE)"
+    }
+  },
+  {
+    "script": "check-mkdocs.sh",
+    "priority": "LOW",
+    "result": {
+      "check_id": "COMP-013",
+      "name": "MkDocs Configuration",
+      "status": "fail",
+      "message": "mkdocs.yml not found"
+    }
+  },
+  {
+    "script": "check-readme-exists.sh",
+    "priority": "CRITICAL",
+    "result": {
+      "check_id": "COMP-001",
+      "name": "README.md Exists",
+      "status": "fail",
+      "message": "README.md not found in repository root"
+    }
+  },
+  {
+    "script": "check-readme-structure.sh",
+    "priority": "HIGH",
+    "result": {
+      "check_id": "COMP-005",
+      "name": "README Structure",
+      "status": "fail",
+      "message": "README.md not found, cannot check structure"
+    }
+  },
+  {
+    "script": "check-repo-settings.sh",
+    "priority": "HIGH",
+    "result": {
+      "check_id": "COMP-017",
+      "name": "Repository Settings",
+      "status": "skip",
+      "message": "Could not parse GitHub repository from remote URL"
+    }
+  },
+  {
+    "script": "check-security.sh",
+    "priority": "LOW",
+    "result": {
+      "check_id": "COMP-012",
+      "name": "SECURITY.md",
+      "status": "fail",
+      "message": "SECURITY.md not found"
+    }
+  }
+]}
+,
+{"repository":"labrats.work.flux.main","path":"/home/runner/work/labrats-compliance/labrats-compliance/repos/labrats.work.flux.main","compliance_score":15,"tier":"🔴 Critical Issues","passed":3,"failed":13,"total_score":12,"max_score":76,"checks":[
+  {
+    "script": "check-adr-pattern.sh",
+    "priority": "MEDIUM",
+    "result": {
+      "check_id": "COMP-009",
+      "name": "ADR Pattern",
+      "status": "fail",
+      "message": "ADR directory not found (docs/adr/)"
+    }
+  },
+  {
+    "script": "check-adr-quality.sh",
+    "priority": "MEDIUM",
+    "result": {
+      "check_id": "COMP-014",
+      "name": "ADR Quality",
+      "status": "skip",
+      "message": "ADR directory not found (checked by COMP-009)"
+    }
+  },
+  {
+    "script": "check-branch-protection.sh",
+    "priority": "HIGH",
+    "result": {
+      "check_id": "COMP-016",
+      "name": "Branch Protection",
+      "status": "skip",
+      "message": "Could not parse GitHub repository from remote URL"
+    }
+  },
+  {
+    "script": "check-claude-config.sh",
+    "priority": "MEDIUM",
+    "result": {
+      "check_id": "COMP-010",
+      "name": ".claude/ Configuration",
+      "status": "fail",
+      "message": ".claude/ directory not found"
+    }
+  },
+  {
+    "script": "check-claude-md-exists.sh",
+    "priority": "CRITICAL",
+    "result": {
+      "check_id": "COMP-004",
+      "name": "CLAUDE.md Exists",
+      "status": "fail",
+      "message": "CLAUDE.md not found in repository root"
+    }
+  },
+  {
+    "script": "check-contributing.sh",
+    "priority": "LOW",
+    "result": {
+      "check_id": "COMP-011",
+      "name": "CONTRIBUTING.md",
+      "status": "fail",
+      "message": "CONTRIBUTING.md not found"
+    }
+  },
+  {
+    "script": "check-deprecated-actions.sh",
+    "priority": "HIGH",
+    "result": {
+      "check_id": "COMP-015",
+      "name": "Deprecated Actions",
+      "status": "skip",
+      "message": "No workflows directory found"
+    }
+  },
+  {
+    "script": "check-docs-directory.sh",
+    "priority": "HIGH",
+    "result": {
+      "check_id": "COMP-006",
+      "name": "docs/ Directory",
+      "status": "fail",
+      "message": "docs/ directory not found"
+    }
+  },
+  {
+    "script": "check-gitignore-exists.sh",
+    "priority": "CRITICAL",
+    "result": {
+      "check_id": "COMP-003",
+      "name": ".gitignore Exists",
+      "status": "fail",
+      "message": ".gitignore not found in repository root"
+    }
+  },
+  {
+    "script": "check-issue-templates.sh",
+    "priority": "MEDIUM",
+    "result": {
+      "check_id": "COMP-008",
+      "name": "Issue Templates",
+      "status": "fail",
+      "message": "No issue templates found (.github/ISSUE_TEMPLATE/ not found)"
+    }
+  },
+  {
+    "script": "check-license-exists.sh",
+    "priority": "CRITICAL",
+    "result": {
+      "check_id": "COMP-002",
+      "name": "LICENSE File Exists",
+      "status": "fail",
+      "message": "LICENSE file not found (checked LICENSE, LICENSE.md, LICENSE.txt, LICENCE)"
+    }
+  },
+  {
+    "script": "check-mkdocs.sh",
+    "priority": "LOW",
+    "result": {
+      "check_id": "COMP-013",
+      "name": "MkDocs Configuration",
+      "status": "fail",
+      "message": "mkdocs.yml not found"
+    }
+  },
+  {
+    "script": "check-readme-exists.sh",
+    "priority": "CRITICAL",
+    "result": {
+      "check_id": "COMP-001",
+      "name": "README.md Exists",
+      "status": "fail",
+      "message": "README.md not found in repository root"
+    }
+  },
+  {
+    "script": "check-readme-structure.sh",
+    "priority": "HIGH",
+    "result": {
+      "check_id": "COMP-005",
+      "name": "README Structure",
+      "status": "fail",
+      "message": "README.md not found, cannot check structure"
+    }
+  },
+  {
+    "script": "check-repo-settings.sh",
+    "priority": "HIGH",
+    "result": {
+      "check_id": "COMP-017",
+      "name": "Repository Settings",
+      "status": "skip",
+      "message": "Could not parse GitHub repository from remote URL"
+    }
+  },
+  {
+    "script": "check-security.sh",
+    "priority": "LOW",
+    "result": {
+      "check_id": "COMP-012",
+      "name": "SECURITY.md",
+      "status": "fail",
+      "message": "SECURITY.md not found"
+    }
+  }
+]}
+,
+{"repository":"labrats.work.framework","path":"/home/runner/work/labrats-compliance/labrats-compliance/repos/labrats.work.framework","compliance_score":35,"tier":"🔴 Critical Issues","passed":5,"failed":11,"total_score":27,"max_score":76,"checks":[
+  {
+    "script": "check-adr-pattern.sh",
+    "priority": "MEDIUM",
+    "result": {
+      "check_id": "COMP-009",
+      "name": "ADR Pattern",
+      "status": "fail",
+      "message": "ADR directory not found (docs/adr/)"
+    }
+  },
+  {
+    "script": "check-adr-quality.sh",
+    "priority": "MEDIUM",
+    "result": {
+      "check_id": "COMP-014",
+      "name": "ADR Quality",
+      "status": "skip",
+      "message": "ADR directory not found (checked by COMP-009)"
+    }
+  },
+  {
+    "script": "check-branch-protection.sh",
+    "priority": "HIGH",
+    "result": {
+      "check_id": "COMP-016",
+      "name": "Branch Protection",
+      "status": "skip",
+      "message": "Could not parse GitHub repository from remote URL"
+    }
+  },
+  {
+    "script": "check-claude-config.sh",
+    "priority": "MEDIUM",
+    "result": {
+      "check_id": "COMP-010",
+      "name": ".claude/ Configuration",
+      "status": "fail",
+      "message": ".claude/ directory not found"
+    }
+  },
+  {
+    "script": "check-claude-md-exists.sh",
+    "priority": "CRITICAL",
+    "result": {
+      "check_id": "COMP-004",
+      "name": "CLAUDE.md Exists",
+      "status": "fail",
+      "message": "CLAUDE.md not found in repository root"
+    }
+  },
+  {
+    "script": "check-contributing.sh",
+    "priority": "LOW",
+    "result": {
+      "check_id": "COMP-011",
+      "name": "CONTRIBUTING.md",
+      "status": "fail",
+      "message": "CONTRIBUTING.md not found"
+    }
+  },
+  {
+    "script": "check-deprecated-actions.sh",
+    "priority": "HIGH",
+    "result": {
+      "check_id": "COMP-015",
+      "name": "Deprecated Actions",
+      "status": "pass",
+      "message": "No deprecated actions found in 1 workflow(s)"
+    }
+  },
+  {
+    "script": "check-docs-directory.sh",
+    "priority": "HIGH",
+    "result": {
+      "check_id": "COMP-006",
+      "name": "docs/ Directory",
+      "status": "fail",
+      "message": "docs/ directory not found"
+    }
+  },
+  {
+    "script": "check-gitignore-exists.sh",
+    "priority": "CRITICAL",
+    "result": {
+      "check_id": "COMP-003",
+      "name": ".gitignore Exists",
+      "status": "pass",
+      "message": ".gitignore found and not empty"
+    }
+  },
+  {
+    "script": "check-issue-templates.sh",
+    "priority": "MEDIUM",
+    "result": {
+      "check_id": "COMP-008",
+      "name": "Issue Templates",
+      "status": "fail",
+      "message": "No issue templates found (.github/ISSUE_TEMPLATE/ not found)"
+    }
+  },
+  {
+    "script": "check-license-exists.sh",
+    "priority": "CRITICAL",
+    "result": {
+      "check_id": "COMP-002",
+      "name": "LICENSE File Exists",
+      "status": "fail",
+      "message": "LICENSE file not found (checked LICENSE, LICENSE.md, LICENSE.txt, LICENCE)"
+    }
+  },
+  {
+    "script": "check-mkdocs.sh",
+    "priority": "LOW",
+    "result": {
+      "check_id": "COMP-013",
+      "name": "MkDocs Configuration",
+      "status": "fail",
+      "message": "mkdocs.yml not found"
+    }
+  },
+  {
+    "script": "check-readme-exists.sh",
+    "priority": "CRITICAL",
+    "result": {
+      "check_id": "COMP-001",
+      "name": "README.md Exists",
+      "status": "fail",
+      "message": "README.md not found in repository root"
+    }
+  },
+  {
+    "script": "check-readme-structure.sh",
+    "priority": "HIGH",
+    "result": {
+      "check_id": "COMP-005",
+      "name": "README Structure",
+      "status": "fail",
+      "message": "README.md not found, cannot check structure"
+    }
+  },
+  {
+    "script": "check-repo-settings.sh",
+    "priority": "HIGH",
+    "result": {
+      "check_id": "COMP-017",
+      "name": "Repository Settings",
+      "status": "skip",
+      "message": "Could not parse GitHub repository from remote URL"
+    }
+  },
+  {
+    "script": "check-security.sh",
+    "priority": "LOW",
+    "result": {
+      "check_id": "COMP-012",
+      "name": "SECURITY.md",
+      "status": "fail",
+      "message": "SECURITY.md not found"
+    }
+  }
+]}
+,
+{"repository":"labrats.work.identity.next","path":"/home/runner/work/labrats-compliance/labrats-compliance/repos/labrats.work.identity.next","compliance_score":15,"tier":"🔴 Critical Issues","passed":3,"failed":13,"total_score":12,"max_score":76,"checks":[
+  {
+    "script": "check-adr-pattern.sh",
+    "priority": "MEDIUM",
+    "result": {
+      "check_id": "COMP-009",
+      "name": "ADR Pattern",
+      "status": "fail",
+      "message": "ADR directory not found (docs/adr/)"
+    }
+  },
+  {
+    "script": "check-adr-quality.sh",
+    "priority": "MEDIUM",
+    "result": {
+      "check_id": "COMP-014",
+      "name": "ADR Quality",
+      "status": "skip",
+      "message": "ADR directory not found (checked by COMP-009)"
+    }
+  },
+  {
+    "script": "check-branch-protection.sh",
+    "priority": "HIGH",
+    "result": {
+      "check_id": "COMP-016",
+      "name": "Branch Protection",
+      "status": "skip",
+      "message": "Could not parse GitHub repository from remote URL"
+    }
+  },
+  {
+    "script": "check-claude-config.sh",
+    "priority": "MEDIUM",
+    "result": {
+      "check_id": "COMP-010",
+      "name": ".claude/ Configuration",
+      "status": "fail",
+      "message": ".claude/ directory not found"
+    }
+  },
+  {
+    "script": "check-claude-md-exists.sh",
+    "priority": "CRITICAL",
+    "result": {
+      "check_id": "COMP-004",
+      "name": "CLAUDE.md Exists",
+      "status": "fail",
+      "message": "CLAUDE.md not found in repository root"
+    }
+  },
+  {
+    "script": "check-contributing.sh",
+    "priority": "LOW",
+    "result": {
+      "check_id": "COMP-011",
+      "name": "CONTRIBUTING.md",
+      "status": "fail",
+      "message": "CONTRIBUTING.md not found"
+    }
+  },
+  {
+    "script": "check-deprecated-actions.sh",
+    "priority": "HIGH",
+    "result": {
+      "check_id": "COMP-015",
+      "name": "Deprecated Actions",
+      "status": "skip",
+      "message": "No workflows directory found"
+    }
+  },
+  {
+    "script": "check-docs-directory.sh",
+    "priority": "HIGH",
+    "result": {
+      "check_id": "COMP-006",
+      "name": "docs/ Directory",
+      "status": "fail",
+      "message": "docs/ directory not found"
+    }
+  },
+  {
+    "script": "check-gitignore-exists.sh",
+    "priority": "CRITICAL",
+    "result": {
+      "check_id": "COMP-003",
+      "name": ".gitignore Exists",
+      "status": "fail",
+      "message": ".gitignore not found in repository root"
+    }
+  },
+  {
+    "script": "check-issue-templates.sh",
+    "priority": "MEDIUM",
+    "result": {
+      "check_id": "COMP-008",
+      "name": "Issue Templates",
+      "status": "fail",
+      "message": "No issue templates found (.github/ISSUE_TEMPLATE/ not found)"
+    }
+  },
+  {
+    "script": "check-license-exists.sh",
+    "priority": "CRITICAL",
+    "result": {
+      "check_id": "COMP-002",
+      "name": "LICENSE File Exists",
+      "status": "fail",
+      "message": "LICENSE file not found (checked LICENSE, LICENSE.md, LICENSE.txt, LICENCE)"
+    }
+  },
+  {
+    "script": "check-mkdocs.sh",
+    "priority": "LOW",
+    "result": {
+      "check_id": "COMP-013",
+      "name": "MkDocs Configuration",
+      "status": "fail",
+      "message": "mkdocs.yml not found"
+    }
+  },
+  {
+    "script": "check-readme-exists.sh",
+    "priority": "CRITICAL",
+    "result": {
+      "check_id": "COMP-001",
+      "name": "README.md Exists",
+      "status": "fail",
+      "message": "README.md not found in repository root"
+    }
+  },
+  {
+    "script": "check-readme-structure.sh",
+    "priority": "HIGH",
+    "result": {
+      "check_id": "COMP-005",
+      "name": "README Structure",
+      "status": "fail",
+      "message": "README.md not found, cannot check structure"
+    }
+  },
+  {
+    "script": "check-repo-settings.sh",
+    "priority": "HIGH",
+    "result": {
+      "check_id": "COMP-017",
+      "name": "Repository Settings",
+      "status": "skip",
+      "message": "Could not parse GitHub repository from remote URL"
+    }
+  },
+  {
+    "script": "check-security.sh",
+    "priority": "LOW",
+    "result": {
+      "check_id": "COMP-012",
+      "name": "SECURITY.md",
+      "status": "fail",
+      "message": "SECURITY.md not found"
+    }
+  }
+]}
+,
+{"repository":"labrats.work.images","path":"/home/runner/work/labrats-compliance/labrats-compliance/repos/labrats.work.images","compliance_score":22,"tier":"🔴 Critical Issues","passed":4,"failed":12,"total_score":17,"max_score":76,"checks":[
+  {
+    "script": "check-adr-pattern.sh",
+    "priority": "MEDIUM",
+    "result": {
+      "check_id": "COMP-009",
+      "name": "ADR Pattern",
+      "status": "fail",
+      "message": "ADR directory not found (docs/adr/)"
+    }
+  },
+  {
+    "script": "check-adr-quality.sh",
+    "priority": "MEDIUM",
+    "result": {
+      "check_id": "COMP-014",
+      "name": "ADR Quality",
+      "status": "skip",
+      "message": "ADR directory not found (checked by COMP-009)"
+    }
+  },
+  {
+    "script": "check-branch-protection.sh",
+    "priority": "HIGH",
+    "result": {
+      "check_id": "COMP-016",
+      "name": "Branch Protection",
+      "status": "skip",
+      "message": "Could not parse GitHub repository from remote URL"
+    }
+  },
+  {
+    "script": "check-claude-config.sh",
+    "priority": "MEDIUM",
+    "result": {
+      "check_id": "COMP-010",
+      "name": ".claude/ Configuration",
+      "status": "fail",
+      "message": ".claude/ directory not found"
+    }
+  },
+  {
+    "script": "check-claude-md-exists.sh",
+    "priority": "CRITICAL",
+    "result": {
+      "check_id": "COMP-004",
+      "name": "CLAUDE.md Exists",
+      "status": "fail",
+      "message": "CLAUDE.md not found in repository root"
+    }
+  },
+  {
+    "script": "check-contributing.sh",
+    "priority": "LOW",
+    "result": {
+      "check_id": "COMP-011",
+      "name": "CONTRIBUTING.md",
+      "status": "fail",
+      "message": "CONTRIBUTING.md not found"
+    }
+  },
+  {
+    "script": "check-deprecated-actions.sh",
+    "priority": "HIGH",
+    "result": {
+      "check_id": "COMP-015",
+      "name": "Deprecated Actions",
+      "status": "pass",
+      "message": "No deprecated actions found in 1 workflow(s)"
+    }
+  },
+  {
+    "script": "check-docs-directory.sh",
+    "priority": "HIGH",
+    "result": {
+      "check_id": "COMP-006",
+      "name": "docs/ Directory",
+      "status": "fail",
+      "message": "docs/ directory not found"
+    }
+  },
+  {
+    "script": "check-gitignore-exists.sh",
+    "priority": "CRITICAL",
+    "result": {
+      "check_id": "COMP-003",
+      "name": ".gitignore Exists",
+      "status": "fail",
+      "message": ".gitignore not found in repository root"
+    }
+  },
+  {
+    "script": "check-issue-templates.sh",
+    "priority": "MEDIUM",
+    "result": {
+      "check_id": "COMP-008",
+      "name": "Issue Templates",
+      "status": "fail",
+      "message": "No issue templates found (.github/ISSUE_TEMPLATE/ not found)"
+    }
+  },
+  {
+    "script": "check-license-exists.sh",
+    "priority": "CRITICAL",
+    "result": {
+      "check_id": "COMP-002",
+      "name": "LICENSE File Exists",
+      "status": "fail",
+      "message": "LICENSE file not found (checked LICENSE, LICENSE.md, LICENSE.txt, LICENCE)"
+    }
+  },
+  {
+    "script": "check-mkdocs.sh",
+    "priority": "LOW",
+    "result": {
+      "check_id": "COMP-013",
+      "name": "MkDocs Configuration",
+      "status": "fail",
+      "message": "mkdocs.yml not found"
+    }
+  },
+  {
+    "script": "check-readme-exists.sh",
+    "priority": "CRITICAL",
+    "result": {
+      "check_id": "COMP-001",
+      "name": "README.md Exists",
+      "status": "fail",
+      "message": "README.md not found in repository root"
+    }
+  },
+  {
+    "script": "check-readme-structure.sh",
+    "priority": "HIGH",
+    "result": {
+      "check_id": "COMP-005",
+      "name": "README Structure",
+      "status": "fail",
+      "message": "README.md not found, cannot check structure"
+    }
+  },
+  {
+    "script": "check-repo-settings.sh",
+    "priority": "HIGH",
+    "result": {
+      "check_id": "COMP-017",
+      "name": "Repository Settings",
+      "status": "skip",
+      "message": "Could not parse GitHub repository from remote URL"
+    }
+  },
+  {
+    "script": "check-security.sh",
+    "priority": "LOW",
+    "result": {
+      "check_id": "COMP-012",
+      "name": "SECURITY.md",
+      "status": "fail",
+      "message": "SECURITY.md not found"
+    }
+  }
+]}
+,
+{"repository":"labrats.work.portal.jerzy","path":"/home/runner/work/labrats-compliance/labrats-compliance/repos/labrats.work.portal.jerzy","compliance_score":15,"tier":"🔴 Critical Issues","passed":3,"failed":13,"total_score":12,"max_score":76,"checks":[
+  {
+    "script": "check-adr-pattern.sh",
+    "priority": "MEDIUM",
+    "result": {
+      "check_id": "COMP-009",
+      "name": "ADR Pattern",
+      "status": "fail",
+      "message": "ADR directory not found (docs/adr/)"
+    }
+  },
+  {
+    "script": "check-adr-quality.sh",
+    "priority": "MEDIUM",
+    "result": {
+      "check_id": "COMP-014",
+      "name": "ADR Quality",
+      "status": "skip",
+      "message": "ADR directory not found (checked by COMP-009)"
+    }
+  },
+  {
+    "script": "check-branch-protection.sh",
+    "priority": "HIGH",
+    "result": {
+      "check_id": "COMP-016",
+      "name": "Branch Protection",
+      "status": "skip",
+      "message": "Could not parse GitHub repository from remote URL"
+    }
+  },
+  {
+    "script": "check-claude-config.sh",
+    "priority": "MEDIUM",
+    "result": {
+      "check_id": "COMP-010",
+      "name": ".claude/ Configuration",
+      "status": "fail",
+      "message": ".claude/ directory not found"
+    }
+  },
+  {
+    "script": "check-claude-md-exists.sh",
+    "priority": "CRITICAL",
+    "result": {
+      "check_id": "COMP-004",
+      "name": "CLAUDE.md Exists",
+      "status": "fail",
+      "message": "CLAUDE.md not found in repository root"
+    }
+  },
+  {
+    "script": "check-contributing.sh",
+    "priority": "LOW",
+    "result": {
+      "check_id": "COMP-011",
+      "name": "CONTRIBUTING.md",
+      "status": "fail",
+      "message": "CONTRIBUTING.md not found"
+    }
+  },
+  {
+    "script": "check-deprecated-actions.sh",
+    "priority": "HIGH",
+    "result": {
+      "check_id": "COMP-015",
+      "name": "Deprecated Actions",
+      "status": "skip",
+      "message": "No workflows directory found"
+    }
+  },
+  {
+    "script": "check-docs-directory.sh",
+    "priority": "HIGH",
+    "result": {
+      "check_id": "COMP-006",
+      "name": "docs/ Directory",
+      "status": "fail",
+      "message": "docs/ directory not found"
+    }
+  },
+  {
+    "script": "check-gitignore-exists.sh",
+    "priority": "CRITICAL",
+    "result": {
+      "check_id": "COMP-003",
+      "name": ".gitignore Exists",
+      "status": "fail",
+      "message": ".gitignore not found in repository root"
+    }
+  },
+  {
+    "script": "check-issue-templates.sh",
+    "priority": "MEDIUM",
+    "result": {
+      "check_id": "COMP-008",
+      "name": "Issue Templates",
+      "status": "fail",
+      "message": "No issue templates found (.github/ISSUE_TEMPLATE/ not found)"
+    }
+  },
+  {
+    "script": "check-license-exists.sh",
+    "priority": "CRITICAL",
+    "result": {
+      "check_id": "COMP-002",
+      "name": "LICENSE File Exists",
+      "status": "fail",
+      "message": "LICENSE file not found (checked LICENSE, LICENSE.md, LICENSE.txt, LICENCE)"
+    }
+  },
+  {
+    "script": "check-mkdocs.sh",
+    "priority": "LOW",
+    "result": {
+      "check_id": "COMP-013",
+      "name": "MkDocs Configuration",
+      "status": "fail",
+      "message": "mkdocs.yml not found"
+    }
+  },
+  {
+    "script": "check-readme-exists.sh",
+    "priority": "CRITICAL",
+    "result": {
+      "check_id": "COMP-001",
+      "name": "README.md Exists",
+      "status": "fail",
+      "message": "README.md not found in repository root"
+    }
+  },
+  {
+    "script": "check-readme-structure.sh",
+    "priority": "HIGH",
+    "result": {
+      "check_id": "COMP-005",
+      "name": "README Structure",
+      "status": "fail",
+      "message": "README.md not found, cannot check structure"
+    }
+  },
+  {
+    "script": "check-repo-settings.sh",
+    "priority": "HIGH",
+    "result": {
+      "check_id": "COMP-017",
+      "name": "Repository Settings",
+      "status": "skip",
+      "message": "Could not parse GitHub repository from remote URL"
+    }
+  },
+  {
+    "script": "check-security.sh",
+    "priority": "LOW",
+    "result": {
+      "check_id": "COMP-012",
+      "name": "SECURITY.md",
+      "status": "fail",
+      "message": "SECURITY.md not found"
+    }
+  }
+]}
+,
+{"repository":"labrats.work.portal.kubaklim","path":"/home/runner/work/labrats-compliance/labrats-compliance/repos/labrats.work.portal.kubaklim","compliance_score":15,"tier":"🔴 Critical Issues","passed":3,"failed":13,"total_score":12,"max_score":76,"checks":[
+  {
+    "script": "check-adr-pattern.sh",
+    "priority": "MEDIUM",
+    "result": {
+      "check_id": "COMP-009",
+      "name": "ADR Pattern",
+      "status": "fail",
+      "message": "ADR directory not found (docs/adr/)"
+    }
+  },
+  {
+    "script": "check-adr-quality.sh",
+    "priority": "MEDIUM",
+    "result": {
+      "check_id": "COMP-014",
+      "name": "ADR Quality",
+      "status": "skip",
+      "message": "ADR directory not found (checked by COMP-009)"
+    }
+  },
+  {
+    "script": "check-branch-protection.sh",
+    "priority": "HIGH",
+    "result": {
+      "check_id": "COMP-016",
+      "name": "Branch Protection",
+      "status": "skip",
+      "message": "Could not parse GitHub repository from remote URL"
+    }
+  },
+  {
+    "script": "check-claude-config.sh",
+    "priority": "MEDIUM",
+    "result": {
+      "check_id": "COMP-010",
+      "name": ".claude/ Configuration",
+      "status": "fail",
+      "message": ".claude/ directory not found"
+    }
+  },
+  {
+    "script": "check-claude-md-exists.sh",
+    "priority": "CRITICAL",
+    "result": {
+      "check_id": "COMP-004",
+      "name": "CLAUDE.md Exists",
+      "status": "fail",
+      "message": "CLAUDE.md not found in repository root"
+    }
+  },
+  {
+    "script": "check-contributing.sh",
+    "priority": "LOW",
+    "result": {
+      "check_id": "COMP-011",
+      "name": "CONTRIBUTING.md",
+      "status": "fail",
+      "message": "CONTRIBUTING.md not found"
+    }
+  },
+  {
+    "script": "check-deprecated-actions.sh",
+    "priority": "HIGH",
+    "result": {
+      "check_id": "COMP-015",
+      "name": "Deprecated Actions",
+      "status": "skip",
+      "message": "No workflows directory found"
+    }
+  },
+  {
+    "script": "check-docs-directory.sh",
+    "priority": "HIGH",
+    "result": {
+      "check_id": "COMP-006",
+      "name": "docs/ Directory",
+      "status": "fail",
+      "message": "docs/ directory not found"
+    }
+  },
+  {
+    "script": "check-gitignore-exists.sh",
+    "priority": "CRITICAL",
+    "result": {
+      "check_id": "COMP-003",
+      "name": ".gitignore Exists",
+      "status": "fail",
+      "message": ".gitignore not found in repository root"
+    }
+  },
+  {
+    "script": "check-issue-templates.sh",
+    "priority": "MEDIUM",
+    "result": {
+      "check_id": "COMP-008",
+      "name": "Issue Templates",
+      "status": "fail",
+      "message": "No issue templates found (.github/ISSUE_TEMPLATE/ not found)"
+    }
+  },
+  {
+    "script": "check-license-exists.sh",
+    "priority": "CRITICAL",
+    "result": {
+      "check_id": "COMP-002",
+      "name": "LICENSE File Exists",
+      "status": "fail",
+      "message": "LICENSE file not found (checked LICENSE, LICENSE.md, LICENSE.txt, LICENCE)"
+    }
+  },
+  {
+    "script": "check-mkdocs.sh",
+    "priority": "LOW",
+    "result": {
+      "check_id": "COMP-013",
+      "name": "MkDocs Configuration",
+      "status": "fail",
+      "message": "mkdocs.yml not found"
+    }
+  },
+  {
+    "script": "check-readme-exists.sh",
+    "priority": "CRITICAL",
+    "result": {
+      "check_id": "COMP-001",
+      "name": "README.md Exists",
+      "status": "fail",
+      "message": "README.md not found in repository root"
+    }
+  },
+  {
+    "script": "check-readme-structure.sh",
+    "priority": "HIGH",
+    "result": {
+      "check_id": "COMP-005",
+      "name": "README Structure",
+      "status": "fail",
+      "message": "README.md not found, cannot check structure"
+    }
+  },
+  {
+    "script": "check-repo-settings.sh",
+    "priority": "HIGH",
+    "result": {
+      "check_id": "COMP-017",
+      "name": "Repository Settings",
+      "status": "skip",
+      "message": "Could not parse GitHub repository from remote URL"
+    }
+  },
+  {
+    "script": "check-security.sh",
+    "priority": "LOW",
+    "result": {
+      "check_id": "COMP-012",
+      "name": "SECURITY.md",
+      "status": "fail",
+      "message": "SECURITY.md not found"
+    }
+  }
+]}
+,
+{"repository":"labrats.work.terraform","path":"/home/runner/work/labrats-compliance/labrats-compliance/repos/labrats.work.terraform","compliance_score":61,"tier":"🟠 Needs Improvement","passed":7,"failed":9,"total_score":47,"max_score":76,"checks":[
+  {
+    "script": "check-adr-pattern.sh",
+    "priority": "MEDIUM",
+    "result": {
+      "check_id": "COMP-009",
+      "name": "ADR Pattern",
+      "status": "fail",
+      "message": "ADR directory not found (docs/adr/)"
+    }
+  },
+  {
+    "script": "check-adr-quality.sh",
+    "priority": "MEDIUM",
+    "result": {
+      "check_id": "COMP-014",
+      "name": "ADR Quality",
+      "status": "skip",
+      "message": "ADR directory not found (checked by COMP-009)"
+    }
+  },
+  {
+    "script": "check-branch-protection.sh",
+    "priority": "HIGH",
+    "result": {
+      "check_id": "COMP-016",
+      "name": "Branch Protection",
+      "status": "skip",
+      "message": "Could not parse GitHub repository from remote URL"
+    }
+  },
+  {
+    "script": "check-claude-config.sh",
+    "priority": "MEDIUM",
+    "result": {
+      "check_id": "COMP-010",
+      "name": ".claude/ Configuration",
+      "status": "fail",
+      "message": ".claude/ directory not found"
+    }
+  },
+  {
+    "script": "check-claude-md-exists.sh",
+    "priority": "CRITICAL",
+    "result": {
+      "check_id": "COMP-004",
+      "name": "CLAUDE.md Exists",
+      "status": "fail",
+      "message": "CLAUDE.md not found in repository root"
+    }
+  },
+  {
+    "script": "check-contributing.sh",
+    "priority": "LOW",
+    "result": {
+      "check_id": "COMP-011",
+      "name": "CONTRIBUTING.md",
+      "status": "fail",
+      "message": "CONTRIBUTING.md not found"
+    }
+  },
+  {
+    "script": "check-deprecated-actions.sh",
+    "priority": "HIGH",
+    "result": {
+      "check_id": "COMP-015",
+      "name": "Deprecated Actions",
+      "status": "pass",
+      "message": "No deprecated actions found in 2 workflow(s)"
+    }
+  },
+  {
+    "script": "check-docs-directory.sh",
+    "priority": "HIGH",
+    "result": {
+      "check_id": "COMP-006",
+      "name": "docs/ Directory",
+      "status": "fail",
+      "message": "docs/ directory not found"
+    }
+  },
+  {
+    "script": "check-gitignore-exists.sh",
+    "priority": "CRITICAL",
+    "result": {
+      "check_id": "COMP-003",
+      "name": ".gitignore Exists",
+      "status": "pass",
+      "message": ".gitignore found and not empty"
+    }
+  },
+  {
+    "script": "check-issue-templates.sh",
+    "priority": "MEDIUM",
+    "result": {
+      "check_id": "COMP-008",
+      "name": "Issue Templates",
+      "status": "fail",
+      "message": "No issue templates found (.github/ISSUE_TEMPLATE/ not found)"
+    }
+  },
+  {
+    "script": "check-license-exists.sh",
+    "priority": "CRITICAL",
+    "result": {
+      "check_id": "COMP-002",
+      "name": "LICENSE File Exists",
+      "status": "pass",
+      "message": "LICENSE file found"
+    }
+  },
+  {
+    "script": "check-mkdocs.sh",
+    "priority": "LOW",
+    "result": {
+      "check_id": "COMP-013",
+      "name": "MkDocs Configuration",
+      "status": "fail",
+      "message": "mkdocs.yml not found"
+    }
+  },
+  {
+    "script": "check-readme-exists.sh",
+    "priority": "CRITICAL",
+    "result": {
+      "check_id": "COMP-001",
+      "name": "README.md Exists",
+      "status": "pass",
+      "message": "README.md found"
+    }
+  },
+  {
+    "script": "check-readme-structure.sh",
+    "priority": "HIGH",
+    "result": {
+      "check_id": "COMP-005",
+      "name": "README Structure",
+      "status": "fail",
+      "message": "README missing required sections: Purpose,Quick Start,Structure"
+    }
+  },
+  {
+    "script": "check-repo-settings.sh",
+    "priority": "HIGH",
+    "result": {
+      "check_id": "COMP-017",
+      "name": "Repository Settings",
+      "status": "skip",
+      "message": "Could not parse GitHub repository from remote URL"
+    }
+  },
+  {
+    "script": "check-security.sh",
+    "priority": "LOW",
+    "result": {
+      "check_id": "COMP-012",
+      "name": "SECURITY.md",
+      "status": "fail",
+      "message": "SECURITY.md not found"
+    }
+  }
+]}
+,
+{"repository":"labrats.work.weather","path":"/home/runner/work/labrats-compliance/labrats-compliance/repos/labrats.work.weather","compliance_score":35,"tier":"🔴 Critical Issues","passed":5,"failed":11,"total_score":27,"max_score":76,"checks":[
+  {
+    "script": "check-adr-pattern.sh",
+    "priority": "MEDIUM",
+    "result": {
+      "check_id": "COMP-009",
+      "name": "ADR Pattern",
+      "status": "fail",
+      "message": "ADR directory not found (docs/adr/)"
+    }
+  },
+  {
+    "script": "check-adr-quality.sh",
+    "priority": "MEDIUM",
+    "result": {
+      "check_id": "COMP-014",
+      "name": "ADR Quality",
+      "status": "skip",
+      "message": "ADR directory not found (checked by COMP-009)"
+    }
+  },
+  {
+    "script": "check-branch-protection.sh",
+    "priority": "HIGH",
+    "result": {
+      "check_id": "COMP-016",
+      "name": "Branch Protection",
+      "status": "skip",
+      "message": "Could not parse GitHub repository from remote URL"
+    }
+  },
+  {
+    "script": "check-claude-config.sh",
+    "priority": "MEDIUM",
+    "result": {
+      "check_id": "COMP-010",
+      "name": ".claude/ Configuration",
+      "status": "fail",
+      "message": ".claude/ directory not found"
+    }
+  },
+  {
+    "script": "check-claude-md-exists.sh",
+    "priority": "CRITICAL",
+    "result": {
+      "check_id": "COMP-004",
+      "name": "CLAUDE.md Exists",
+      "status": "fail",
+      "message": "CLAUDE.md not found in repository root"
+    }
+  },
+  {
+    "script": "check-contributing.sh",
+    "priority": "LOW",
+    "result": {
+      "check_id": "COMP-011",
+      "name": "CONTRIBUTING.md",
+      "status": "fail",
+      "message": "CONTRIBUTING.md not found"
+    }
+  },
+  {
+    "script": "check-deprecated-actions.sh",
+    "priority": "HIGH",
+    "result": {
+      "check_id": "COMP-015",
+      "name": "Deprecated Actions",
+      "status": "pass",
+      "message": "No deprecated actions found in 1 workflow(s)"
+    }
+  },
+  {
+    "script": "check-docs-directory.sh",
+    "priority": "HIGH",
+    "result": {
+      "check_id": "COMP-006",
+      "name": "docs/ Directory",
+      "status": "fail",
+      "message": "docs/ directory not found"
+    }
+  },
+  {
+    "script": "check-gitignore-exists.sh",
+    "priority": "CRITICAL",
+    "result": {
+      "check_id": "COMP-003",
+      "name": ".gitignore Exists",
+      "status": "pass",
+      "message": ".gitignore found and not empty"
+    }
+  },
+  {
+    "script": "check-issue-templates.sh",
+    "priority": "MEDIUM",
+    "result": {
+      "check_id": "COMP-008",
+      "name": "Issue Templates",
+      "status": "fail",
+      "message": "No issue templates found (.github/ISSUE_TEMPLATE/ not found)"
+    }
+  },
+  {
+    "script": "check-license-exists.sh",
+    "priority": "CRITICAL",
+    "result": {
+      "check_id": "COMP-002",
+      "name": "LICENSE File Exists",
+      "status": "fail",
+      "message": "LICENSE file not found (checked LICENSE, LICENSE.md, LICENSE.txt, LICENCE)"
+    }
+  },
+  {
+    "script": "check-mkdocs.sh",
+    "priority": "LOW",
+    "result": {
+      "check_id": "COMP-013",
+      "name": "MkDocs Configuration",
+      "status": "fail",
+      "message": "mkdocs.yml not found"
+    }
+  },
+  {
+    "script": "check-readme-exists.sh",
+    "priority": "CRITICAL",
+    "result": {
+      "check_id": "COMP-001",
+      "name": "README.md Exists",
+      "status": "fail",
+      "message": "README.md not found in repository root"
+    }
+  },
+  {
+    "script": "check-readme-structure.sh",
+    "priority": "HIGH",
+    "result": {
+      "check_id": "COMP-005",
+      "name": "README Structure",
+      "status": "fail",
+      "message": "README.md not found, cannot check structure"
+    }
+  },
+  {
+    "script": "check-repo-settings.sh",
+    "priority": "HIGH",
+    "result": {
+      "check_id": "COMP-017",
+      "name": "Repository Settings",
+      "status": "skip",
+      "message": "Could not parse GitHub repository from remote URL"
+    }
+  },
+  {
+    "script": "check-security.sh",
+    "priority": "LOW",
+    "result": {
+      "check_id": "COMP-012",
+      "name": "SECURITY.md",
+      "status": "fail",
+      "message": "SECURITY.md not found"
+    }
+  }
+]}
+,
+{"repository":"modules-ansible","path":"/home/runner/work/labrats-compliance/labrats-compliance/repos/modules-ansible","compliance_score":48,"tier":"🔴 Critical Issues","passed":5,"failed":11,"total_score":37,"max_score":76,"checks":[
+  {
+    "script": "check-adr-pattern.sh",
+    "priority": "MEDIUM",
+    "result": {
+      "check_id": "COMP-009",
+      "name": "ADR Pattern",
+      "status": "fail",
+      "message": "ADR directory not found (docs/adr/)"
+    }
+  },
+  {
+    "script": "check-adr-quality.sh",
+    "priority": "MEDIUM",
+    "result": {
+      "check_id": "COMP-014",
+      "name": "ADR Quality",
+      "status": "skip",
+      "message": "ADR directory not found (checked by COMP-009)"
+    }
+  },
+  {
+    "script": "check-branch-protection.sh",
+    "priority": "HIGH",
+    "result": {
+      "check_id": "COMP-016",
+      "name": "Branch Protection",
+      "status": "fail",
+      "message": "Unable to check branch protection (API error)"
+    }
+  },
+  {
+    "script": "check-claude-config.sh",
+    "priority": "MEDIUM",
+    "result": {
+      "check_id": "COMP-010",
+      "name": ".claude/ Configuration",
+      "status": "fail",
+      "message": ".claude/ directory not found"
+    }
+  },
+  {
+    "script": "check-claude-md-exists.sh",
+    "priority": "CRITICAL",
+    "result": {
+      "check_id": "COMP-004",
+      "name": "CLAUDE.md Exists",
+      "status": "fail",
+      "message": "CLAUDE.md not found in repository root"
+    }
+  },
+  {
+    "script": "check-contributing.sh",
+    "priority": "LOW",
+    "result": {
+      "check_id": "COMP-011",
+      "name": "CONTRIBUTING.md",
+      "status": "fail",
+      "message": "CONTRIBUTING.md not found"
+    }
+  },
+  {
+    "script": "check-deprecated-actions.sh",
+    "priority": "HIGH",
+    "result": {
+      "check_id": "COMP-015",
+      "name": "Deprecated Actions",
+      "status": "pass",
+      "message": "No deprecated actions found in 1 workflow(s)"
+    }
+  },
+  {
+    "script": "check-docs-directory.sh",
+    "priority": "HIGH",
+    "result": {
+      "check_id": "COMP-006",
+      "name": "docs/ Directory",
+      "status": "fail",
+      "message": "docs/ directory not found"
+    }
+  },
+  {
+    "script": "check-gitignore-exists.sh",
+    "priority": "CRITICAL",
+    "result": {
+      "check_id": "COMP-003",
+      "name": ".gitignore Exists",
+      "status": "pass",
+      "message": ".gitignore found and not empty"
+    }
+  },
+  {
+    "script": "check-issue-templates.sh",
+    "priority": "MEDIUM",
+    "result": {
+      "check_id": "COMP-008",
+      "name": "Issue Templates",
+      "status": "fail",
+      "message": "No issue templates found (.github/ISSUE_TEMPLATE/ not found)"
+    }
+  },
+  {
+    "script": "check-license-exists.sh",
+    "priority": "CRITICAL",
+    "result": {
+      "check_id": "COMP-002",
+      "name": "LICENSE File Exists",
+      "status": "pass",
+      "message": "LICENSE file found"
+    }
+  },
+  {
+    "script": "check-mkdocs.sh",
+    "priority": "LOW",
+    "result": {
+      "check_id": "COMP-013",
+      "name": "MkDocs Configuration",
+      "status": "fail",
+      "message": "mkdocs.yml not found"
+    }
+  },
+  {
+    "script": "check-readme-exists.sh",
+    "priority": "CRITICAL",
+    "result": {
+      "check_id": "COMP-001",
+      "name": "README.md Exists",
+      "status": "pass",
+      "message": "README.md found"
+    }
+  },
+  {
+    "script": "check-readme-structure.sh",
+    "priority": "HIGH",
+    "result": {
+      "check_id": "COMP-005",
+      "name": "README Structure",
+      "status": "fail",
+      "message": "README missing required sections: Purpose,Quick Start,Structure"
+    }
+  },
+  {
+    "script": "check-repo-settings.sh",
+    "priority": "HIGH",
+    "result": {
+      "check_id": "COMP-017",
+      "name": "Repository Settings",
+      "status": "fail",
+      "message": "Unable to fetch repository information (API error)"
+    }
+  },
+  {
+    "script": "check-security.sh",
+    "priority": "LOW",
+    "result": {
+      "check_id": "COMP-012",
+      "name": "SECURITY.md",
+      "status": "fail",
+      "message": "SECURITY.md not found"
+    }
+  }
+]}
+,
+{"repository":"modules-terraform","path":"/home/runner/work/labrats-compliance/labrats-compliance/repos/modules-terraform","compliance_score":28,"tier":"🔴 Critical Issues","passed":3,"failed":13,"total_score":22,"max_score":76,"checks":[
+  {
+    "script": "check-adr-pattern.sh",
+    "priority": "MEDIUM",
+    "result": {
+      "check_id": "COMP-009",
+      "name": "ADR Pattern",
+      "status": "fail",
+      "message": "ADR directory not found (docs/adr/)"
+    }
+  },
+  {
+    "script": "check-adr-quality.sh",
+    "priority": "MEDIUM",
+    "result": {
+      "check_id": "COMP-014",
+      "name": "ADR Quality",
+      "status": "skip",
+      "message": "ADR directory not found (checked by COMP-009)"
+    }
+  },
+  {
+    "script": "check-branch-protection.sh",
+    "priority": "HIGH",
+    "result": {
+      "check_id": "COMP-016",
+      "name": "Branch Protection",
+      "status": "fail",
+      "message": "Unable to check branch protection (API error)"
+    }
+  },
+  {
+    "script": "check-claude-config.sh",
+    "priority": "MEDIUM",
+    "result": {
+      "check_id": "COMP-010",
+      "name": ".claude/ Configuration",
+      "status": "fail",
+      "message": ".claude/ directory not found"
+    }
+  },
+  {
+    "script": "check-claude-md-exists.sh",
+    "priority": "CRITICAL",
+    "result": {
+      "check_id": "COMP-004",
+      "name": "CLAUDE.md Exists",
+      "status": "fail",
+      "message": "CLAUDE.md not found in repository root"
+    }
+  },
+  {
+    "script": "check-contributing.sh",
+    "priority": "LOW",
+    "result": {
+      "check_id": "COMP-011",
+      "name": "CONTRIBUTING.md",
+      "status": "fail",
+      "message": "CONTRIBUTING.md not found"
+    }
+  },
+  {
+    "script": "check-deprecated-actions.sh",
+    "priority": "HIGH",
+    "result": {
+      "check_id": "COMP-015",
+      "name": "Deprecated Actions",
+      "status": "fail",
+      "message": "Found 4 deprecated action(s): actions/checkout@v3 in test-cloud-init.yml, actions/checkout@v3 in test-kvm.yml, actions/checkout@v3 in push-tag.yml, actions/checkout@v3 in deploy-test.yml"
+    }
+  },
+  {
+    "script": "check-docs-directory.sh",
+    "priority": "HIGH",
+    "result": {
+      "check_id": "COMP-006",
+      "name": "docs/ Directory",
+      "status": "fail",
+      "message": "docs/ directory not found"
+    }
+  },
+  {
+    "script": "check-gitignore-exists.sh",
+    "priority": "CRITICAL",
+    "result": {
+      "check_id": "COMP-003",
+      "name": ".gitignore Exists",
+      "status": "fail",
+      "message": ".gitignore not found in repository root"
+    }
+  },
+  {
+    "script": "check-issue-templates.sh",
+    "priority": "MEDIUM",
+    "result": {
+      "check_id": "COMP-008",
+      "name": "Issue Templates",
+      "status": "fail",
+      "message": "No issue templates found (.github/ISSUE_TEMPLATE/ not found)"
+    }
+  },
+  {
+    "script": "check-license-exists.sh",
+    "priority": "CRITICAL",
+    "result": {
+      "check_id": "COMP-002",
+      "name": "LICENSE File Exists",
+      "status": "pass",
+      "message": "LICENSE file found"
+    }
+  },
+  {
+    "script": "check-mkdocs.sh",
+    "priority": "LOW",
+    "result": {
+      "check_id": "COMP-013",
+      "name": "MkDocs Configuration",
+      "status": "fail",
+      "message": "mkdocs.yml not found"
+    }
+  },
+  {
+    "script": "check-readme-exists.sh",
+    "priority": "CRITICAL",
+    "result": {
+      "check_id": "COMP-001",
+      "name": "README.md Exists",
+      "status": "pass",
+      "message": "README.md found"
+    }
+  },
+  {
+    "script": "check-readme-structure.sh",
+    "priority": "HIGH",
+    "result": {
+      "check_id": "COMP-005",
+      "name": "README Structure",
+      "status": "fail",
+      "message": "README missing required sections: Purpose,Quick Start,Structure"
+    }
+  },
+  {
+    "script": "check-repo-settings.sh",
+    "priority": "HIGH",
+    "result": {
+      "check_id": "COMP-017",
+      "name": "Repository Settings",
+      "status": "fail",
+      "message": "Unable to fetch repository information (API error)"
+    }
+  },
+  {
+    "script": "check-security.sh",
+    "priority": "LOW",
+    "result": {
+      "check_id": "COMP-012",
+      "name": "SECURITY.md",
+      "status": "fail",
+      "message": "SECURITY.md not found"
+    }
+  }
+]}
+,
+{"repository":"ops-images","path":"/home/runner/work/labrats-compliance/labrats-compliance/repos/ops-images","compliance_score":35,"tier":"🔴 Critical Issues","passed":4,"failed":12,"total_score":27,"max_score":76,"checks":[
+  {
+    "script": "check-adr-pattern.sh",
+    "priority": "MEDIUM",
+    "result": {
+      "check_id": "COMP-009",
+      "name": "ADR Pattern",
+      "status": "fail",
+      "message": "ADR directory not found (docs/adr/)"
+    }
+  },
+  {
+    "script": "check-adr-quality.sh",
+    "priority": "MEDIUM",
+    "result": {
+      "check_id": "COMP-014",
+      "name": "ADR Quality",
+      "status": "skip",
+      "message": "ADR directory not found (checked by COMP-009)"
+    }
+  },
+  {
+    "script": "check-branch-protection.sh",
+    "priority": "HIGH",
+    "result": {
+      "check_id": "COMP-016",
+      "name": "Branch Protection",
+      "status": "fail",
+      "message": "Unable to check branch protection (API error)"
+    }
+  },
+  {
+    "script": "check-claude-config.sh",
+    "priority": "MEDIUM",
+    "result": {
+      "check_id": "COMP-010",
+      "name": ".claude/ Configuration",
+      "status": "fail",
+      "message": ".claude/ directory not found"
+    }
+  },
+  {
+    "script": "check-claude-md-exists.sh",
+    "priority": "CRITICAL",
+    "result": {
+      "check_id": "COMP-004",
+      "name": "CLAUDE.md Exists",
+      "status": "pass",
+      "message": "CLAUDE.md found with content (186 lines)"
+    }
+  },
+  {
+    "script": "check-contributing.sh",
+    "priority": "LOW",
+    "result": {
+      "check_id": "COMP-011",
+      "name": "CONTRIBUTING.md",
+      "status": "fail",
+      "message": "CONTRIBUTING.md not found"
+    }
+  },
+  {
+    "script": "check-deprecated-actions.sh",
+    "priority": "HIGH",
+    "result": {
+      "check_id": "COMP-015",
+      "name": "Deprecated Actions",
+      "status": "pass",
+      "message": "No deprecated actions found in 3 workflow(s)"
+    }
+  },
+  {
+    "script": "check-docs-directory.sh",
+    "priority": "HIGH",
+    "result": {
+      "check_id": "COMP-006",
+      "name": "docs/ Directory",
+      "status": "fail",
+      "message": "docs/ directory not found"
+    }
+  },
+  {
+    "script": "check-gitignore-exists.sh",
+    "priority": "CRITICAL",
+    "result": {
+      "check_id": "COMP-003",
+      "name": ".gitignore Exists",
+      "status": "fail",
+      "message": ".gitignore not found in repository root"
+    }
+  },
+  {
+    "script": "check-issue-templates.sh",
+    "priority": "MEDIUM",
+    "result": {
+      "check_id": "COMP-008",
+      "name": "Issue Templates",
+      "status": "fail",
+      "message": "No issue templates found (.github/ISSUE_TEMPLATE/ not found)"
+    }
+  },
+  {
+    "script": "check-license-exists.sh",
+    "priority": "CRITICAL",
+    "result": {
+      "check_id": "COMP-002",
+      "name": "LICENSE File Exists",
+      "status": "fail",
+      "message": "LICENSE file not found (checked LICENSE, LICENSE.md, LICENSE.txt, LICENCE)"
+    }
+  },
+  {
+    "script": "check-mkdocs.sh",
+    "priority": "LOW",
+    "result": {
+      "check_id": "COMP-013",
+      "name": "MkDocs Configuration",
+      "status": "fail",
+      "message": "mkdocs.yml not found"
+    }
+  },
+  {
+    "script": "check-readme-exists.sh",
+    "priority": "CRITICAL",
+    "result": {
+      "check_id": "COMP-001",
+      "name": "README.md Exists",
+      "status": "pass",
+      "message": "README.md found"
+    }
+  },
+  {
+    "script": "check-readme-structure.sh",
+    "priority": "HIGH",
+    "result": {
+      "check_id": "COMP-005",
+      "name": "README Structure",
+      "status": "fail",
+      "message": "README missing required sections: Purpose"
+    }
+  },
+  {
+    "script": "check-repo-settings.sh",
+    "priority": "HIGH",
+    "result": {
+      "check_id": "COMP-017",
+      "name": "Repository Settings",
+      "status": "fail",
+      "message": "Unable to fetch repository information (API error)"
+    }
+  },
+  {
+    "script": "check-security.sh",
+    "priority": "LOW",
+    "result": {
+      "check_id": "COMP-012",
+      "name": "SECURITY.md",
+      "status": "fail",
+      "message": "SECURITY.md not found"
+    }
+  }
+]}
+,
+{"repository":"projector","path":"/home/runner/work/labrats-compliance/labrats-compliance/repos/projector","compliance_score":61,"tier":"🟠 Needs Improvement","passed":6,"failed":10,"total_score":47,"max_score":76,"checks":[
+  {
+    "script": "check-adr-pattern.sh",
+    "priority": "MEDIUM",
+    "result": {
+      "check_id": "COMP-009",
+      "name": "ADR Pattern",
+      "status": "fail",
+      "message": "ADR directory not found (docs/adr/)"
+    }
+  },
+  {
+    "script": "check-adr-quality.sh",
+    "priority": "MEDIUM",
+    "result": {
+      "check_id": "COMP-014",
+      "name": "ADR Quality",
+      "status": "skip",
+      "message": "ADR directory not found (checked by COMP-009)"
+    }
+  },
+  {
+    "script": "check-branch-protection.sh",
+    "priority": "HIGH",
+    "result": {
+      "check_id": "COMP-016",
+      "name": "Branch Protection",
+      "status": "fail",
+      "message": "Unable to check branch protection (API error)"
+    }
+  },
+  {
+    "script": "check-claude-config.sh",
+    "priority": "MEDIUM",
+    "result": {
+      "check_id": "COMP-010",
+      "name": ".claude/ Configuration",
+      "status": "fail",
+      "message": ".claude/ directory not found"
+    }
+  },
+  {
+    "script": "check-claude-md-exists.sh",
+    "priority": "CRITICAL",
+    "result": {
+      "check_id": "COMP-004",
+      "name": "CLAUDE.md Exists",
+      "status": "pass",
+      "message": "CLAUDE.md found with content (97 lines)"
+    }
+  },
+  {
+    "script": "check-contributing.sh",
+    "priority": "LOW",
+    "result": {
+      "check_id": "COMP-011",
+      "name": "CONTRIBUTING.md",
+      "status": "fail",
+      "message": "CONTRIBUTING.md not found"
+    }
+  },
+  {
+    "script": "check-deprecated-actions.sh",
+    "priority": "HIGH",
+    "result": {
+      "check_id": "COMP-015",
+      "name": "Deprecated Actions",
+      "status": "pass",
+      "message": "No deprecated actions found in 2 workflow(s)"
+    }
+  },
+  {
+    "script": "check-docs-directory.sh",
+    "priority": "HIGH",
+    "result": {
+      "check_id": "COMP-006",
+      "name": "docs/ Directory",
+      "status": "fail",
+      "message": "docs/ directory exists but missing README.md"
+    }
+  },
+  {
+    "script": "check-gitignore-exists.sh",
+    "priority": "CRITICAL",
+    "result": {
+      "check_id": "COMP-003",
+      "name": ".gitignore Exists",
+      "status": "pass",
+      "message": ".gitignore found and not empty"
+    }
+  },
+  {
+    "script": "check-issue-templates.sh",
+    "priority": "MEDIUM",
+    "result": {
+      "check_id": "COMP-008",
+      "name": "Issue Templates",
+      "status": "fail",
+      "message": "No issue templates found (.github/ISSUE_TEMPLATE/ not found)"
+    }
+  },
+  {
+    "script": "check-license-exists.sh",
+    "priority": "CRITICAL",
+    "result": {
+      "check_id": "COMP-002",
+      "name": "LICENSE File Exists",
+      "status": "pass",
+      "message": "LICENSE file found"
+    }
+  },
+  {
+    "script": "check-mkdocs.sh",
+    "priority": "LOW",
+    "result": {
+      "check_id": "COMP-013",
+      "name": "MkDocs Configuration",
+      "status": "fail",
+      "message": "mkdocs.yml not found"
+    }
+  },
+  {
+    "script": "check-readme-exists.sh",
+    "priority": "CRITICAL",
+    "result": {
+      "check_id": "COMP-001",
+      "name": "README.md Exists",
+      "status": "pass",
+      "message": "README.md found"
+    }
+  },
+  {
+    "script": "check-readme-structure.sh",
+    "priority": "HIGH",
+    "result": {
+      "check_id": "COMP-005",
+      "name": "README Structure",
+      "status": "fail",
+      "message": "README missing required sections: Purpose,Quick Start"
+    }
+  },
+  {
+    "script": "check-repo-settings.sh",
+    "priority": "HIGH",
+    "result": {
+      "check_id": "COMP-017",
+      "name": "Repository Settings",
+      "status": "fail",
+      "message": "Unable to fetch repository information (API error)"
+    }
+  },
+  {
+    "script": "check-security.sh",
+    "priority": "LOW",
+    "result": {
+      "check_id": "COMP-012",
+      "name": "SECURITY.md",
+      "status": "fail",
+      "message": "SECURITY.md not found"
+    }
+  }
+]}
+,
+{"repository":"terraform-provider-opnsense","path":"/home/runner/work/labrats-compliance/labrats-compliance/repos/terraform-provider-opnsense","compliance_score":48,"tier":"🔴 Critical Issues","passed":5,"failed":11,"total_score":37,"max_score":76,"checks":[
+  {
+    "script": "check-adr-pattern.sh",
+    "priority": "MEDIUM",
+    "result": {
+      "check_id": "COMP-009",
+      "name": "ADR Pattern",
+      "status": "fail",
+      "message": "ADR directory not found (docs/adr/)"
+    }
+  },
+  {
+    "script": "check-adr-quality.sh",
+    "priority": "MEDIUM",
+    "result": {
+      "check_id": "COMP-014",
+      "name": "ADR Quality",
+      "status": "skip",
+      "message": "ADR directory not found (checked by COMP-009)"
+    }
+  },
+  {
+    "script": "check-branch-protection.sh",
+    "priority": "HIGH",
+    "result": {
+      "check_id": "COMP-016",
+      "name": "Branch Protection",
+      "status": "fail",
+      "message": "Unable to check branch protection (API error)"
+    }
+  },
+  {
+    "script": "check-claude-config.sh",
+    "priority": "MEDIUM",
+    "result": {
+      "check_id": "COMP-010",
+      "name": ".claude/ Configuration",
+      "status": "fail",
+      "message": ".claude/ directory not found"
+    }
+  },
+  {
+    "script": "check-claude-md-exists.sh",
+    "priority": "CRITICAL",
+    "result": {
+      "check_id": "COMP-004",
+      "name": "CLAUDE.md Exists",
+      "status": "fail",
+      "message": "CLAUDE.md not found in repository root"
+    }
+  },
+  {
+    "script": "check-contributing.sh",
+    "priority": "LOW",
+    "result": {
+      "check_id": "COMP-011",
+      "name": "CONTRIBUTING.md",
+      "status": "fail",
+      "message": "CONTRIBUTING.md not found"
+    }
+  },
+  {
+    "script": "check-deprecated-actions.sh",
+    "priority": "HIGH",
+    "result": {
+      "check_id": "COMP-015",
+      "name": "Deprecated Actions",
+      "status": "pass",
+      "message": "No deprecated actions found in 1 workflow(s)"
+    }
+  },
+  {
+    "script": "check-docs-directory.sh",
+    "priority": "HIGH",
+    "result": {
+      "check_id": "COMP-006",
+      "name": "docs/ Directory",
+      "status": "fail",
+      "message": "docs/ directory not found"
+    }
+  },
+  {
+    "script": "check-gitignore-exists.sh",
+    "priority": "CRITICAL",
+    "result": {
+      "check_id": "COMP-003",
+      "name": ".gitignore Exists",
+      "status": "pass",
+      "message": ".gitignore found and not empty"
+    }
+  },
+  {
+    "script": "check-issue-templates.sh",
+    "priority": "MEDIUM",
+    "result": {
+      "check_id": "COMP-008",
+      "name": "Issue Templates",
+      "status": "fail",
+      "message": "No issue templates found (.github/ISSUE_TEMPLATE/ not found)"
+    }
+  },
+  {
+    "script": "check-license-exists.sh",
+    "priority": "CRITICAL",
+    "result": {
+      "check_id": "COMP-002",
+      "name": "LICENSE File Exists",
+      "status": "pass",
+      "message": "LICENSE file found"
+    }
+  },
+  {
+    "script": "check-mkdocs.sh",
+    "priority": "LOW",
+    "result": {
+      "check_id": "COMP-013",
+      "name": "MkDocs Configuration",
+      "status": "fail",
+      "message": "mkdocs.yml not found"
+    }
+  },
+  {
+    "script": "check-readme-exists.sh",
+    "priority": "CRITICAL",
+    "result": {
+      "check_id": "COMP-001",
+      "name": "README.md Exists",
+      "status": "pass",
+      "message": "README.md found"
+    }
+  },
+  {
+    "script": "check-readme-structure.sh",
+    "priority": "HIGH",
+    "result": {
+      "check_id": "COMP-005",
+      "name": "README Structure",
+      "status": "fail",
+      "message": "README missing required sections: Purpose,Quick Start,Structure"
+    }
+  },
+  {
+    "script": "check-repo-settings.sh",
+    "priority": "HIGH",
+    "result": {
+      "check_id": "COMP-017",
+      "name": "Repository Settings",
+      "status": "fail",
+      "message": "Unable to fetch repository information (API error)"
+    }
+  },
+  {
+    "script": "check-security.sh",
+    "priority": "LOW",
+    "result": {
+      "check_id": "COMP-012",
+      "name": "SECURITY.md",
+      "status": "fail",
+      "message": "SECURITY.md not found"
+    }
+  }
+]}
+,
+{"repository":"work.labrats.inflancka.c1.flux","path":"/home/runner/work/labrats-compliance/labrats-compliance/repos/work.labrats.inflancka.c1.flux","compliance_score":28,"tier":"🔴 Critical Issues","passed":4,"failed":12,"total_score":22,"max_score":76,"checks":[
+  {
+    "script": "check-adr-pattern.sh",
+    "priority": "MEDIUM",
+    "result": {
+      "check_id": "COMP-009",
+      "name": "ADR Pattern",
+      "status": "fail",
+      "message": "ADR directory not found (docs/adr/)"
+    }
+  },
+  {
+    "script": "check-adr-quality.sh",
+    "priority": "MEDIUM",
+    "result": {
+      "check_id": "COMP-014",
+      "name": "ADR Quality",
+      "status": "skip",
+      "message": "ADR directory not found (checked by COMP-009)"
+    }
+  },
+  {
+    "script": "check-branch-protection.sh",
+    "priority": "HIGH",
+    "result": {
+      "check_id": "COMP-016",
+      "name": "Branch Protection",
+      "status": "skip",
+      "message": "Could not parse GitHub repository from remote URL"
+    }
+  },
+  {
+    "script": "check-claude-config.sh",
+    "priority": "MEDIUM",
+    "result": {
+      "check_id": "COMP-010",
+      "name": ".claude/ Configuration",
+      "status": "fail",
+      "message": ".claude/ directory not found"
+    }
+  },
+  {
+    "script": "check-claude-md-exists.sh",
+    "priority": "CRITICAL",
+    "result": {
+      "check_id": "COMP-004",
+      "name": "CLAUDE.md Exists",
+      "status": "fail",
+      "message": "CLAUDE.md not found in repository root"
+    }
+  },
+  {
+    "script": "check-contributing.sh",
+    "priority": "LOW",
+    "result": {
+      "check_id": "COMP-011",
+      "name": "CONTRIBUTING.md",
+      "status": "fail",
+      "message": "CONTRIBUTING.md not found"
+    }
+  },
+  {
+    "script": "check-deprecated-actions.sh",
+    "priority": "HIGH",
+    "result": {
+      "check_id": "COMP-015",
+      "name": "Deprecated Actions",
+      "status": "skip",
+      "message": "No workflows directory found"
+    }
+  },
+  {
+    "script": "check-docs-directory.sh",
+    "priority": "HIGH",
+    "result": {
+      "check_id": "COMP-006",
+      "name": "docs/ Directory",
+      "status": "fail",
+      "message": "docs/ directory not found"
+    }
+  },
+  {
+    "script": "check-gitignore-exists.sh",
+    "priority": "CRITICAL",
+    "result": {
+      "check_id": "COMP-003",
+      "name": ".gitignore Exists",
+      "status": "pass",
+      "message": ".gitignore found and not empty"
+    }
+  },
+  {
+    "script": "check-issue-templates.sh",
+    "priority": "MEDIUM",
+    "result": {
+      "check_id": "COMP-008",
+      "name": "Issue Templates",
+      "status": "fail",
+      "message": "No issue templates found (.github/ISSUE_TEMPLATE/ not found)"
+    }
+  },
+  {
+    "script": "check-license-exists.sh",
+    "priority": "CRITICAL",
+    "result": {
+      "check_id": "COMP-002",
+      "name": "LICENSE File Exists",
+      "status": "fail",
+      "message": "LICENSE file not found (checked LICENSE, LICENSE.md, LICENSE.txt, LICENCE)"
+    }
+  },
+  {
+    "script": "check-mkdocs.sh",
+    "priority": "LOW",
+    "result": {
+      "check_id": "COMP-013",
+      "name": "MkDocs Configuration",
+      "status": "fail",
+      "message": "mkdocs.yml not found"
+    }
+  },
+  {
+    "script": "check-readme-exists.sh",
+    "priority": "CRITICAL",
+    "result": {
+      "check_id": "COMP-001",
+      "name": "README.md Exists",
+      "status": "fail",
+      "message": "README.md not found in repository root"
+    }
+  },
+  {
+    "script": "check-readme-structure.sh",
+    "priority": "HIGH",
+    "result": {
+      "check_id": "COMP-005",
+      "name": "README Structure",
+      "status": "fail",
+      "message": "README.md not found, cannot check structure"
+    }
+  },
+  {
+    "script": "check-repo-settings.sh",
+    "priority": "HIGH",
+    "result": {
+      "check_id": "COMP-017",
+      "name": "Repository Settings",
+      "status": "skip",
+      "message": "Could not parse GitHub repository from remote URL"
+    }
+  },
+  {
+    "script": "check-security.sh",
+    "priority": "LOW",
+    "result": {
+      "check_id": "COMP-012",
+      "name": "SECURITY.md",
+      "status": "fail",
+      "message": "SECURITY.md not found"
+    }
+  }
+]}
+
+  ]
+}
