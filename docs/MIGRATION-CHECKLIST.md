@@ -207,7 +207,7 @@ See [UPGRADE.md - Troubleshooting](UPGRADE.md#troubleshooting) for detailed solu
 - [ ] **Documentation reviewed:**
   - [ ] [UPGRADE.md](UPGRADE.md) - Complete upgrade guide
   - [ ] [SETUP.md](SETUP.md) - Setup reference
-  - [ ] [.env.example](.env.example) - Configuration reference
+  - [ ] [.env.example](../.env.example) - Configuration reference
 
 - [ ] **Support channels:**
   - [ ] Check existing issues with `upgrade` label

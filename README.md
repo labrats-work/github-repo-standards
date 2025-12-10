@@ -2,7 +2,7 @@
 
 Cross-repository standardization and compliance checking framework for the labrats-work organization.
 
-> **⚠️ BREAKING CHANGE (v2.0):** If you're upgrading from an existing installation, see **[UPGRADE.md](UPGRADE.md)** for migration instructions. Configuration is now environment-based and requires setup of GitHub Secrets and Variables.
+> **⚠️ BREAKING CHANGE (v2.0):** If you're upgrading from an existing installation, see **[UPGRADE.md](docs/UPGRADE.md)** for migration instructions. Configuration is now environment-based and requires setup of GitHub Secrets and Variables.
 
 ## Purpose
 
@@ -14,7 +14,7 @@ This repository serves as the central hub for:
 
 ## Setup
 
-**🚀 New Installation?** See **[SETUP.md](SETUP.md)** for complete setup instructions including:
+**🚀 New Installation?** See **[SETUP.md](docs/SETUP.md)** for complete setup instructions including:
 - GitHub Apps creation and installation
 - Environment secrets and variables configuration
 - Repository setup and verification

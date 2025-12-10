@@ -330,11 +330,11 @@ After successful setup:
 
 ## Additional Resources
 
-- [COMPLIANCE.md](COMPLIANCE.md) - Compliance standards definition
-- [API_PERMISSIONS.md](API_PERMISSIONS.md) - Detailed API permissions reference
-- [GITHUB_APP_SETUP.md](GITHUB_APP_SETUP.md) - GitHub App creation details
-- [SECURITY.md](SECURITY.md) - Security considerations
-- [CONTRIBUTING.md](CONTRIBUTING.md) - Contributing guidelines
+- [COMPLIANCE.md](../COMPLIANCE.md) - Compliance standards definition
+- [API_PERMISSIONS.md](../API_PERMISSIONS.md) - Detailed API permissions reference
+- [GITHUB_APP_SETUP.md](../GITHUB_APP_SETUP.md) - GitHub App creation details
+- [SECURITY.md](../SECURITY.md) - Security considerations
+- [CONTRIBUTING.md](../CONTRIBUTING.md) - Contributing guidelines
 
 ---
 

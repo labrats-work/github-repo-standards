@@ -323,8 +323,8 @@ Besides the breaking changes, v2.0 includes:
 
 1. **Review Documentation:**
    - [SETUP.md](SETUP.md) - Complete setup guide
-   - [API_PERMISSIONS.md](API_PERMISSIONS.md) - GitHub App permissions
-   - [SECURITY.md](SECURITY.md) - Security considerations
+   - [API_PERMISSIONS.md](../API_PERMISSIONS.md) - GitHub App permissions
+   - [SECURITY.md](../SECURITY.md) - Security considerations
 
 2. **Check Existing Issues:**
    - Search repository issues for similar problems

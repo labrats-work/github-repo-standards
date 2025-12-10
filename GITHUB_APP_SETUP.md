@@ -2,11 +2,11 @@
 
 This guide walks you through creating a GitHub App for the compliance checker using the **manifest flow**.
 
-> **⚠️ IMPORTANT:** This document covers GitHub App creation details. For complete setup including environment configuration and secrets, see **[SETUP.md](SETUP.md)**.
+> **⚠️ IMPORTANT:** This document covers GitHub App creation details. For complete setup including environment configuration and secrets, see **[SETUP.md](docs/SETUP.md)**.
 
 ## Quick Start
 
-**New to this scanner?** Start with [SETUP.md](SETUP.md) for a complete, step-by-step setup guide.
+**New to this scanner?** Start with [SETUP.md](docs/SETUP.md) for a complete, step-by-step setup guide.
 
 **Already familiar?** Use this document as a reference for GitHub App configuration details.
 
@@ -181,7 +181,7 @@ After creating the GitHub Apps, you **must** configure GitHub Secrets and Variab
 
 ### Required Setup
 
-**See [SETUP.md - Environment Configuration](SETUP.md#environment-configuration) for detailed instructions.**
+**See [SETUP.md - Environment Configuration](docs/SETUP.md#environment-configuration) for detailed instructions.**
 
 **Quick Summary:**
 

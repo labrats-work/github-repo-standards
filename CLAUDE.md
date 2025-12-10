@@ -166,6 +166,7 @@ When working in this repository:
 4. **Deduplication Is Important** - Always check for existing open issues before creating new ones
 5. **Security Model Matters** - GITHUB_TOKEN for same-repo, App token for cross-repo reads
 6. **Self-Checking** - github-repo-standards checks itself for compliance too
+7. **Documentation Placement** - ALWAYS place markdown documentation files in the `docs/` directory, never in the root
 
 ### Common Pitfalls
 
@@ -173,6 +174,10 @@ When working in this repository:
 - **Don't create duplicate issues** - Check for existing open compliance issues first
 - **Don't use GitHub App token for github-repo-standards operations** - Use GITHUB_TOKEN
 - **Don't hardcode repo lists** - Use GitHub App to discover installed repos
+- **Don't put markdown docs in root** - ALWAYS place markdown documentation (guides, references, etc.) in `docs/` directory
+  - ❌ Wrong: `/UPGRADE.md`, `/MIGRATION-GUIDE.md`, `/API-REFERENCE.md`
+  - ✅ Correct: `/docs/UPGRADE.md`, `/docs/MIGRATION-GUIDE.md`, `/docs/API-REFERENCE.md`
+  - Exception: Root-level standard files (README.md, CONTRIBUTING.md, SECURITY.md, LICENSE, CHANGELOG.md) stay in root
 
 ### Typical Workflows
 
@@ -201,4 +206,4 @@ When working in this repository:
 
 ## Last Updated
 
-2025-12-03
+2025-12-10 (v2.0.0 - Environment-based configuration)
