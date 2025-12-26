@@ -28,7 +28,7 @@ env:
 jobs:
   # First job: Discover all repositories
   discover-repos:
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, tomp736]
     outputs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
       repo-count: ${{ steps.set-matrix.outputs.repo-count }}
@@ -62,7 +62,7 @@ jobs:
   # Second job: Run compliance checks in parallel using matrix
   check-compliance:
     needs: discover-repos
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, tomp736]
     if: needs.discover-repos.outputs.repo-count > 0
     strategy:
       matrix:
@@ -391,7 +391,7 @@ jobs:
   # Third job: Aggregate results and create PR
   aggregate-results:
     needs: [discover-repos, check-compliance]
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, tomp736]
     permissions:
       contents: write
       issues: write
