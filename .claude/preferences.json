@@ -1,26 +1,43 @@
 {
   "repository": "github-repo-standards",
-  "purpose": "Cross-repository compliance checking and standardization framework",
-  "type": "automation",
+  "purpose": "Template repository for compliance checking frameworks - defines standards and check scripts",
+  "type": "template",
+  "important_notes": [
+    "⚠️ This is a TEMPLATE repository - it defines compliance standards and check scripts",
+    "⚠️ The ACTUAL compliance checks for labrats-work run in the 'labrats-compliance' repository",
+    "This repository provides the framework that labrats-compliance uses",
+    "Changes here should be synced to labrats-compliance when updating standards"
+  ],
   "guidelines": [
-    "This is the meta-repository for managing all my-* repositories",
+    "This is the template for compliance checking frameworks",
     "Compliance checks are modular - each check is a separate script",
-    "Use GITHUB_TOKEN for github-repo-standards operations, App token for cross-repo",
+    "Use GITHUB_TOKEN for same-repo operations, App token for cross-repo",
     "Template file approach for issue bodies, not heredocs",
     "Always check for existing open issues before creating new ones",
-    "github-repo-standards checks itself for compliance too"
+    "Compliance checks should be self-checking (framework checks itself)"
   ],
+  "related_repositories": {
+    "labrats-compliance": "Active compliance checking repository for labrats-work organization",
+    "github-repo-standards": "This template repository - defines standards and checks"
+  },
   "important_files": {
-    "COMPLIANCE.md": "Source of truth for compliance standards",
+    "COMPLIANCE.md": "Source of truth for compliance standards (COMP-001 to COMP-020)",
     "compliance/check-priorities.json": "Check priority and scoring configuration",
-    "compliance/checks/": "Individual check scripts",
-    ".github/workflows/compliance-check.yml": "Orchestrates checks and automation",
-    ".github/ISSUE_TEMPLATE_COMPLIANCE_FAILURE.md": "Issue template",
-    "docs/adr/": "Architecture decisions"
+    "compliance/checks/": "Individual check scripts (bash, output JSON)",
+    "compliance/scripts/": "Automated fix scripts",
+    ".github/workflows/compliance-check.yml": "Reference workflow (customize in labrats-compliance)",
+    ".github/ISSUE_TEMPLATE_COMPLIANCE_FAILURE.md": "Issue template for compliance failures",
+    "docs/adr/": "Architecture decisions for the framework"
   },
   "common_tasks": {
     "run_check_locally": "./compliance/checks/check-readme-exists.sh /path/to/repo",
-    "trigger_workflow": "gh workflow run compliance-check.yml --repo labrats-work/github-repo-standards",
-    "view_reports": "cat reports/compliance-report-$(date +%Y-%m-%d).md"
-  }
+    "test_new_check": "./compliance/checks/check-arc-runner-usage.sh .",
+    "view_all_checks": "ls compliance/checks/check-*.sh"
+  },
+  "workflow_for_updates": [
+    "1. Update compliance standards in this template repository",
+    "2. Test changes locally with compliance check scripts",
+    "3. Sync changes to labrats-compliance repository",
+    "4. Run compliance workflow in labrats-compliance to validate"
+  ]
 }
