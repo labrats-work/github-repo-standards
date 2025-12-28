@@ -153,6 +153,28 @@ This document defines the best practices for all `my-*` repositories based on pa
 **Reference:** See `docs/standards/ADR-RFC-STANDARDS.md` for comprehensive guidelines.
 **Check Script:** `check-adr-quality.sh`
 
+#### COMP-020: ARC Runner Usage
+**Status:** MEDIUM
+**Description:** Workflows must use ARC (Actions Runner Controller) runners instead of GitHub-hosted or legacy runners.
+**Required Runner:** `k8s-local-tomp736` (ARC runner scale set name)
+**Prohibited Runners:**
+- GitHub-hosted runners: `ubuntu-latest`, `windows-latest`, `macos-latest`, etc.
+- Legacy self-hosted runners: `[self-hosted, tomp736]`, `[self-hosted, local]`, etc.
+
+**Rationale:** Using ARC runners provides:
+- Auto-scaling from 5-50 runners based on demand
+- No token expiration (GitHub App authentication)
+- Consistent execution environment
+- Resource efficiency (ephemeral runners)
+- Cost savings over GitHub-hosted runners
+
+**Best Practices:**
+- Use `runs-on: k8s-local-tomp736` in all workflow jobs
+- Do NOT use custom labels (ARC doesn't support `[self-hosted, tomp736]`)
+- Ensure all jobs target the ARC runner scale set name
+
+**Check Script:** `check-arc-runner-usage.sh`
+
 ---
 
 ### ⚪ LOW - Advanced Features
@@ -188,15 +210,15 @@ Score = (Passed Checks / Total Applicable Checks) * 100
 **Weight by Priority:**
 - CRITICAL: 10 points each (4 checks = 40 points)
 - HIGH: 5 points each (6 checks = 30 points)
-- MEDIUM: 2 points each (4 checks = 8 points)
+- MEDIUM: 2 points each (5 checks = 10 points)
 - LOW: 1 point each (3 checks = 3 points)
 
-**Total Possible:** 81 points
+**Total Possible:** 83 points
 
 **Compliance Tiers:**
-- 90-100% (73-81 points): 🟢 Excellent
-- 75-89% (61-72 points): 🟡 Good
-- 50-74% (41-60 points): 🟠 Needs Improvement
+- 90-100% (75-83 points): 🟢 Excellent
+- 75-89% (62-74 points): 🟡 Good
+- 50-74% (42-61 points): 🟠 Needs Improvement
 - 0-49% (0-40 points): 🔴 Critical Issues
 
 ---

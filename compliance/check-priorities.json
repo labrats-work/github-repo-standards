@@ -93,5 +93,10 @@
     "name": "Branch Rulesets",
     "priority": "HIGH",
     "points": 5
+  },
+  "COMP-020": {
+    "name": "ARC Runner Usage",
+    "priority": "MEDIUM",
+    "points": 2
   }
 }
