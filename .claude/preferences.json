@@ -4,9 +4,9 @@
   "type": "template",
   "important_notes": [
     "⚠️ This is a TEMPLATE repository - it defines compliance standards and check scripts",
-    "⚠️ The ACTUAL compliance checks for labrats-work run in the 'labrats-compliance' repository",
-    "This repository provides the framework that labrats-compliance uses",
-    "Changes here should be synced to labrats-compliance when updating standards"
+    "⚠️ When using this template, create a separate repository instance for running actual compliance checks",
+    "This repository provides the framework that instances use",
+    "Changes here define the standards; sync to your instance to apply them"
   ],
   "guidelines": [
     "This is the template for compliance checking frameworks",
@@ -16,16 +16,17 @@
     "Always check for existing open issues before creating new ones",
     "Compliance checks should be self-checking (framework checks itself)"
   ],
-  "related_repositories": {
-    "labrats-compliance": "Active compliance checking repository for labrats-work organization",
-    "github-repo-standards": "This template repository - defines standards and checks"
+  "usage": {
+    "as_template": "Use this repository as a template to create compliance automation for any organization",
+    "instance_setup": "Clone/fork this template, configure GitHub App, customize workflows for your org",
+    "sync_updates": "Pull changes from template to keep your instance up-to-date with latest standards"
   },
   "important_files": {
     "COMPLIANCE.md": "Source of truth for compliance standards (COMP-001 to COMP-020)",
     "compliance/check-priorities.json": "Check priority and scoring configuration",
     "compliance/checks/": "Individual check scripts (bash, output JSON)",
     "compliance/scripts/": "Automated fix scripts",
-    ".github/workflows/compliance-check.yml": "Reference workflow (customize in labrats-compliance)",
+    ".github/workflows/compliance-check.yml": "Reference workflow (customize in your instance)",
     ".github/ISSUE_TEMPLATE_COMPLIANCE_FAILURE.md": "Issue template for compliance failures",
     "docs/adr/": "Architecture decisions for the framework"
   },
@@ -37,7 +38,7 @@
   "workflow_for_updates": [
     "1. Update compliance standards in this template repository",
     "2. Test changes locally with compliance check scripts",
-    "3. Sync changes to labrats-compliance repository",
-    "4. Run compliance workflow in labrats-compliance to validate"
+    "3. Sync changes to your instance repository",
+    "4. Run compliance workflow in your instance to validate"
   ]
 }
